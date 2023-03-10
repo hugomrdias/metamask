@@ -1,12 +1,12 @@
 {
-  "name": "package1",
+  "name": "tools",
   "version": "0.0.1",
   "description": "Example package description.",
   "author": "Hugo Dias <hugomrdias@gmail.com> (hugodias.me)",
   "license": "MIT",
   "repository": {
-    "url": "hugomrdias/hd-template",
-    "directory": "packages/package1"
+    "url": "hugomrdias/tools",
+    "directory": "packages/tools"
   },
   "type": "module",
   "main": "src/index.js",
@@ -51,7 +51,8 @@
     "@types/node": "^18.11.18",
     "assert": "^2.0.0",
     "mocha": "^10.2.0",
-    "playwright-test": "^8.2.0"
+    "playwright-test": "^8.2.0",
+    "type-fest": "^3.6.1"
   },
   "eslintConfig": {
     "extends": [
