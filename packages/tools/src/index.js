@@ -131,7 +131,7 @@ function main() {
   const tag = download({
     repo: 'MetaMask/metamask-extension',
     tag: 'latest',
-    // asset: 'metamask-flask-chrome-[tag]-flask.0',
+    asset: 'metamask-flask-chrome-[tag]-flask.0',
   })
   // eslint-disable-next-line no-console
   console.log('🚀 ~ file: index.js:38 ~ main ~ tag:', tag)
