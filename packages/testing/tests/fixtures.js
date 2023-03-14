@@ -1,7 +1,5 @@
 import { test as base, chromium } from '@playwright/test'
-import path from 'path'
-import * as url from 'url'
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
+import { download } from 'filsnap-testing-tools'
 
 /**
  * @typedef {import('@playwright/test').PlaywrightTestArgs} PlaywrightTestArgs
@@ -23,10 +21,11 @@ const password = '12345678'
 export const test = base.extend({
   // eslint-disable-next-line no-empty-pattern
   context: async ({}, use) => {
-    const pathToExtension = path.join(
-      __dirname,
-      '../metamask-flask-chrome-10.26.1'
-    )
+    const pathToExtension = await download({
+      repo: 'MetaMask/metamask-extension',
+      tag: 'latest',
+      asset: 'metamask-flask-chrome-[tag]-flask.0',
+    })
     const context = await chromium.launchPersistentContext('', {
       headless: false,
       args: [
@@ -95,16 +94,34 @@ export const test = base.extend({
     const connect = await context.waitForEvent('page')
     await connect.waitForLoadState()
     await connect.getByRole('button').filter({ hasText: 'Connect' }).click()
-    await connect
-      .getByRole('button')
-      .filter({ hasText: 'Approve & install' })
-      .click()
-    await connect.getByLabel('Test Networks').click()
-    await connect.getByLabel('Filecoin key').click()
-    await connect.getByRole('button').filter({ hasText: 'Confirm' }).click()
+
+    await Promise.allSettled([snapApprove, snapWaitApprove])
 
     // create new empty page for tests
     await use(await context.newPage())
   },
 })
 export const expect = test.expect
+
+/**
+ *
+ * @param {import('@playwright/test').Page} page
+ */
+async function snapApprove(page) {
+  await page
+    .getByRole('button')
+    .filter({ hasText: 'Approve & install' })
+    .click()
+  await page.getByLabel('Test Networks').click()
+  await page.getByLabel('Filecoin key').click()
+  await page.getByRole('button').filter({ hasText: 'Confirm' }).click()
+}
+
+/**
+ *
+ */
+async function snapWaitApprove() {
+  const page = await context.waitForEvent('page')
+  await page.waitForLoadState()
+  await snapApprove(page)
+}

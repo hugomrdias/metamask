@@ -32,6 +32,7 @@ export default defineConfig({
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
+    baseURL: 'http://localhost:3000',
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
     actionTimeout: 0,
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -39,6 +40,7 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    colorScheme: 'dark',
   },
 
   /* Configure projects for major browsers */
@@ -83,8 +85,8 @@ export default defineConfig({
   // outputDir: 'test-results/',
 
   /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   port: 3000,
-  // },
+  webServer: {
+    command: 'pnpm run start',
+    url: 'http://localhost:3000',
+  },
 })

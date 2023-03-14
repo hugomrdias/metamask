@@ -3,8 +3,16 @@
   "compilerOptions": {
     "outDir": "dist",
     "lib": ["ESNext", "DOM"],
-    "emitDeclarationOnly": true
+    "emitDeclarationOnly": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
+    "types": ["vite/client"]
   },
+  "references": [
+    {
+      "path": "../tools"
+    }
+  ],
   "include": ["src", "test", "package.json"],
   "exclude": ["node_modules", "dist", "out"]
 }

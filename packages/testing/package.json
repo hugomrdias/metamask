@@ -5,18 +5,35 @@
   "author": "Hugo Dias <hugomrdias@gmail.com> (hugodias.me)",
   "main": "index.js",
   "type": "module",
+  "private": true,
   "scripts": {
-    "test": "playwright test --project=chromium"
+    "test": "playwright test --project=chromium",
+    "dev": "vite --force",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "tsc && eslint '**/*.{js,jsx,ts}' && prettier --check '**/*.{js,jsx,ts,yml,json}' --ignore-path ../../.gitignore",
+    "check": "tsc",
+    "start": "vite build && vite preview --port 3000"
   },
   "keywords": [],
   "license": "MIT",
+  "dependencies": {
+    "@acab/reset.css": "^0.5.3",
+    "@preact/signals": "^1.1.2",
+    "filsnap-testing-tools": "workspace:^0.0.1",
+    "preact": "^10.11.1",
+    "water.css": "^2.1.1"
+  },
   "devDependencies": {
+    "@babel/core": "7",
     "@playwright/test": "^1.31.2",
-    "@types/node": "^18.11.18"
+    "@preact/preset-vite": "^2.5.0",
+    "@types/node": "^18.11.18",
+    "vite": "^4.0.3"
   },
   "eslintConfig": {
     "extends": [
-      "../../node_modules/hd-scripts/eslint/index.js"
+      "../../node_modules/hd-scripts/eslint/preact.js"
     ],
     "parserOptions": {
       "project": "./tsconfig.json"

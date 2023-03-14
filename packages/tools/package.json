@@ -1,5 +1,5 @@
 {
-  "name": "tools",
+  "name": "filsnap-testing-tools",
   "version": "0.0.1",
   "description": "Example package description.",
   "author": "Hugo Dias <hugomrdias@gmail.com> (hugodias.me)",
@@ -67,5 +67,8 @@
     "ignorePatterns": [
       "dist"
     ]
+  },
+  "dependencies": {
+    "fflate": "^0.7.4"
   }
 }
