@@ -54,9 +54,7 @@ export class Metamask {
     password = '12345678'
   ) {
     // setup metamask
-
     const page = await this.wallet()
-
     await page.getByText('accept').click()
 
     // import wallet
@@ -78,21 +76,27 @@ export class Metamask {
     return this
   }
 
+  /**
+   * Get metamask page
+   */
   async wallet() {
     if (!this.walletPage) {
       const page = this.context
         .pages()
-        .find((p) => p.url().startsWith('chrome-extension://'))
+        .find((p) =>
+          p.url().startsWith(`chrome-extension://${this.extensionId}`)
+        )
       this.walletPage =
         page ||
         (await this.context.waitForEvent('page', {
           predicate: (page) => {
-            return page.url().startsWith('chrome-extension://')
+            return page
+              .url()
+              .startsWith(`chrome-extension://${this.extensionId}`)
           },
         }))
+      await this.walletPage.waitForLoadState('domcontentloaded')
     }
-
-    await this.walletPage.waitForLoadState('domcontentloaded')
 
     await this.walletPage.bringToFront()
     // await this.walletPage.goto(
@@ -104,13 +108,13 @@ export class Metamask {
   }
 
   /**
+   * Install a snap
    *
-   * @param {import('@playwright/test').Page} testPage
+   * @param {import('@playwright/test').Page} testPage - Test context page to bring the tab back to the front
    */
   async installSnap(testPage) {
     // navigate to another page to get window.ethereum
     const page = await this.context.newPage()
-
     await page.goto('http://example.org')
     const install = page.evaluate(
       ({ snapId, version }) => {
@@ -132,7 +136,6 @@ export class Metamask {
 
     // Snap popup steps
     const wallet = await this.wallet()
-
     await waitNotification(wallet, 'confirm-permissions')
     await wallet.getByRole('button').filter({ hasText: 'Connect' }).click()
     await waitNotification(wallet, 'snap-install')

@@ -17,7 +17,7 @@ import { Metamask } from './metamask.js'
 /** @type {TestType} */
 export const test = base.extend({
   // eslint-disable-next-line no-empty-pattern
-  context: async ({}, use) => {
+  context: async ({ headless }, use) => {
     const pathToExtension = await download({
       repo: 'MetaMask/metamask-extension',
       tag: 'latest',
@@ -26,9 +26,9 @@ export const test = base.extend({
 
     // Launch context with extension
     const context = await chromium.launchPersistentContext('', {
-      headless: false,
+      headless,
       args: [
-        // `--headless=new`,
+        ...(headless ? ['--headless=new'] : []),
         `--disable-extensions-except=${pathToExtension}`,
         `--load-extension=${pathToExtension}`,
       ],

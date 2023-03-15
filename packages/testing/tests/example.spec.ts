@@ -5,7 +5,6 @@ test('popup page', async ({ page, metamask }) => {
   const result = await metamask.installSnap(page)
 
   await page.goto('/')
-  // await page.pause()
   await expect(page.getByText('Filsnap Testing')).toBeVisible()
 
   expect(result['npm:@chainsafe/filsnap']).toBeTruthy()
