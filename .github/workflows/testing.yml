@@ -8,6 +8,8 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2.2.3
@@ -18,7 +20,8 @@ jobs:
           node-version: 18
           cache: 'pnpm'
       - run: pnpm install
-      - run: pnpm dlx playwright install --with-deps
+      - id: tests
+        run: pnpm dlx playwright install --with-deps
       # - run: pnpm -r --filter testing run lint
       - run: pnpm -r --filter testing run test
       - uses: actions/upload-artifact@v3
@@ -27,22 +30,29 @@ jobs:
           name: playwright-report
           path: packages/testing/playwright-report/
           retention-days: 30
-      - name: Check for website playwright-report
+      - name: Check for playwright-report
         id: check_report
+        if: always()
         uses: andstor/file-existence-action@v1
         with:
           files: packages/testing/playwright-report
       - name: Add report to web3.storage
-        if: steps.check_report.outputs.files_exists == 'true'
+        if: always() && steps.check_report.outputs.files_exists == 'true'
         uses: web3-storage/add-to-web3@v2
         id: add_to_web3_storage
         with:
           path_to_add: packages/testing/playwright-report
           web3_token: ${{ secrets.WEB3_TOKEN }}
       - name: Add url to GITHUB_STEP_SUMMARY
-        if: steps.add_to_web3_storage.outputs.cid
+        if: always() && steps.add_to_web3_storage.outputs.cid
         run: |
           echo "
-          ### playwright-report-${{ matrix.browser }}-${{ matrix.os }}
+          ### playwright-report
           * url: https://w3s.link/ipfs/${{ steps.add_to_web3_storage.outputs.cid }}
           " >> $GITHUB_STEP_SUMMARY
+      - uses: mshick/add-pr-comment@v2
+        if: always() && steps.test.outcome != 'success' && github.event_name = 'pull_request'
+        with:
+          message: |
+            ### playwright-report
+            * url: https://w3s.link/ipfs/${{ steps.add_to_web3_storage.outputs.cid }}
