@@ -38,7 +38,7 @@ export const test = base.extend({
     await context.close()
   },
 
-  metamask: async ({ context }, use) => {
+  metamask: async ({ context, page }, use) => {
     let [background] = context.backgroundPages()
     if (!background) {
       background = await context.waitForEvent('backgroundpage')
@@ -46,7 +46,8 @@ export const test = base.extend({
 
     // Create metamask
     const extensionId = background.url().split('/')[2]
-    const metamask = new Metamask(context, extensionId)
+    await page.goto('/')
+    const metamask = new Metamask(context, extensionId, page)
 
     await use(metamask)
   },

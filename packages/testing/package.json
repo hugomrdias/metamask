@@ -20,7 +20,9 @@
   "dependencies": {
     "@acab/reset.css": "^0.5.3",
     "@metamask/providers": "^10.2.1",
+    "@metamask/snaps-utils": "^0.31.0",
     "@preact/signals": "^1.1.2",
+    "eth-rpc-errors": "^4.0.3",
     "filsnap-testing-tools": "workspace:^0.0.1",
     "p-retry": "^5.1.2",
     "preact": "^10.11.1",

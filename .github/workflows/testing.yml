@@ -1,0 +1,47 @@
+name: testing
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.3
+        with:
+          version: 7
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'pnpm'
+      - run: pnpm install
+      - run: pnpm dlx playwright install --with-deps
+      - run: pnpm -r --filter testing run lint
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: packages/testing/playwright-report/
+          retention-days: 30
+      - name: Check for website playwright-report
+        id: check_report
+        uses: andstor/file-existence-action@v1
+        with:
+          files: packages/testing/playwright-report
+      - name: add report to web3.storage
+        if: steps.check_report.outputs.files_exists == 'true'
+        uses: web3-storage/add-to-web3@v2
+        id: add_to_web3_storage
+        with:
+          path_to_add: packages/testing/playwright-report
+          web3_token: ${{ secrets.WEB3_TOKEN }}
+      - name: add url to GITHUB_STEP_SUMMARY
+        if: steps.add_to_web3_storage.outputs.cid
+        run: |
+          echo "
+          ### playwright-report-${{ matrix.browser }}-${{ matrix.os }}
+          * url: https://w3s.link/ipfs/${{ steps.add_to_web3_storage.outputs.cid }}
+          " >> $GITHUB_STEP_SUMMARY
