@@ -46,5 +46,5 @@ test('should install on a custom version', async ({
     version: '2.3.11',
   })
 
-  expect(result['npm:@chainsafe/filsnap'].version).toBe('2.3.11')
+  expect(result['npm:@chainsafe/filsnap'].version).toBe('2.3.1111')
 })
