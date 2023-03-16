@@ -51,7 +51,7 @@ jobs:
           * url: https://w3s.link/ipfs/${{ steps.add_to_web3_storage.outputs.cid }}
           " >> $GITHUB_STEP_SUMMARY
       - uses: mshick/add-pr-comment@v2
-        if: always() && steps.test.outcome != 'success' && github.event_name = 'pull_request'
+        if: always() && steps.test.outcome != 'success' && github.event_name == 'pull_request'
         with:
           message: |
             ### playwright-report
