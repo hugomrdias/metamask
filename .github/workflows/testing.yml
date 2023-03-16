@@ -19,7 +19,7 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install
       - run: pnpm dlx playwright install --with-deps
-      - run: pnpm -r --filter testing run lint
+      - run: pnpm -r --filter testing run test
       - uses: actions/upload-artifact@v3
         if: always()
         with:
