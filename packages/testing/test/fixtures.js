@@ -18,7 +18,7 @@ export const test = base.extend({
   context: async ({ headless }, use) => {
     const pathToExtension = await download({
       repo: 'MetaMask/metamask-extension',
-      tag: '10.26.1',
+      tag: 'v10.26.1',
       asset: 'metamask-flask-chrome-[tag]-flask.0',
     })
 
