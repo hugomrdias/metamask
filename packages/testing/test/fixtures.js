@@ -8,19 +8,17 @@ import { Metamask } from './metamask.js'
  * @typedef {import('@playwright/test').PlaywrightWorkerArgs} PlaywrightWorkerArgs
  * @typedef {import('@playwright/test').PlaywrightWorkerOptions} PlaywrightWorkerOptions
  * @typedef {import('@playwright/test').BrowserContext} BrowserContext
- * @typedef {import('@playwright/test').TestType<PlaywrightTestArgs & PlaywrightTestOptions & {
-    context: BrowserContext;
-    metamask: Metamask
-}, PlaywrightWorkerArgs & PlaywrightWorkerOptions>} TestType
  */
 
-/** @type {TestType} */
+/** @type {import('@playwright/test').TestType<PlaywrightTestArgs & {
+    metamask: import('./metamask').Metamask
+}, PlaywrightWorkerArgs>} */
 export const test = base.extend({
   // eslint-disable-next-line no-empty-pattern
   context: async ({ headless }, use) => {
     const pathToExtension = await download({
       repo: 'MetaMask/metamask-extension',
-      tag: 'latest',
+      tag: '10.26.1',
       asset: 'metamask-flask-chrome-[tag]-flask.0',
     })
 
@@ -38,6 +36,7 @@ export const test = base.extend({
     await context.close()
   },
 
+  // @ts-ignore
   metamask: async ({ context, page }, use) => {
     let [background] = context.backgroundPages()
     if (!background) {
@@ -50,6 +49,7 @@ export const test = base.extend({
     const metamask = new Metamask(context, extensionId, page)
 
     await use(metamask)
+    metamask.clearListeners()
   },
 })
 export const expect = test.expect

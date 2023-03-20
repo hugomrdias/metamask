@@ -1,4 +1,5 @@
 import { test, expect } from './fixtures.js'
+const SNAP_ID = 'npm:@chainsafe/filsnap'
 
 test('should install and return proper response', async ({
   page,
@@ -6,33 +7,33 @@ test('should install and return proper response', async ({
 }) => {
   await metamask.onboard()
   const result = await metamask.installSnap({
-    snapId: 'npm:@chainsafe/filsnap',
+    snapId: SNAP_ID,
   })
 
   await page.goto('/')
   await expect(page.getByText('Filsnap Testing')).toBeVisible()
 
-  expect(result['npm:@chainsafe/filsnap']).toBeTruthy()
+  expect(result[SNAP_ID]).toBeTruthy()
 })
 
 test('should get snaps', async ({ page, metamask }) => {
   await metamask.onboard()
   await metamask.installSnap({
-    snapId: 'npm:@chainsafe/filsnap',
+    snapId: SNAP_ID,
   })
 
   const result = await metamask.getSnaps()
-  expect(result['npm:@chainsafe/filsnap']).toBeTruthy()
+  expect(result[SNAP_ID]).toBeTruthy()
 })
 
 test('should install on a custom page', async ({ page, metamask, context }) => {
   await metamask.onboard()
   const result = await metamask.installSnap({
-    snapId: 'npm:@chainsafe/filsnap',
+    snapId: SNAP_ID,
     page: await context.newPage(),
   })
 
-  expect(result['npm:@chainsafe/filsnap']).toBeTruthy()
+  expect(result[SNAP_ID]).toBeTruthy()
 })
 
 test('should install on a custom version', async ({
@@ -42,9 +43,9 @@ test('should install on a custom version', async ({
 }) => {
   await metamask.onboard()
   const result = await metamask.installSnap({
-    snapId: 'npm:@chainsafe/filsnap',
+    snapId: SNAP_ID,
     version: '2.3.11',
   })
 
-  expect(result['npm:@chainsafe/filsnap'].version).toBe('2.3.11')
+  expect(result[SNAP_ID].version).toBe('2.3.11')
 })

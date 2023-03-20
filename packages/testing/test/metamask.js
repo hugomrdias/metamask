@@ -1,9 +1,11 @@
-import pRetry from 'p-retry'
-import { isValidCode } from 'eth-rpc-errors/dist/utils.js'
+import Emittery from 'emittery'
 import { EthereumRpcError } from 'eth-rpc-errors'
+import { isValidCode } from 'eth-rpc-errors/dist/utils.js'
+import pRetry from 'p-retry'
 
 /**
  * @typedef {import('eth-rpc-errors/dist/classes').SerializedEthereumRpcError} SerializedEthereumRpcError
+ * @typedef {{notification: import('@playwright/test').Page}} Events
  */
 
 /**
@@ -13,10 +15,11 @@ import { EthereumRpcError } from 'eth-rpc-errors'
  */
 function isMetamaskRpcError(obj) {
   if (!obj) return false
-  if (!(obj instanceof Object)) return false
+  if (typeof obj !== 'object') return false
   if (!('code' in obj)) return false
   if (!('message' in obj)) return false
 
+  // @ts-ignore
   if (isValidCode(obj.code)) {
     return true
   }
@@ -69,7 +72,10 @@ function waitNotification(page, name) {
   return pRetry(run, { retries: 5, factor: 1 })
 }
 
-export class Metamask {
+/**
+ * @extends Emittery<Events>
+ */
+export class Metamask extends Emittery {
   /**
    *
    * @param {import('@playwright/test').BrowserContext} context
@@ -77,11 +83,25 @@ export class Metamask {
    * @param {import('@playwright/test').Page} testPage
    */
   constructor(context, extensionId, testPage) {
+    super()
     this.context = context
     this.extensionId = extensionId
     this.testPage = testPage
     this.walletPage = undefined
     this._rpcPage = undefined
+
+    this.on(Emittery.listenerAdded, ({ listener, eventName }) => {
+      if (eventName === 'notification') {
+        this.context.on('page', (frame) => {
+          if (
+            frame.url() ===
+            `chrome-extension://${extensionId}/notification.html`
+          ) {
+            this.emit('notification', frame)
+          }
+        })
+      }
+    })
   }
 
   /**
@@ -144,21 +164,6 @@ export class Metamask {
   }
 
   /**
-   * Get metamask page
-   */
-  async rpcPage() {
-    if (!this._rpcPage) {
-      const page = await this.context.newPage()
-      await page.goto('https://example.org')
-      this._rpcPage = page
-    }
-
-    await this._rpcPage.bringToFront()
-
-    return this._rpcPage
-  }
-
-  /**
    * Install a snap
    *
    * @param {import('./types').InstallSnapOptions} options
@@ -168,10 +173,7 @@ export class Metamask {
 
     const install = rpcPage.evaluate(
       async ({ snapId, version }) => {
-        const api =
-          /** @type {import('@metamask/providers').MetaMaskInpageProvider} */ (
-            window.ethereum
-          )
+        const api = window.ethereum
         try {
           const result = await api.request({
             method: 'wallet_requestSnaps',
@@ -219,38 +221,71 @@ export class Metamask {
    *
    * @param {import('@playwright/test').Page} [page] - Page to run getSnaps
    */
-  async getSnaps(page) {
+  getSnaps(page) {
+    return /** @type {Promise<import('./types').InstallSnapsResult>} */ (
+      this._rpcCall(
+        {
+          method: 'wallet_getSnaps',
+        },
+        page
+      )
+    )
+  }
+
+  /**
+   * Invoke Snap
+   *
+   * @template R
+   *
+   * @param {import('./types').InvokeSnapOptions} opts
+   * @returns {Promise<R>}
+   */
+  async invokeSnap(opts) {
+    return /** @type {Promise<R>} */ (
+      this._rpcCall(
+        {
+          method: 'wallet_invokeSnap',
+          params: {
+            snapId: opts.snapId,
+            request: opts.request,
+          },
+        },
+        opts.page
+      )
+    )
+  }
+
+  /**
+   * @template R
+   *
+   * @param {import('@metamask/providers/dist/BaseProvider').RequestArguments} arg
+   * @param {import('@playwright/test').Page} [page]
+   */
+  async _rpcCall(arg, page) {
     const rpcPage = await ensurePageLoadedURL(page ?? this.testPage)
 
-    const install = rpcPage.evaluate(async () => {
-      const api =
-        /** @type {import('@metamask/providers').MetaMaskInpageProvider} */ (
-          window.ethereum
-        )
+    /** @type {Promise<R>} */
+    // @ts-ignore
+    const result = await rpcPage.evaluate(async (arg) => {
+      const api = window.ethereum
       try {
-        const result = await api.request({
-          method: 'wallet_getSnaps',
-        })
+        const result = await api.request(arg)
 
         return result
       } catch (error) {
         return /** @type {error} */ (error)
       }
-    })
-
-    const result = await install
+    }, arg)
 
     if (isMetamaskRpcError(result)) {
       throw new EthereumRpcError(result.code, result.message, result.data)
     }
 
     if (!result) {
-      throw new Error(
-        `Unknown RPC error: "wallet_requestSnaps" didnt return a response`
-      )
+      throw new Error(`Unknown RPC error: method didnt return a response`)
     }
 
     await this.testPage.bringToFront()
-    return /** @type {import('./types').InstallSnapsResult} */ (result)
+    return result
   }
 }

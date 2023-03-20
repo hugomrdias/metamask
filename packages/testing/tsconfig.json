@@ -13,6 +13,6 @@
       "path": "../tools"
     }
   ],
-  "include": ["src", "test", "package.json"],
+  "include": ["src", "test"],
   "exclude": ["node_modules", "dist", "out"]
 }
