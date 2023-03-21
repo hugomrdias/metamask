@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures.js'
+import { test, expect } from 'filsnap-testing-tools'
 const SNAP_ID = 'npm:@chainsafe/filsnap'
 
 test('should install and return proper response', async ({
@@ -16,7 +16,7 @@ test('should install and return proper response', async ({
   expect(result[SNAP_ID]).toBeTruthy()
 })
 
-test('should get snaps', async ({ page, metamask }) => {
+test('should get snaps', async ({ metamask }) => {
   await metamask.onboard()
   await metamask.installSnap({
     snapId: SNAP_ID,

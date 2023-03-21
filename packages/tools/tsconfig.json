@@ -5,6 +5,6 @@
     "lib": ["ESNext", "DOM"],
     "emitDeclarationOnly": true
   },
-  "include": ["src", "test", "package.json"],
+  "include": ["src", "test"],
   "exclude": ["node_modules", "dist", "out"]
 }

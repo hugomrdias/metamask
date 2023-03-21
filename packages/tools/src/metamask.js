@@ -4,7 +4,7 @@ import { isValidCode } from 'eth-rpc-errors/dist/utils.js'
 import pRetry from 'p-retry'
 
 /**
- * @typedef {import('eth-rpc-errors/dist/classes').SerializedEthereumRpcError} SerializedEthereumRpcError
+ * @typedef {import('eth-rpc-errors/dist/classes.js').SerializedEthereumRpcError} SerializedEthereumRpcError
  * @typedef {{notification: import('@playwright/test').Page}} Events
  */
 
@@ -76,6 +76,9 @@ function waitNotification(page, name) {
  * @extends Emittery<Events>
  */
 export class Metamask extends Emittery {
+  /** @type {import('@playwright/test').Page | undefined} */
+  #walletPage
+
   /**
    *
    * @param {import('@playwright/test').BrowserContext} context
@@ -87,8 +90,7 @@ export class Metamask extends Emittery {
     this.context = context
     this.extensionId = extensionId
     this.testPage = testPage
-    this.walletPage = undefined
-    this._rpcPage = undefined
+    this.#walletPage = undefined
 
     this.on(Emittery.listenerAdded, ({ listener, eventName }) => {
       if (eventName === 'notification') {
@@ -140,13 +142,13 @@ export class Metamask extends Emittery {
    * Get metamask page
    */
   async wallet() {
-    if (!this.walletPage) {
+    if (!this.#walletPage) {
       const page = this.context
         .pages()
         .find((p) =>
           p.url().startsWith(`chrome-extension://${this.extensionId}`)
         )
-      this.walletPage =
+      this.#walletPage =
         page ||
         (await this.context.waitForEvent('page', {
           predicate: (page) => {
@@ -155,18 +157,18 @@ export class Metamask extends Emittery {
               .startsWith(`chrome-extension://${this.extensionId}`)
           },
         }))
-      await this.walletPage.waitForLoadState('domcontentloaded')
+      await this.#walletPage.waitForLoadState('domcontentloaded')
     }
 
-    await this.walletPage.bringToFront()
+    await this.#walletPage.bringToFront()
 
-    return this.walletPage
+    return this.#walletPage
   }
 
   /**
    * Install a snap
    *
-   * @param {import('./types').InstallSnapOptions} options
+   * @param {import('./types.js').InstallSnapOptions} options
    */
   async installSnap(options) {
     const rpcPage = await ensurePageLoadedURL(options.page ?? this.testPage)
@@ -213,7 +215,7 @@ export class Metamask extends Emittery {
     }
 
     await this.testPage.bringToFront()
-    return /** @type {import('./types').InstallSnapsResult} */ (result)
+    return /** @type {import('./types.js').InstallSnapsResult} */ (result)
   }
 
   /**
@@ -222,7 +224,7 @@ export class Metamask extends Emittery {
    * @param {import('@playwright/test').Page} [page] - Page to run getSnaps
    */
   getSnaps(page) {
-    return /** @type {Promise<import('./types').InstallSnapsResult>} */ (
+    return /** @type {Promise<import('./types.js').InstallSnapsResult>} */ (
       this._rpcCall(
         {
           method: 'wallet_getSnaps',
@@ -237,7 +239,7 @@ export class Metamask extends Emittery {
    *
    * @template R
    *
-   * @param {import('./types').InvokeSnapOptions} opts
+   * @param {import('./types.js').InvokeSnapOptions} opts
    * @returns {Promise<R>}
    */
   async invokeSnap(opts) {
@@ -258,7 +260,7 @@ export class Metamask extends Emittery {
   /**
    * @template R
    *
-   * @param {import('@metamask/providers/dist/BaseProvider').RequestArguments} arg
+   * @param {import('@metamask/providers/dist/BaseProvider.js').RequestArguments} arg
    * @param {import('@playwright/test').Page} [page]
    */
   async _rpcCall(arg, page) {

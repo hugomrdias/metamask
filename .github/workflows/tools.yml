@@ -1,4 +1,4 @@
-name: Package1
+name: Tools
 env:
   CI: true
   FORCE_COLOR: 1
@@ -7,13 +7,13 @@ on:
     branches:
       - main
     paths:
-      - 'packages/package1/**'
-      - '.github/workflows/package1.yml'
+      - 'packages/tools/**'
+      - '.github/workflows/tools.yml'
       - 'pnpm-lock.yaml'
   pull_request:
     paths:
-      - 'packages/package1/**'
-      - '.github/workflows/package1.yml'
+      - 'packages/tools/**'
+      - '.github/workflows/tools.yml'
       - 'pnpm-lock.yaml'
 jobs:
   test:
@@ -29,6 +29,6 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install
       - run: pnpm run build
-      - run: pnpm -r --filter package1 run lint
-      - run: pnpm -r --filter package1 run test
-      - run: pnpm -r --filter package1 exec depcheck
+      - run: pnpm -r --filter filsnap-testing-tools run lint
+      - run: pnpm -r --filter filsnap-testing-tools run test
+      - run: pnpm -r --filter filsnap-testing-tools exec depcheck

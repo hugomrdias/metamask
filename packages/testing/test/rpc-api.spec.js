@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures.js'
+import { test, expect } from 'filsnap-testing-tools'
 const SNAP_ID = 'npm:@chainsafe/filsnap'
 
 test.describe('filsnap api with default seed', () => {

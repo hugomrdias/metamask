@@ -1,9 +1,17 @@
-name: testing
+name: Testing
 on:
   push:
-    branches: [main, master]
+    branches:
+      - main
+    paths:
+      - 'packages/testing/**'
+      - '.github/workflows/testing.yml'
+      - 'pnpm-lock.yaml'
   pull_request:
-    branches: [main, master]
+    paths:
+      - 'packages/testing/**'
+      - '.github/workflows/testing.yml'
+      - 'pnpm-lock.yaml'
 jobs:
   test:
     timeout-minutes: 60
@@ -22,7 +30,8 @@ jobs:
       - run: pnpm install
       - id: tests
         run: pnpm dlx playwright install --with-deps
-      # - run: pnpm -r --filter testing run lint
+      - run: pnpm -r --filter testing run lint
+      - run: pnpm -r --filter testing exec depcheck
       - run: pnpm -r --filter testing run test
       - uses: actions/upload-artifact@v3
         if: always()

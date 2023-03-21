@@ -5,31 +5,33 @@
   "author": "Hugo Dias <hugomrdias@gmail.com> (hugodias.me)",
   "license": "MIT",
   "repository": {
-    "url": "hugomrdias/tools",
+    "url": "hugomrdias/filsnap-testing",
     "directory": "packages/tools"
   },
   "type": "module",
   "main": "src/index.js",
   "types": "dist/src/index.d.ts",
-  "browser": {
-    "crypto": false,
-    "./src/crypto.js": "./src/crypto-browser.js"
-  },
   "exports": {
     ".": {
       "types": "./dist/src/index.d.ts",
       "import": "./src/index.js"
     },
-    "./crypto": {
-      "types": "./dist/src/crypto.d.ts",
-      "browser": "./src/crypto-browser.js",
-      "import": "./src/crypto.js"
+    "./fixture": {
+      "types": "./dist/src/fixture.d.ts",
+      "import": "./src/fixture.js"
+    },
+    "./metamask": {
+      "types": "./dist/src/metamask.d.ts",
+      "import": "./src/metamask.js"
     }
   },
   "typesVersions": {
     "*": {
-      "module1": [
-        "dist/src/crypto"
+      "fixture": [
+        "dist/src/fixture"
+      ],
+      "metamask": [
+        "dist/src/metamask"
       ]
     }
   },
@@ -45,13 +47,20 @@
     "test:node": "mocha 'test/**/!(*.browser).test.js'",
     "test:browser": "playwright-test 'test/**/!(*.node).test.js'"
   },
+  "dependencies": {
+    "@metamask/providers": "^10.2.1",
+    "@metamask/snaps-utils": "^0.31.0",
+    "@playwright/test": "^1.31.2",
+    "conf": "^11.0.1",
+    "emittery": "^1.0.1",
+    "eth-rpc-errors": "^4.0.3",
+    "fflate": "^0.7.4",
+    "p-retry": "^5.1.2"
+  },
   "devDependencies": {
     "@types/assert": "^1.5.6",
     "@types/mocha": "^10.0.1",
     "@types/node": "^18.11.18",
-    "assert": "^2.0.0",
-    "mocha": "^10.2.0",
-    "playwright-test": "^8.2.0",
     "type-fest": "^3.6.1"
   },
   "eslintConfig": {
@@ -68,7 +77,16 @@
       "dist"
     ]
   },
-  "dependencies": {
-    "fflate": "^0.7.4"
+  "depcheck": {
+    "specials": [
+      "bin"
+    ],
+    "ignores": [
+      "@types/*",
+      "type-fest"
+    ]
+  },
+  "engines": {
+    "node": ">=16"
   }
 }
