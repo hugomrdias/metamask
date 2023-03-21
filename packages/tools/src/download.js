@@ -116,7 +116,7 @@ function assetName(tag, asset) {
 export async function download({
   repo,
   userAgent = 'metamask',
-  token,
+  token = process.env.GITHUB_TOKEN,
   tag = 'latest',
   dir = defaultDirectory,
   asset,
@@ -130,7 +130,7 @@ export async function download({
     },
   })
 
-  const threshold = 3600 * 1000 // hour
+  const threshold = 7200 * 1000 // hour
 
   if (tag === 'latest' && Date.now() > config.get('latestCheck') + threshold) {
     tag = await getLastestTag({ repo, userAgent, token })
