@@ -7,7 +7,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "test": "playwright test --project=chromium",
+    "test": "playwright test",
     "dev": "vite --force",
     "build": "vite build",
     "preview": "vite preview",
