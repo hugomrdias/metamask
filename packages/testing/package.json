@@ -28,10 +28,10 @@
     "water.css": "^2.1.1"
   },
   "devDependencies": {
-    "@babel/core": "7",
+    "@babel/core": "^7.21.3",
     "@playwright/test": "^1.31.2",
     "@preact/preset-vite": "^2.5.0",
-    "@types/node": "^18.11.18",
+    "@types/node": "^18.15.5",
     "playwright": "^1.31.2",
     "playwright-core": "^1.31.2",
     "vite": "^4.0.3"
