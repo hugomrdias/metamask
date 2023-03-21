@@ -36,7 +36,6 @@ jobs:
       - run: pnpm -r --filter testing run lint
       - run: pnpm -r --filter testing exec depcheck
       - id: tests
-        # run: xvfb-run pnpm -r --filter testing run test --headed
         run: pnpm -r --filter testing run test
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -76,4 +75,4 @@ jobs:
         if: always() && steps.tests.outcome == 'success' && github.event_name == 'pull_request'
         with:
           message: |
-            ### Tests pass 🎉
+            ### Tests passed 🎉

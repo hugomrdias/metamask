@@ -13,7 +13,6 @@ export default defineConfig({
   reporter: process.env.CI ? [['html'], ['list']] : 'list',
   use: {
     actionTimeout: 0,
-    /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: 'http://example.org',
     trace: 'on-first-retry',
     colorScheme: 'dark',

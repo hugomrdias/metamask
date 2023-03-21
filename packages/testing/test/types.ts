@@ -1,13 +1,5 @@
-import { MetaMaskInpageProvider } from '@metamask/providers'
-import { TruncatedSnap } from '@metamask/snaps-utils'
 import { Page } from '@playwright/test'
 
-export type InstallSnapsResult = Record<string, TruncatedSnap>
-declare global {
-  interface Window {
-    ethereum: MetaMaskInpageProvider
-  }
-}
 export interface InstallSnapOptions {
   /**
    * Page to run request on. Defaults: to the test page
