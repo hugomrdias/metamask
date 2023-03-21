@@ -2,6 +2,7 @@ name: Tools
 env:
   CI: true
   FORCE_COLOR: 1
+  PLAYWRIGHT_BROWSERS_PATH: 0
 on:
   push:
     branches:
@@ -28,7 +29,6 @@ jobs:
           node-version: 18
           cache: 'pnpm'
       - run: pnpm install
-      - run: pnpm run build
       - run: pnpm -r --filter filsnap-testing-tools run lint
       - run: pnpm -r --filter filsnap-testing-tools run test
       - run: pnpm -r --filter filsnap-testing-tools exec depcheck
