@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: 18
           cache: 'pnpm'
-      - run: pnpm install
+      - run: pnpm install --frozen-lockfile
       - run: pnpm -r --filter filsnap-testing-tools run lint
       - run: pnpm -r --filter filsnap-testing-tools run test
         env:

@@ -31,12 +31,12 @@ jobs:
         with:
           node-version: 18
           cache: 'pnpm'
-      - run: pnpm install
+      - run: pnpm install --frozen-lockfile
       # - run: pnpm dlx playwright install --with-deps chromium
       - run: pnpm -r --filter testing run lint
       - run: pnpm -r --filter testing exec depcheck
       - id: tests
-        run: pnpm -r --filter testing run test
+        run: pnpm -r --filter testing run test --headed
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - uses: actions/upload-artifact@v3
