@@ -37,6 +37,8 @@ jobs:
       - run: pnpm -r --filter testing exec depcheck
       - id: tests
         run: pnpm -r --filter testing run test
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - uses: actions/upload-artifact@v3
         if: always()
         with:

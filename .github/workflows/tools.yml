@@ -31,4 +31,6 @@ jobs:
       - run: pnpm install
       - run: pnpm -r --filter filsnap-testing-tools run lint
       - run: pnpm -r --filter filsnap-testing-tools run test
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - run: pnpm -r --filter filsnap-testing-tools exec depcheck
