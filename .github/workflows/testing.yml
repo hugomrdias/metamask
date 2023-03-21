@@ -19,7 +19,7 @@ on:
 jobs:
   test:
     timeout-minutes: 60
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     permissions:
       pull-requests: write
     steps:
