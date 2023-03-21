@@ -36,8 +36,8 @@ jobs:
       - run: pnpm -r --filter testing run lint
       - run: pnpm -r --filter testing exec depcheck
       - id: tests
-        # run: xvfb-run pnpm -r --filter testing run test --headed
-        run: pnpm -r --filter testing run test
+        run: xvfb-run pnpm -r --filter testing run test --headed
+        # run: pnpm -r --filter testing run test
         env:
           GITHUB_TOKEN: ${{ github.token }}
       - uses: actions/upload-artifact@v3
