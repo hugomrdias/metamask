@@ -151,7 +151,7 @@ test.describe('filsnap api with default seed', () => {
   })
 
   // eslint-disable-next-line no-only-tests/no-only-tests
-  test.only('should sign raw message', async ({ metamask, page }) => {
+  test('should sign raw message', async ({ metamask, page }) => {
     await metamask.invokeSnap({
       snapId: SNAP_ID,
       request: {
