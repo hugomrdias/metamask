@@ -95,6 +95,8 @@ export class Metamask extends Emittery {
     this.on(Emittery.listenerAdded, ({ listener, eventName }) => {
       if (eventName === 'notification') {
         this.context.on('page', (frame) => {
+          // eslint-disable-next-line no-console
+          console.log('new page', frame.url())
           if (
             frame.url() ===
             `chrome-extension://${extensionId}/notification.html`
