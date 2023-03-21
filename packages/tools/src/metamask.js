@@ -103,16 +103,6 @@ export class Metamask extends Emittery {
           }
         })
         this.#walletPage?.reload()
-        // this.context.on('page', (frame) => {
-        //   // eslint-disable-next-line no-console
-        //   console.log('new page', frame.url())
-        //   if (
-        //     frame.url() ===
-        //     `chrome-extension://${extensionId}/notification.html`
-        //   ) {
-        //     this.emit('notification', frame)
-        //   }
-        // })
       }
     })
   }
