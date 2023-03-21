@@ -94,16 +94,25 @@ export class Metamask extends Emittery {
 
     this.on(Emittery.listenerAdded, ({ listener, eventName }) => {
       if (eventName === 'notification') {
-        this.context.on('page', (frame) => {
-          // eslint-disable-next-line no-console
-          console.log('new page', frame.url())
+        this.#walletPage?.on('framenavigated', (frame) => {
           if (
             frame.url() ===
-            `chrome-extension://${extensionId}/notification.html`
+            `chrome-extension://${extensionId}/home.html#confirmation`
           ) {
-            this.emit('notification', frame)
+            this.emit('notification', frame.page())
           }
         })
+        this.#walletPage?.reload()
+        // this.context.on('page', (frame) => {
+        //   // eslint-disable-next-line no-console
+        //   console.log('new page', frame.url())
+        //   if (
+        //     frame.url() ===
+        //     `chrome-extension://${extensionId}/notification.html`
+        //   ) {
+        //     this.emit('notification', frame)
+        //   }
+        // })
       }
     })
   }
