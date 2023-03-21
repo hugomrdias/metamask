@@ -1,8 +1,5 @@
 import { defineConfig } from '@playwright/test'
 
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
 export default defineConfig({
   testDir: './test',
   timeout: 30 * 1000,
@@ -16,7 +13,7 @@ export default defineConfig({
   reporter: process.env.CI ? [['html'], ['list']] : 'list',
   use: {
     actionTimeout: 0,
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://example.org',
     trace: 'on-first-retry',
     colorScheme: 'dark',
     browserName: 'chromium',
@@ -24,9 +21,4 @@ export default defineConfig({
 
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */
   // outputDir: 'test-results/',
-
-  webServer: {
-    command: 'pnpm run start',
-    url: 'http://localhost:3000',
-  },
 })

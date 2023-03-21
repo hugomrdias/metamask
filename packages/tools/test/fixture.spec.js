@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures.js'
+import { test, expect } from '../src/fixture.js'
 const SNAP_ID = 'npm:@chainsafe/filsnap'
 
 test('should install and return proper response', async ({
@@ -11,12 +11,12 @@ test('should install and return proper response', async ({
   })
 
   await page.goto('/')
-  await expect(page.getByText('Filsnap Testing')).toBeVisible()
+  await expect(page.getByText('Example Domain')).toBeVisible()
 
   expect(result[SNAP_ID]).toBeTruthy()
 })
 
-test('should get snaps', async ({ page, metamask }) => {
+test('should get snaps', async ({ metamask }) => {
   await metamask.onboard()
   await metamask.installSnap({
     snapId: SNAP_ID,

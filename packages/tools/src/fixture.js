@@ -1,24 +1,21 @@
 import { test as base, chromium } from '@playwright/test'
-import { download } from 'filsnap-testing-tools'
+import { download } from './download.js'
 import { Metamask } from './metamask.js'
 
 /**
  * @typedef {import('@playwright/test').PlaywrightTestArgs} PlaywrightTestArgs
- * @typedef {import('@playwright/test').PlaywrightTestOptions} PlaywrightTestOptions
  * @typedef {import('@playwright/test').PlaywrightWorkerArgs} PlaywrightWorkerArgs
- * @typedef {import('@playwright/test').PlaywrightWorkerOptions} PlaywrightWorkerOptions
- * @typedef {import('@playwright/test').BrowserContext} BrowserContext
  */
 
 /** @type {import('@playwright/test').TestType<PlaywrightTestArgs & {
-    metamask: import('./metamask').Metamask
+    metamask: import('./metamask.js').Metamask
 }, PlaywrightWorkerArgs>} */
 export const test = base.extend({
   // eslint-disable-next-line no-empty-pattern
   context: async ({ headless }, use) => {
     const pathToExtension = await download({
       repo: 'MetaMask/metamask-extension',
-      tag: 'v10.26.1',
+      tag: 'latest',
       asset: 'metamask-flask-chrome-[tag]-flask.0',
     })
 

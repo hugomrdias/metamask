@@ -1,4 +1,4 @@
-import { test, expect } from './fixtures.js'
+import { test, expect } from 'filsnap-testing-tools'
 const SNAP_ID = 'npm:@chainsafe/filsnap'
 
 test.describe('filsnap api with default seed', () => {
@@ -150,6 +150,7 @@ test.describe('filsnap api with default seed', () => {
     expect(result).toBe(0)
   })
 
+  // eslint-disable-next-line no-only-tests/no-only-tests
   test('should sign raw message', async ({ metamask, page }) => {
     await metamask.invokeSnap({
       snapId: SNAP_ID,
