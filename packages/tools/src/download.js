@@ -10,7 +10,7 @@ const defaultDirectory = path.resolve('node_modules', '.cache', '.metamask')
 /**
  * Get the latest tag for a repo
  *
- * @param {import("./types.js").Options} opts
+ * @param {import("./types.js").DownloadMetamaskOptions} opts
  */
 async function getLastestTag({ repo, userAgent = 'metamask', token }) {
   const headers = {
@@ -37,38 +37,11 @@ async function getLastestTag({ repo, userAgent = 'metamask', token }) {
 
   return data.tag_name
 }
-/**
- * Download release source array buffer
- *
- * @param {import("./types.js").Options} opts
- */
-async function getSource({ repo, userAgent = 'filsnap', token, tag }) {
-  const url = `https://api.github.com/repos/${repo}/zipball/${tag}`
-  const headers = {
-    Accept: 'application/vnd.github+json',
-    'X-GitHub-Api-Version': GITHUB_API_VERSION,
-    'User-Agent': userAgent,
-  }
-  if (token) {
-    // @ts-ignore
-    headers.Authorization = `Bearer ${token}`
-  }
-  const rsp = await fetch(url, {
-    headers,
-    redirect: 'follow',
-  })
-  if (!rsp.ok) {
-    const msg = await rsp.json()
-    throw new Error(msg.message)
-  }
-
-  return rsp.arrayBuffer()
-}
 
 /**
  * Download release asset array buffer
  *
- * @param {import('type-fest').SetRequired<import("./types.js").Options, 'tag' | 'asset'>} opts
+ * @param {import('type-fest').SetRequired<import("./types.js").DownloadMetamaskOptions, 'tag' | 'asset'>} opts
  */
 async function getAsset({ repo, userAgent = 'filsnap', token, tag, asset }) {
   const url = `https://github.com/${repo}/releases/download/${tag}/${asset}.zip`
@@ -99,27 +72,18 @@ async function getAsset({ repo, userAgent = 'filsnap', token, tag, asset }) {
 }
 
 /**
- * @param {string} tag
- * @param {string} [asset]
- */
-function assetName(tag, asset) {
-  return asset
-    ? asset.replace('[tag]', tag.replace('v', ''))
-    : `source-${tag.replace('v', '')}`
-}
-
-/**
  * Download and unzip a release file
  *
- * @param {import("./types.js").Options} opts
+ * @param {import("./types.js").DownloadMetamaskOptions} opts
  */
 export async function download({
-  repo,
+  repo = 'MetaMask/metamask-extension',
   userAgent = 'metamask',
   token = process.env.GITHUB_TOKEN,
   tag = 'latest',
   dir = defaultDirectory,
-  asset,
+  flask = false,
+  browser = 'chrome',
 }) {
   /** @type {Conf<{ latestTag: string; latestCheck: number; }>} */
   const config = new Conf({
@@ -140,18 +104,18 @@ export async function download({
     tag = config.get('latestTag')
   }
 
-  asset = assetName(tag, asset)
+  let asset = 'metamask-'
+  asset += flask
+    ? `flask-${browser}-${tag.replace('v', '')}-flask.0`
+    : `${browser}-${tag.replace('v', '')}`
+
   const outFolder = path.join(dir, asset)
 
   if (fs.existsSync(outFolder)) {
     return outFolder
   }
 
-  if (asset.startsWith('source')) {
-    unzip(await getSource({ repo, userAgent, token, tag }), outFolder)
-  } else {
-    unzip(await getAsset({ repo, userAgent, token, tag, asset }), outFolder)
-  }
+  unzip(await getAsset({ repo, userAgent, token, tag, asset }), outFolder)
 
   return outFolder
 }

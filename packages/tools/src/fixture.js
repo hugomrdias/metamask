@@ -1,52 +1,73 @@
 import { test as base, chromium } from '@playwright/test'
 import { download } from './download.js'
-import { Metamask } from './metamask.js'
+import { Metamask, findExtensionId, findWallet } from './metamask.js'
 
 /**
- * @typedef {import('@playwright/test').PlaywrightTestArgs} PlaywrightTestArgs
- * @typedef {import('@playwright/test').PlaywrightWorkerArgs} PlaywrightWorkerArgs
+ * @param {import('./types.js').FixtureOptions} opts
  */
+export function createFixture(opts = {}) {
+  const {
+    download: downloadOptions = {},
+    mode = 'parallel',
+    isolated = true,
+    snap,
+    seed,
+    password,
+  } = opts
 
-/** @type {import('@playwright/test').TestType<PlaywrightTestArgs & {
-    metamask: import('./metamask.js').Metamask
-}, PlaywrightWorkerArgs>} */
-export const test = base.extend({
-  // eslint-disable-next-line no-empty-pattern
-  context: async ({ headless }, use) => {
-    const pathToExtension = await download({
-      repo: 'MetaMask/metamask-extension',
-      tag: 'latest',
-      asset: 'metamask-flask-chrome-[tag]-flask.0',
-    })
+  /** @type {import('@playwright/test').BrowserContext} */
+  let ctx
 
-    // Launch context with extension
-    const context = await chromium.launchPersistentContext('', {
-      headless,
-      args: [
-        ...(headless ? ['--headless=new'] : []),
-        `--disable-extensions-except=${pathToExtension}`,
-        `--load-extension=${pathToExtension}`,
-      ],
-    })
+  /** @type {Metamask} */
+  let model
 
-    await use(context)
-    await context.close()
-  },
+  const test = /** @type {import('./types').TextExtend} */ (base.extend)({
+    context: async ({ headless }, use) => {
+      const pathToExtension = await download(downloadOptions)
 
-  // @ts-ignore
-  metamask: async ({ context, page }, use) => {
-    let [background] = context.backgroundPages()
-    if (!background) {
-      background = await context.waitForEvent('backgroundpage')
-    }
+      if (!ctx || isolated) {
+        // Launch context with extension
+        ctx = await chromium.launchPersistentContext('', {
+          headless,
+          args: [
+            ...(headless ? ['--headless=new'] : []),
+            `--disable-extensions-except=${pathToExtension}`,
+            `--load-extension=${pathToExtension}`,
+          ],
+        })
+      }
 
-    // Create metamask
-    const extensionId = background.url().split('/')[2]
-    await page.goto('/')
-    const metamask = new Metamask(context, extensionId, page)
+      await use(ctx)
+      if (isolated) {
+        await ctx.close()
+      }
+    },
 
-    await use(metamask)
-    metamask.clearListeners()
-  },
-})
-export const expect = test.expect
+    metamask: async ({ context, page, baseURL }, use) => {
+      if (baseURL) {
+        await page.goto(baseURL)
+      }
+
+      if (!model || isolated) {
+        const extensionId = await findExtensionId(context)
+        model = new Metamask(
+          context,
+          extensionId,
+          await findWallet(context, extensionId)
+        )
+
+        if (snap) {
+          await model.setup(seed, password)
+          await model.installSnap({ page, ...snap })
+        }
+      }
+
+      await use(model)
+      model.clearListeners()
+    },
+  })
+
+  test.describe.configure({ mode: isolated ? mode : 'serial' })
+  const expect = test.expect
+  return { test, expect }
+}

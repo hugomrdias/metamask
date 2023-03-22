@@ -1,14 +1,38 @@
 import { MetaMaskInpageProvider } from '@metamask/providers'
 import { TruncatedSnap } from '@metamask/snaps-utils'
-import { Page } from '@playwright/test'
+import {
+  Page,
+  PlaywrightTestArgs,
+  PlaywrightWorkerArgs,
+  TestType,
+} from '@playwright/test'
+import { Metamask } from './metamask.js'
 
-export interface Options {
-  repo: `${string}/${string}`
+export interface DownloadMetamaskOptions {
+  repo?: `${string}/${string}`
   tag?: string
   userAgent?: string
   token?: string
   dir?: string
   asset?: string
+  flask?: boolean
+  browser?: 'chrome' | 'firefox'
+}
+
+export type TextExtend = TestType<
+  PlaywrightTestArgs & {
+    metamask: Metamask
+  },
+  PlaywrightWorkerArgs
+>['extend']
+
+export interface FixtureOptions {
+  download?: Partial<DownloadMetamaskOptions>
+  mode?: 'parallel' | 'serial'
+  isolated?: boolean
+  snap?: Pick<InstallSnapOptions, 'snapId' | 'version'>
+  seed?: string
+  password?: string
 }
 
 export type InstallSnapsResult = Record<string, TruncatedSnap>
@@ -21,7 +45,7 @@ export interface InstallSnapOptions {
   /**
    * Page to run request on. Defaults: to the test page
    */
-  page?: Page
+  page: Page
   /**
    * Snap ID
    *
@@ -45,7 +69,6 @@ export interface InvokeSnapOptions {
   /**
    * Page to run request on. Defaults: to the test page
    */
-  page?: Page
-  snapId: string
+  page: Page
   request: SnapRequest
 }

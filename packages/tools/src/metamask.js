@@ -33,9 +33,9 @@ function isMetamaskRpcError(obj) {
  */
 async function ensurePageLoadedURL(page) {
   if (page.url() === 'about:blank') {
-    await page.goto('https://example.org')
+    throw new Error('Go to a page first')
   }
-  await page.bringToFront()
+  // await page.bringToFront()
 
   return page
 }
@@ -69,32 +69,66 @@ function waitNotification(page, name) {
     }
   }
 
-  return pRetry(run, { retries: 5, factor: 1 })
+  return pRetry(run, { retries: 5 })
+}
+
+/**
+ * @param {import('@playwright/test').BrowserContext} ctx
+ */
+export async function findExtensionId(ctx) {
+  let [background] = ctx.backgroundPages()
+  if (!background) {
+    background = await ctx.waitForEvent('backgroundpage')
+  }
+
+  // Create metamask
+  const extensionId = background.url().split('/')[2]
+
+  return extensionId
+}
+
+/**
+ * @param {import('@playwright/test').BrowserContext} ctx
+ * @param {string} extensionId
+ */
+export async function findWallet(ctx, extensionId) {
+  let page = ctx
+    .pages()
+    .find((p) => p.url().startsWith(`chrome-extension://${extensionId}`))
+
+  if (!page) {
+    page = await ctx.waitForEvent('page', {
+      predicate: (page) => {
+        return page.url().startsWith(`chrome-extension://${extensionId}`)
+      },
+    })
+  }
+  await page.waitForLoadState('domcontentloaded')
+  return page
 }
 
 /**
  * @extends Emittery<Events>
  */
 export class Metamask extends Emittery {
-  /** @type {import('@playwright/test').Page | undefined} */
-  #walletPage
-
+  /** @type {string | undefined} */
+  #snap
   /**
    *
    * @param {import('@playwright/test').BrowserContext} context
    * @param {string} extensionId
-   * @param {import('@playwright/test').Page} testPage
+   * @param {import('@playwright/test').Page} walletPage
    */
-  constructor(context, extensionId, testPage) {
+  constructor(context, extensionId, walletPage) {
     super()
     this.context = context
     this.extensionId = extensionId
-    this.testPage = testPage
-    this.#walletPage = undefined
+    this.walletPage = walletPage
+    this.#snap = undefined
 
-    this.on(Emittery.listenerAdded, ({ listener, eventName }) => {
+    this.on(Emittery.listenerAdded, async ({ listener, eventName }) => {
       if (eventName === 'notification') {
-        this.#walletPage?.on('framenavigated', (frame) => {
+        this.walletPage.on('framenavigated', (frame) => {
           if (
             frame.url() ===
             `chrome-extension://${extensionId}/home.html#confirmation`
@@ -102,7 +136,8 @@ export class Metamask extends Emittery {
             this.emit('notification', frame.page())
           }
         })
-        this.#walletPage?.reload()
+
+        waitNotification(this.walletPage, 'confirmation')
       }
     })
   }
@@ -112,12 +147,12 @@ export class Metamask extends Emittery {
    * @param {string} seed
    * @param {string} password
    */
-  async onboard(
+  async setup(
     seed = 'already turtle birth enroll since owner keep patch skirt drift any dinner',
     password = '12345678'
   ) {
     // setup metamask
-    const page = await this.wallet()
+    const page = this.walletPage
     await page.getByText('accept').click()
 
     // import wallet
@@ -139,31 +174,9 @@ export class Metamask extends Emittery {
     return this
   }
 
-  /**
-   * Get metamask page
-   */
-  async wallet() {
-    if (!this.#walletPage) {
-      const page = this.context
-        .pages()
-        .find((p) =>
-          p.url().startsWith(`chrome-extension://${this.extensionId}`)
-        )
-      this.#walletPage =
-        page ||
-        (await this.context.waitForEvent('page', {
-          predicate: (page) => {
-            return page
-              .url()
-              .startsWith(`chrome-extension://${this.extensionId}`)
-          },
-        }))
-      await this.#walletPage.waitForLoadState('domcontentloaded')
-    }
-
-    await this.#walletPage.bringToFront()
-
-    return this.#walletPage
+  async teardown() {
+    this.clearListeners()
+    await this.context.close()
   }
 
   /**
@@ -172,7 +185,7 @@ export class Metamask extends Emittery {
    * @param {import('./types.js').InstallSnapOptions} options
    */
   async installSnap(options) {
-    const rpcPage = await ensurePageLoadedURL(options.page ?? this.testPage)
+    const rpcPage = await ensurePageLoadedURL(options.page)
 
     const install = rpcPage.evaluate(
       async ({ snapId, version }) => {
@@ -195,7 +208,7 @@ export class Metamask extends Emittery {
       { snapId: options.snapId, version: options.version }
     )
     // Snap popup steps
-    const wallet = await this.wallet()
+    const wallet = this.walletPage
     await waitNotification(wallet, 'confirm-permissions')
     await wallet.getByRole('button').filter({ hasText: 'Connect' }).click()
     try {
@@ -215,16 +228,26 @@ export class Metamask extends Emittery {
       )
     }
 
-    await this.testPage.bringToFront()
+    this.#snap = options.snapId
+
     return /** @type {import('./types.js').InstallSnapsResult} */ (result)
+  }
+
+  #ensureSnap() {
+    if (!this.#snap) {
+      throw new Error(
+        'There\'s no snap installed yet. Run "metamask.installSnap()" first.'
+      )
+    }
   }
 
   /**
    * Install a snap
    *
-   * @param {import('@playwright/test').Page} [page] - Page to run getSnaps
+   * @param {import('@playwright/test').Page} page - Page to run getSnaps
    */
   getSnaps(page) {
+    this.#ensureSnap()
     return /** @type {Promise<import('./types.js').InstallSnapsResult>} */ (
       this._rpcCall(
         {
@@ -244,12 +267,13 @@ export class Metamask extends Emittery {
    * @returns {Promise<R>}
    */
   async invokeSnap(opts) {
+    this.#ensureSnap()
     return /** @type {Promise<R>} */ (
       this._rpcCall(
         {
           method: 'wallet_invokeSnap',
           params: {
-            snapId: opts.snapId,
+            snapId: this.#snap,
             request: opts.request,
           },
         },
@@ -262,10 +286,10 @@ export class Metamask extends Emittery {
    * @template R
    *
    * @param {import('@metamask/providers/dist/BaseProvider.js').RequestArguments} arg
-   * @param {import('@playwright/test').Page} [page]
+   * @param {import('@playwright/test').Page} page
    */
   async _rpcCall(arg, page) {
-    const rpcPage = await ensurePageLoadedURL(page ?? this.testPage)
+    const rpcPage = await ensurePageLoadedURL(page)
 
     /** @type {Promise<R>} */
     // @ts-ignore
@@ -287,8 +311,6 @@ export class Metamask extends Emittery {
     if (!result) {
       throw new Error(`Unknown RPC error: method didnt return a response`)
     }
-
-    await this.testPage.bringToFront()
     return result
   }
 }
