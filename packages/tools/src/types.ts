@@ -1,12 +1,12 @@
-import { MetaMaskInpageProvider } from '@metamask/providers'
-import { TruncatedSnap } from '@metamask/snaps-utils'
-import {
+import type { MetaMaskInpageProvider } from '@metamask/providers'
+import type { TruncatedSnap } from '@metamask/snaps-utils'
+import type {
   Page,
   PlaywrightTestArgs,
   PlaywrightWorkerArgs,
   TestType,
 } from '@playwright/test'
-import { Metamask } from './metamask.js'
+import type { Metamask } from './metamask.js'
 
 export interface DownloadMetamaskOptions {
   repo?: `${string}/${string}`

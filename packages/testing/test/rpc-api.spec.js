@@ -56,8 +56,8 @@ test.describe('filsnap api with default seed', () => {
   })
 
   test('should get private key', async ({ metamask, page }) => {
-    metamask.on('notification', (frame) => {
-      frame.getByRole('button').filter({ hasText: 'Approve' }).click()
+    metamask.on('notification', (page) => {
+      page.getByRole('button').filter({ hasText: 'Approve' }).click()
     })
     const result = await metamask.invokeSnap({
       request: {
@@ -201,7 +201,7 @@ test.describe('filsnap api with default seed', () => {
       page,
     })
 
-    metamask.on('notification', async (page) => {
+    metamask.on('notification', async () => {
       // await expect(page.getByText('raw message', { exact: true })).toBeVisible()
       // await page.getByRole('button').filter({ hasText: 'Approve' }).click()
     })
@@ -241,7 +241,7 @@ test.describe('filsnap api with default seed', () => {
       page,
     })
 
-    metamask.on('notification', async (page) => {
+    metamask.on('notification', async () => {
       // await expect(page.getByText('raw message', { exact: true })).toBeVisible()
       // await page.getByRole('button').filter({ hasText: 'Approve' }).click()
     })

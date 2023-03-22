@@ -12,7 +12,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "tsc --build && eslint '**/*.{js,jsx,ts}' && prettier --check '**/*.{js,jsx,ts,yml,json}' --ignore-path ../../.gitignore",
-    "check": "tsc",
+    "check": "tsc --build",
     "start": "vite build && vite preview --port 3000"
   },
   "keywords": [],
