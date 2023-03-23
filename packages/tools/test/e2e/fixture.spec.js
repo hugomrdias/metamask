@@ -1,4 +1,4 @@
-import { createFixture } from '../src/fixture.js'
+import { createFixture } from '../../src/fixture.js'
 
 const { test, expect } = createFixture({
   download: {

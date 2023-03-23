@@ -6,7 +6,7 @@ const { test, expect } = createFixture({
     flask: true,
   },
   snap: {
-    snapId: SNAP_ID,
+    snapId: SNAP_ID, // 'local:http://localhost:8081',
   },
 })
 
@@ -19,6 +19,7 @@ test.describe('filsnap api with default seed', () => {
       page,
     })
 
+    await page.pause()
     expect(result).toBe('f1jbnosztqwadgh4smvsnojdvwjgqxsmtzy5n5imi')
   })
 
@@ -140,7 +141,7 @@ test.describe('filsnap api with default seed', () => {
     /** @type {import('@chainsafe/filsnap-types').MessageRequest} */
     const message = {
       to: 't1sfizuhpgjqyl4yjydlebncvecf3q2cmeeathzwi',
-      value: '0.0011',
+      value: '0',
     }
 
     /** @type {import('@chainsafe/filsnap-types').MessageGasEstimate} */
@@ -201,7 +202,8 @@ test.describe('filsnap api with default seed', () => {
       page,
     })
 
-    metamask.on('notification', async () => {
+    await page.pause()
+    metamask.on('notification', async (page) => {
       // await expect(page.getByText('raw message', { exact: true })).toBeVisible()
       // await page.getByRole('button').filter({ hasText: 'Approve' }).click()
     })
@@ -209,9 +211,8 @@ test.describe('filsnap api with default seed', () => {
     /** @type {import('@chainsafe/filsnap-types').MessageRequest} */
     const message = {
       to: 't1sfizuhpgjqyl4yjydlebncvecf3q2cmeeathzwi',
-      value: '0.001',
+      value: '10',
     }
-    await page.pause()
     /** @type {import('@chainsafe/filsnap-types').SignMessageResponse} */
     const result = await metamask.invokeSnap({
       request: {
@@ -220,7 +221,7 @@ test.describe('filsnap api with default seed', () => {
       },
       page,
     })
-
+    await page.pause()
     expect(result).toStrictEqual({
       confirmed: true,
       // eslint-disable-next-line unicorn/no-null
