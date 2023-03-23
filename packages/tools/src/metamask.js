@@ -67,6 +67,7 @@ function waitNotification(page, name) {
       await page.reload({ waitUntil: 'domcontentloaded' })
       throw new Error('not yet')
     }
+    return page
   }
 
   return pRetry(run, { retries: 5 })
@@ -128,16 +129,8 @@ export class Metamask extends Emittery {
 
     this.on(Emittery.listenerAdded, async ({ listener, eventName }) => {
       if (eventName === 'notification') {
-        this.walletPage.on('framenavigated', (frame) => {
-          if (
-            frame.url() ===
-            `chrome-extension://${extensionId}/home.html#confirmation`
-          ) {
-            this.emit('notification', frame.page())
-          }
-        })
-
-        waitNotification(this.walletPage, 'confirmation')
+        const page = await waitNotification(this.walletPage, 'confirmation')
+        this.emit('notification', page)
       }
     })
   }
