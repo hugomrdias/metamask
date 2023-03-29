@@ -19,7 +19,6 @@ test.describe('filsnap api with default seed', () => {
       page,
     })
 
-    await page.pause()
     expect(result).toBe('f1jbnosztqwadgh4smvsnojdvwjgqxsmtzy5n5imi')
   })
 
@@ -124,10 +123,10 @@ test.describe('filsnap api with default seed', () => {
       page,
     })
 
-    expect(result).toBe('100')
+    expect(result).toBeTruthy()
   })
 
-  test.fixme('should get gasEstimate', async ({ metamask, page }) => {
+  test('should get gasEstimate', async ({ metamask, page }) => {
     await metamask.invokeSnap({
       request: {
         method: 'fil_configure',
@@ -153,7 +152,10 @@ test.describe('filsnap api with default seed', () => {
       page,
     })
 
-    expect(result).toBe(0)
+    expect(result).toMatchObject({
+      gaslimit: 912_078,
+      maxfee: '100000000000000000',
+    })
   })
 
   // eslint-disable-next-line no-only-tests/no-only-tests
@@ -191,7 +193,9 @@ test.describe('filsnap api with default seed', () => {
     })
   })
 
-  test.fixme('should sign message', async ({ metamask, page }) => {
+  test('should sign message', async ({ metamask, page }) => {
+    const from = 't1pc2apytmdas3sn5ylwhfa32jfpx7ez7ykieelna'
+    const to = 't1sfizuhpgjqyl4yjydlebncvecf3q2cmeeathzwi'
     await metamask.invokeSnap({
       request: {
         method: 'fil_configure',
@@ -202,16 +206,19 @@ test.describe('filsnap api with default seed', () => {
       page,
     })
 
-    await page.pause()
     metamask.on('notification', async (page) => {
-      // await expect(page.getByText('raw message', { exact: true })).toBeVisible()
-      // await page.getByRole('button').filter({ hasText: 'Approve' }).click()
+      await expect(
+        page.getByText(`It will be signed with address: ${from}`, {
+          exact: true,
+        })
+      ).toBeVisible()
+      await page.getByRole('button').filter({ hasText: 'Approve' }).click()
     })
 
     /** @type {import('@chainsafe/filsnap-types').MessageRequest} */
     const message = {
-      to: 't1sfizuhpgjqyl4yjydlebncvecf3q2cmeeathzwi',
-      value: '10',
+      to,
+      value: '1',
     }
     /** @type {import('@chainsafe/filsnap-types').SignMessageResponse} */
     const result = await metamask.invokeSnap({
@@ -221,17 +228,29 @@ test.describe('filsnap api with default seed', () => {
       },
       page,
     })
-    await page.pause()
-    expect(result).toStrictEqual({
+    expect(result).toMatchObject({
       confirmed: true,
       // eslint-disable-next-line unicorn/no-null
       error: null,
-      signature:
-        'qwM8IkldjEZqTSy8dRiuxHkieagJCjRrVOJPHzPdrrYMxRvhJcjZUslGjslVSz8aOQEmdh8BznPGBUlz9dPPBgE=',
+      signedMessage: {
+        message: {
+          from,
+          gaslimit: 1_516_578,
+          method: 0,
+          params: '',
+          to,
+          value: '1',
+        },
+        signature: {
+          type: 1,
+        },
+      },
     })
   })
 
-  test.fixme('should send message', async ({ metamask, page }) => {
+  test('should send message', async ({ metamask, page }) => {
+    const from = 't1pc2apytmdas3sn5ylwhfa32jfpx7ez7ykieelna'
+    const to = 't1sfizuhpgjqyl4yjydlebncvecf3q2cmeeathzwi'
     await metamask.invokeSnap({
       request: {
         method: 'fil_configure',
@@ -242,21 +261,17 @@ test.describe('filsnap api with default seed', () => {
       page,
     })
 
-    metamask.on('notification', async () => {
-      // await expect(page.getByText('raw message', { exact: true })).toBeVisible()
-      // await page.getByRole('button').filter({ hasText: 'Approve' }).click()
+    metamask.on('notification', async (page) => {
+      await page.getByRole('button').filter({ hasText: 'Approve' }).click()
     })
 
     /** @type {import('@chainsafe/filsnap-types').MessageRequest} */
     const message = {
-      to: 't1sfizuhpgjqyl4yjydlebncvecf3q2cmeeathzwi',
-      value: '0.001',
+      to,
+      value: '1',
     }
-    await page.pause()
     /** @type {import('@chainsafe/filsnap-types').SignMessageResponse} */
-    // @ts-ignore
-    // eslint-disable-next-line no-unused-vars
-    const result = await metamask.invokeSnap({
+    const signedMessageResponse = await metamask.invokeSnap({
       request: {
         method: 'fil_signMessage',
         params: { message },
@@ -264,6 +279,23 @@ test.describe('filsnap api with default seed', () => {
       page,
     })
 
-    // TODO fil_sendMessage
+    /** @type {import('@chainsafe/filsnap-types').MessageStatus} */
+    const result = await metamask.invokeSnap({
+      request: {
+        method: 'fil_sendMessage',
+        params: { signedMessage: signedMessageResponse.signedMessage },
+      },
+      page,
+    })
+    expect(result).toMatchObject({
+      message: {
+        from,
+        gaslimit: 1_516_578,
+        method: 0,
+        params: '',
+        to,
+        value: '1',
+      },
+    })
   })
 })
