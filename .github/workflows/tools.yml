@@ -2,8 +2,8 @@ name: Tools
 env:
   CI: true
   FORCE_COLOR: 1
-  # PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
-  # PLAYWRIGHT_BROWSERS_PATH: 0
+  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
+  PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/ms-playwright
 on:
   push:
     branches:
@@ -31,8 +31,8 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - run: pnpm -r --filter filsnap-testing-tools run lint
-      # - run: pnpm dlx playwright install --with-deps chromium
+      - run: pnpm -r --filter filsnap-testing-tools exec depcheck
+      - run: pnpm dlx playwright install --with-deps chromium
       - run: pnpm -r --filter filsnap-testing-tools run test
         env:
           GITHUB_TOKEN: ${{ github.token }}
-      - run: pnpm -r --filter filsnap-testing-tools exec depcheck
