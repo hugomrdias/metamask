@@ -7,8 +7,7 @@ const { test, expect } = createFixture({
 })
 const SNAP_ID = 'npm:@chainsafe/filsnap'
 
-// eslint-disable-next-line no-only-tests/no-only-tests
-test.only('should install and return proper response', async ({
+test('should install and return proper response', async ({
   page,
   metamask,
 }) => {
