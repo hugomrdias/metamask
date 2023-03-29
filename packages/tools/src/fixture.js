@@ -1,6 +1,11 @@
 import { test as base, chromium } from '@playwright/test'
 import { download } from './download.js'
-import { Metamask, findExtensionId, findWallet } from './metamask.js'
+import {
+  Metamask,
+  findExtensionId,
+  findVersion,
+  findWallet,
+} from './metamask.js'
 
 /**
  * @param {import('./types.js').FixtureOptions} opts
@@ -8,7 +13,6 @@ import { Metamask, findExtensionId, findWallet } from './metamask.js'
 export function createFixture(opts = {}) {
   const {
     download: downloadOptions = {},
-    mode = 'parallel',
     isolated = true,
     snap,
     seed,
@@ -53,7 +57,8 @@ export function createFixture(opts = {}) {
         model = new Metamask(
           context,
           extensionId,
-          await findWallet(context, extensionId)
+          await findWallet(context, extensionId),
+          await findVersion(context, extensionId)
         )
 
         if (snap) {
@@ -67,7 +72,9 @@ export function createFixture(opts = {}) {
     },
   })
 
-  test.describe.configure({ mode: isolated ? mode : 'serial' })
+  if (!isolated) {
+    test.describe.configure({ mode: 'serial' })
+  }
   const expect = test.expect
   return { test, expect }
 }

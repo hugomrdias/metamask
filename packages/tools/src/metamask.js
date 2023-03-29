@@ -35,7 +35,6 @@ async function ensurePageLoadedURL(page) {
   if (page.url() === 'about:blank') {
     throw new Error('Go to a page first')
   }
-  // await page.bringToFront()
 
   return page
 }
@@ -109,23 +108,49 @@ export async function findWallet(ctx, extensionId) {
 }
 
 /**
+ * @param {import('@playwright/test').BrowserContext} ctx
+ * @param {string} extensionId
+ */
+export async function findVersion(ctx, extensionId) {
+  const page = await ctx.newPage()
+  await page.goto(`chrome://extensions/?id=${extensionId}`)
+  const version = await page
+    .getByRole('heading', { name: 'Version' })
+    .locator('..')
+    .locator('.section-content')
+    .textContent()
+
+  await page.close()
+
+  if (!version) {
+    throw new Error('Could not find version')
+  }
+
+  return version
+}
+
+/**
  * @extends Emittery<Events>
  */
 export class Metamask extends Emittery {
   /** @type {string | undefined} */
   #snap
+
   /**
    *
    * @param {import('@playwright/test').BrowserContext} context
    * @param {string} extensionId
    * @param {import('@playwright/test').Page} walletPage
+   * @param {string} version
    */
-  constructor(context, extensionId, walletPage) {
+  constructor(context, extensionId, walletPage, version) {
     super()
     this.context = context
     this.extensionId = extensionId
     this.walletPage = walletPage
     this.#snap = undefined
+    this.version = version
+    this.isFlask = version.includes('flask')
 
     this.on(Emittery.listenerAdded, async ({ listener, eventName }) => {
       if (eventName === 'notification') {
@@ -146,7 +171,9 @@ export class Metamask extends Emittery {
   ) {
     // setup metamask
     const page = this.walletPage
-    await page.getByText('accept').click()
+    if (this.isFlask) {
+      await page.getByText('accept').click()
+    }
 
     // import wallet
     await page.getByTestId('onboarding-import-wallet').click()
@@ -172,12 +199,24 @@ export class Metamask extends Emittery {
     await this.context.close()
   }
 
+  #ensureFlaskOrSnap(skipSnap = false) {
+    if (!this.isFlask) {
+      throw new Error('This method is only available for Flask builds.')
+    }
+    if (!skipSnap && !this.#snap) {
+      throw new Error(
+        'There\'s no snap installed yet. Run "metamask.installSnap()" first.'
+      )
+    }
+  }
+
   /**
    * Install a snap
    *
    * @param {import('./types.js').InstallSnapOptions} options
    */
   async installSnap(options) {
+    this.#ensureFlaskOrSnap(true)
     const rpcPage = await ensurePageLoadedURL(options.page)
 
     const install = rpcPage.evaluate(
@@ -226,23 +265,15 @@ export class Metamask extends Emittery {
     return /** @type {import('./types.js').InstallSnapsResult} */ (result)
   }
 
-  #ensureSnap() {
-    if (!this.#snap) {
-      throw new Error(
-        'There\'s no snap installed yet. Run "metamask.installSnap()" first.'
-      )
-    }
-  }
-
   /**
    * Install a snap
    *
    * @param {import('@playwright/test').Page} page - Page to run getSnaps
    */
   getSnaps(page) {
-    this.#ensureSnap()
+    this.#ensureFlaskOrSnap()
     return /** @type {Promise<import('./types.js').InstallSnapsResult>} */ (
-      this._rpcCall(
+      this.#_rpcCall(
         {
           method: 'wallet_getSnaps',
         },
@@ -259,10 +290,10 @@ export class Metamask extends Emittery {
    * @param {import('./types.js').InvokeSnapOptions} opts
    * @returns {Promise<R>}
    */
-  async invokeSnap(opts) {
-    this.#ensureSnap()
+  invokeSnap(opts) {
+    this.#ensureFlaskOrSnap()
     return /** @type {Promise<R>} */ (
-      this._rpcCall(
+      this.#_rpcCall(
         {
           method: 'wallet_invokeSnap',
           params: {
@@ -281,7 +312,7 @@ export class Metamask extends Emittery {
    * @param {import('@metamask/providers/dist/BaseProvider.js').RequestArguments} arg
    * @param {import('@playwright/test').Page} page
    */
-  async _rpcCall(arg, page) {
+  async #_rpcCall(arg, page) {
     const rpcPage = await ensurePageLoadedURL(page)
 
     /** @type {Promise<R>} */

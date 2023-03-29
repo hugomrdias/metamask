@@ -100,7 +100,7 @@ export async function download({
     tag = await getLastestTag({ repo, userAgent, token })
     config.set('latestCheck', Date.now())
     config.set('latestTag', tag)
-  } else {
+  } else if (tag === 'latest') {
     tag = config.get('latestTag')
   }
 

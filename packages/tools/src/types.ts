@@ -28,7 +28,6 @@ export type TextExtend = TestType<
 
 export interface FixtureOptions {
   download?: Partial<DownloadMetamaskOptions>
-  mode?: 'parallel' | 'serial'
   isolated?: boolean
   snap?: Pick<InstallSnapOptions, 'snapId' | 'version'>
   seed?: string
