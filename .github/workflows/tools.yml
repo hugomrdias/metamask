@@ -3,7 +3,7 @@ env:
   CI: true
   FORCE_COLOR: 1
   # PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
-  PLAYWRIGHT_BROWSERS_PATH: 0
+  # PLAYWRIGHT_BROWSERS_PATH: 0
 on:
   push:
     branches:
