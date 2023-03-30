@@ -30,6 +30,7 @@
     "@playwright/test": "^1.32.1",
     "@preact/preset-vite": "^2.5.0",
     "@types/node": "^18.15.11",
+    "playwright": "^1.32.1",
     "vite": "^4.2.1"
   },
   "eslintConfig": {
