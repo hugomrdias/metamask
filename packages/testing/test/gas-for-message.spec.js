@@ -8,7 +8,7 @@ const { test, expect } = createFixture({
     flask: true,
   },
   snap: {
-    snapId: SNAP_ID, // 'local:http://localhost:8081',
+    snapId: SNAP_ID,
   },
 })
 

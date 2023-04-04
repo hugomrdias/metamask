@@ -166,8 +166,9 @@ export class Metamask extends Emittery {
    * @param {string} password
    */
   async setup(
-    seed = 'already turtle birth enroll since owner keep patch skirt drift any dinner',
-    password = '12345678'
+    seed = process.env.METAMASK_SEED ??
+      'already turtle birth enroll since owner keep patch skirt drift any dinner',
+    password = process.env.METAMASK_PASSWORD ?? '12345678'
   ) {
     // setup metamask
     const page = this.walletPage
@@ -237,7 +238,10 @@ export class Metamask extends Emittery {
           return /** @type {error} */ (error)
         }
       },
-      { snapId: options.snapId, version: options.version }
+      {
+        snapId: options.snapId ?? process.env.METAMASK_SNAP_ID,
+        version: options.version ?? process.env.METAMASK_SNAP_VERSION,
+      }
     )
     // Snap popup steps
     const wallet = this.walletPage

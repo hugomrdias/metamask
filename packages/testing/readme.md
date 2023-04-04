@@ -1,4 +1,8 @@
-# Usage
+# filsnap-testing
+
+> Note: Currently metamask >= v10.28.0 is not supported.
+
+## Usage
 
 ```bash
 
