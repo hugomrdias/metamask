@@ -1,4 +1,4 @@
-# Monorepo template
+# Filsnap Testing Monorepo
 
 ## Usage
 
