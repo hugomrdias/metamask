@@ -1,4 +1,8 @@
-# Usage
+# filsnap-testing
+
+> Note: Currently metamask >= v10.28.0 is not supported.
+
+## Usage
 
 ```bash
 
@@ -13,3 +17,7 @@ Tests: t1pc2apytmdas3sn5ylwhfa32jfpx7ez7ykieelna
 ### Faucet
 
 https://faucet.calibration.fildev.network/
+
+## Notes
+
+wallets needs funds to gas estimate
