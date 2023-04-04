@@ -34,3 +34,8 @@ jobs:
       - run: pnpm -r --filter testing run test
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          METAMASK_TAG: ${{ inputs.metamask-tag }}
+          METAMASK_SEED: ${{ inputs.metamask-seed }}
+          METAMASK_PASSWORD: ${{ inputs.metamask-password }}
+          METAMASK_SNAP_ID: ${{ inputs.metamask-snap-id }}
+          MEtAMASK_SNAP_VERSION: ${{ inputs.metamask-snap-version }}
