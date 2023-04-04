@@ -1,8 +1,6 @@
 import { createFixture } from 'filsnap-testing-tools'
 
 const SNAP_ID = process.env.METAMASK_SNAP_ID ?? 'npm:@chainsafe/filsnap'
-// eslint-disable-next-line no-console
-console.log('🚀 ~ file: configure.spec.js:4 ~ SNAP_ID:', SNAP_ID)
 const { test, expect } = createFixture({
   isolated: false,
   download: {
@@ -12,6 +10,9 @@ const { test, expect } = createFixture({
     snapId: SNAP_ID,
   },
 })
+
+// eslint-disable-next-line no-console
+console.log('metamask', process.env.METAMASK_TAG)
 
 test.describe('fil_configure', () => {
   test('should get configure for testnet', async ({ metamask, page }) => {

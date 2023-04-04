@@ -1,7 +1,7 @@
 import { createFixture } from 'filsnap-testing-tools'
 
 const TARGET_ADDRESS = 't1sfizuhpgjqyl4yjydlebncvecf3q2cmeeathzwi'
-const SNAP_ID = 'npm:@chainsafe/filsnap'
+const SNAP_ID = process.env.METAMASK_SNAP_ID ?? 'npm:@chainsafe/filsnap'
 const { test, expect } = createFixture({
   isolated: false,
   download: {
