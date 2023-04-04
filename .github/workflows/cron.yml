@@ -1,0 +1,27 @@
+name: Cron
+env:
+  CI: true
+  FORCE_COLOR: 1
+  PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/ms-playwright
+on:
+  schedule:
+    - cron: '0 0 * * *'
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.4
+        with:
+          version: 7
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm dlx playwright install chromium --with-deps
+      - run: pnpm -r --filter testing run test
+        id: tests
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

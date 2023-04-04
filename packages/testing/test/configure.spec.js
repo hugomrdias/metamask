@@ -11,9 +11,6 @@ const { test, expect } = createFixture({
   },
 })
 
-// eslint-disable-next-line no-console
-console.log('metamask', process.env.METAMASK_TAG)
-
 test.describe('fil_configure', () => {
   test('should get configure for testnet', async ({ metamask, page }) => {
     /** @type {import('@chainsafe/filsnap-types').SnapConfig} */
