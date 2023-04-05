@@ -1,4 +1,4 @@
-import { createFixture } from 'filsnap-testing-tools'
+import { createFixture } from 'metamask-testing-tools'
 
 const TARGET_ADDRESS = 't1sfizuhpgjqyl4yjydlebncvecf3q2cmeeathzwi'
 const SNAP_ID = process.env.METAMASK_SNAP_ID || 'npm:@chainsafe/filsnap'

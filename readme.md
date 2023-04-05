@@ -1,8 +1,6 @@
 # Filsnap Testing Monorepo
 
-## Usage
-
-First add `GH_TOKEN` and `NPM_TOKEN` to secrets for CI workflows.
+## Install
 
 ```bash
 # install all dependencies in the mono-repo
@@ -11,15 +9,15 @@ pnpm install
 npx simple-git-hooks
 ```
 
-## Tests
+## Packages
 
-```bash
-# node tests can enable nodejs native watch mode
-pnpm test:node -n watch
+### [testing](./packages/testing)
 
-# browser tests can enable watch
-pnpm test:browser --watch
-```
+Test suite for [FilSnap](https://github.com/ChainSafe/filsnap) using Playwright.
+
+### [tools](./packages/tools)
+
+This is a collection of tools for testing metamask, metamask flask and metamask snaps.
 
 ## License
 

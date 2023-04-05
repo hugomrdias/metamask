@@ -8,6 +8,13 @@
     "url": "hugomrdias/filsnap-testing",
     "directory": "packages/tools"
   },
+  "keywords": [
+    "metamask",
+    "testing",
+    "snap",
+    "flask",
+    "playwright"
+  ],
   "type": "module",
   "main": "src/index.js",
   "types": "dist/src/index.d.ts",

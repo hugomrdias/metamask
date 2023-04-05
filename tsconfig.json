@@ -35,11 +35,11 @@
   },
   "typedocOptions": {
     "entryPointStrategy": "packages",
-    "entryPoints": ["packages/package1"],
+    "entryPoints": ["packages/tools"],
     "excludeExternals": true,
     "darkHighlightTheme": "github-dark",
     "navigationLinks": {
-      "Github": "https://github.com/hugomrdias/hd-template"
+      "Github": "https://github.com/hugomrdias/filsnap-testing"
     }
   }
 }

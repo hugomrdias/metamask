@@ -25,8 +25,7 @@ jobs:
   npm:
     needs: release
     if: |
-      contains(fromJson(needs.release.outputs.paths_released), 'packages/package1') ||
-      contains(fromJson(needs.release.outputs.paths_released), 'packages/package2')
+      contains(fromJson(needs.release.outputs.paths_released), 'packages/tools')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -43,3 +42,8 @@ jobs:
       - run: pnpm -r publish --access=public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+  docs:
+    needs: release
+    if: |
+      contains(fromJson(needs.release.outputs.paths_released), 'packages/tools')
+    uses: './.github/workflows/reusable-docs.yml'
