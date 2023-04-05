@@ -7,13 +7,13 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "test": "METAMASK_TAG=v10.27.0 playwright test",
+    "test": "pnpm run build && METAMASK_TAG=v10.27.0 playwright test",
     "dev": "vite --force",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "tsc --build && eslint '**/*.{js,jsx,ts}' && prettier --check '**/*.{js,jsx,ts,yml,json}' --ignore-path ../../.gitignore",
     "check": "tsc --build",
-    "start": "vite build && vite preview --port 3000"
+    "start": "vite preview --port 3000"
   },
   "keywords": [],
   "license": "MIT",

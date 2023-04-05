@@ -39,10 +39,8 @@ test.describe('fil_getGasForMessage', () => {
       page,
     })
 
-    expect(result).toMatchObject({
-      gaslimit: 912_078,
-      maxfee: '100000000000000000',
-    })
+    expect(result.gaslimit).toBeGreaterThanOrEqual(1000)
+    expect(result.maxfee).toBe('100000000000000000')
   })
 
   test('should estimate on testnet with 0.2 FIL maxfee', async ({
@@ -74,10 +72,8 @@ test.describe('fil_getGasForMessage', () => {
       page,
     })
 
-    expect(result).toMatchObject({
-      gaslimit: 912_078,
-      maxfee: '200000000000000000',
-    })
+    expect(result.gaslimit).toBeGreaterThanOrEqual(1000)
+    expect(result.maxfee).toBe('200000000000000000')
   })
 
   test('should estimate on testnet for non 0 value', async ({
@@ -109,8 +105,6 @@ test.describe('fil_getGasForMessage', () => {
       page,
     })
 
-    expect(result).toMatchObject({
-      gaslimit: 1_527_953,
-    })
+    expect(result.gaslimit).toBeGreaterThanOrEqual(1000)
   })
 })

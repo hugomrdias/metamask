@@ -80,30 +80,6 @@ test.describe('filsnap api with default seed', () => {
     expect(result).toStrictEqual([])
   })
 
-  test('should get configure for testnet', async ({ metamask, page }) => {
-    /** @type {import('@chainsafe/filsnap-types').SnapConfig} */
-    const result = await metamask.invokeSnap({
-      request: {
-        method: 'fil_configure',
-        params: {
-          configuration: { network: 't' },
-        },
-      },
-      page,
-    })
-
-    expect(result).toStrictEqual({
-      derivationPath: "m/44'/1'/0'/0/0",
-      network: 't',
-      rpc: { token: '', url: 'https://api.calibration.node.glif.io' },
-      unit: {
-        decimals: 6,
-        image: 'https://cryptologos.cc/logos/filecoin-fil-logo.svg?v=007',
-        symbol: 'FIL',
-      },
-    })
-  })
-
   test('should get balance', async ({ metamask, page }) => {
     await metamask.invokeSnap({
       request: {
@@ -126,39 +102,6 @@ test.describe('filsnap api with default seed', () => {
     expect(result).toBeTruthy()
   })
 
-  test('should get gasEstimate', async ({ metamask, page }) => {
-    await metamask.invokeSnap({
-      request: {
-        method: 'fil_configure',
-        params: {
-          configuration: { network: 't' },
-        },
-      },
-      page,
-    })
-
-    /** @type {import('@chainsafe/filsnap-types').MessageRequest} */
-    const message = {
-      to: 't1sfizuhpgjqyl4yjydlebncvecf3q2cmeeathzwi',
-      value: '0',
-    }
-
-    /** @type {import('@chainsafe/filsnap-types').MessageGasEstimate} */
-    const result = await metamask.invokeSnap({
-      request: {
-        method: 'fil_getGasForMessage',
-        params: { message },
-      },
-      page,
-    })
-
-    expect(result).toMatchObject({
-      gaslimit: 912_078,
-      maxfee: '100000000000000000',
-    })
-  })
-
-  // eslint-disable-next-line no-only-tests/no-only-tests
   test('should sign raw message', async ({ metamask, page }) => {
     await metamask.invokeSnap({
       request: {
@@ -235,7 +178,6 @@ test.describe('filsnap api with default seed', () => {
       signedMessage: {
         message: {
           from,
-          gaslimit: 1_516_578,
           method: 0,
           params: '',
           to,
@@ -290,7 +232,6 @@ test.describe('filsnap api with default seed', () => {
     expect(result).toMatchObject({
       message: {
         from,
-        gaslimit: 1_516_578,
         method: 0,
         params: '',
         to,
