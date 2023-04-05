@@ -46,8 +46,8 @@ jobs:
           status: ${{ job.status }}
           notify_when: 'failure'
           token: ${{ secrets.GITHUB_TOKEN }}
-          notification_title: '{workflow} has {status_message}'
-          message_format: '{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>'
-          footer: 'Linked Repo <{repo_url}|{repo}> | <{workflow_url}|View Workflow>'
+          notification_title: '{workflow} workflow has {status_message}'
+          message_format: '{emoji} *{workflow}* {status_message} at <{run_url}|{job}>'
+          footer: 'Repo: <{repo_url}|{repo}> | Workflow: <{workflow_url}|{workflow}>'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
