@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v0.1.0...metamask-testing-tools-v0.1.1) (2023-04-05)
+
+
+### Bug Fixes
+
+* fix docs url ([7a5bf28](https://github.com/hugomrdias/filsnap-testing/commit/7a5bf2823a74889bfcdfea54c2fe3b58f82a96db))
+
 ## [0.1.0](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v0.0.1...metamask-testing-tools-v0.1.0) (2023-04-05)
 
 
