@@ -1,6 +1,6 @@
-# filsnap-testing-tools
+# metamask-testing-tools
 
-This is a collection of tools for testing filsnap.
+This is a collection of tools for testing metamask, metamask flask and metamask snaps.
 
 > Note: Currently metamask >= v10.28.0 is not supported.
 
