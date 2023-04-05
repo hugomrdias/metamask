@@ -44,7 +44,7 @@ test('should get address mainnet', async ({ metamask, page }) => {
 
 ## Docs
 
-Check <https://hugomrdias.github.io/filsnap-testing/modules/tools.html>
+Check <https://hugomrdias.github.io/filsnap-testing/modules/metamask_testing_tools.html>
 
 ## ENV variables
 

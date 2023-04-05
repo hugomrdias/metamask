@@ -35,7 +35,7 @@
   },
   "typedocOptions": {
     "entryPointStrategy": "packages",
-    "entryPoints": ["packages/tools"],
+    "entryPoints": ["packages/tools", "packages/testing"],
     "excludeExternals": true,
     "darkHighlightTheme": "github-dark",
     "navigationLinks": {

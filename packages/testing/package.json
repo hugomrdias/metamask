@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "author": "Hugo Dias <hugomrdias@gmail.com> (hugodias.me)",
-  "main": "src/index.js",
+  "main": "src/main.jsx",
   "type": "module",
   "private": true,
   "scripts": {
