@@ -7,7 +7,16 @@
 ```bash
 
 pnpm run test
+pnpm run test -- --headed # run tests in headful mode
+pnpm run test -- --debug # run tests in debug mode
 ```
+
+## Github Actions
+
+The CI needs to be configured with the following secrets:
+
+- `WEB3_TOKEN` - web3.storage token
+- `SLACK_WEBHOOK` - slack webhook url
 
 ## Wallets
 

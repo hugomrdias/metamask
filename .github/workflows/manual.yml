@@ -39,3 +39,15 @@ jobs:
           METAMASK_PASSWORD: ${{ inputs.metamask-password }}
           METAMASK_SNAP_ID: ${{ inputs.metamask-snap-id }}
           MEtAMASK_SNAP_VERSION: ${{ inputs.metamask-snap-version }}
+      - name: Report Status
+        if: always()
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+          notify_when: 'failure'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          notification_title: '{workflow} has {status_message}'
+          message_format: '{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>'
+          footer: 'Linked Repo <{repo_url}|{repo}> | <{workflow_url}|View Workflow>'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
