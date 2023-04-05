@@ -27,11 +27,11 @@
     "water.css": "^2.1.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.3",
-    "@playwright/test": "^1.32.1",
+    "@babel/core": "^7.21.4",
+    "@playwright/test": "^1.32.2",
     "@preact/preset-vite": "^2.5.0",
     "@types/node": "^18.15.11",
-    "playwright": "^1.32.1",
+    "playwright": "^1.32.2",
     "vite": "^4.2.1"
   },
   "eslintConfig": {
