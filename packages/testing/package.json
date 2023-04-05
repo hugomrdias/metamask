@@ -19,9 +19,10 @@
   "license": "MIT",
   "dependencies": {
     "@acab/reset.css": "^0.5.3",
+    "@chainsafe/filsnap-adapter": "^2.1.3",
     "@chainsafe/filsnap-types": "^2.1.3",
     "@preact/signals": "^1.1.3",
-    "metamask-testing-tools": "workspace:^0.0.1",
+    "metamask-testing-tools": "workspace:^0.1.0",
     "preact": "^10.13.2",
     "water.css": "^2.1.1"
   },
