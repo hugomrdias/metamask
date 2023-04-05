@@ -72,7 +72,7 @@ async function getAsset({ repo, userAgent = 'filsnap', token, tag, asset }) {
 }
 
 /**
- * Download and unzip a release file
+ * Download and unzip a Metamask release file
  *
  * @param {import("./types.js").DownloadMetamaskOptions} opts
  */
@@ -94,7 +94,7 @@ export async function download({
     },
   })
 
-  const threshold = 7200 * 1000 // hour
+  const threshold = 7200 * 1000 // 2 hours
 
   if (tag === 'latest' && Date.now() > config.get('latestCheck') + threshold) {
     tag = await getLastestTag({ repo, userAgent, token })
@@ -121,6 +121,7 @@ export async function download({
 }
 
 /**
+ * Unzip a zip file into the given directory
  *
  * @param {ArrayBuffer} data
  * @param {string} outDir

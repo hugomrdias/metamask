@@ -22,10 +22,6 @@ export default defineConfig({
     colorScheme: 'dark',
     browserName: 'chromium',
   },
-
-  /* Folder for test artifacts such as screenshots, videos, traces, etc. */
-  // outputDir: 'test-results/',
-
   webServer: {
     command: 'pnpm run start',
     url: 'http://localhost:3000',
