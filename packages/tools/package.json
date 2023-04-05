@@ -1,6 +1,6 @@
 {
   "name": "metamask-testing-tools",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "This is a collection of tools for testing metamask, metamask flask and metamask snaps.",
   "author": "Hugo Dias <hugomrdias@gmail.com> (hugodias.me)",
   "license": "MIT",
