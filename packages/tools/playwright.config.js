@@ -8,7 +8,7 @@ export default defineConfig({
   },
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
-  maxFailures: process.env.CI ? 1 : 0,
+  maxFailures: process.env.CI ? 2 : 0,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: process.env.CI ? [['html'], ['list']] : 'list',
