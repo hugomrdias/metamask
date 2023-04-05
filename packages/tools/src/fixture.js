@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { test as base, chromium } from '@playwright/test'
 import { download } from './download.js'
 import {
@@ -28,12 +27,6 @@ export function createFixture(opts = {}) {
 
   const test = /** @type {import('./types').TextExtend} */ (base.extend)({
     context: async ({ headless }, use) => {
-      console.log(process.env.METAMASK_TAG)
-      console.log(process.env.METAMASK_SEED)
-      console.log(process.env.METAMASK_PASSWORD)
-      console.log(process.env.METAMASK_SNAP_ID)
-      console.log(process.env.METAMASK_SNAP_VERSION)
-      console.log(process.env.METAMASK_SNAP_VERSION22)
       const pathToExtension = await download(downloadOptions)
 
       if (!ctx || isolated) {

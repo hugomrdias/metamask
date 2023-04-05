@@ -80,7 +80,7 @@ export async function download({
   repo = 'MetaMask/metamask-extension',
   userAgent = 'metamask',
   token = process.env.GITHUB_TOKEN,
-  tag = process.env.METAMASK_TAG ?? 'latest',
+  tag = process.env.METAMASK_TAG || 'latest',
   dir = defaultDirectory,
   flask = false,
   browser = 'chrome',

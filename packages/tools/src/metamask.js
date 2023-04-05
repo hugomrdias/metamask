@@ -166,9 +166,9 @@ export class Metamask extends Emittery {
    * @param {string} password
    */
   async setup(
-    seed = process.env.METAMASK_SEED ??
+    seed = process.env.METAMASK_SEED ||
       'already turtle birth enroll since owner keep patch skirt drift any dinner',
-    password = process.env.METAMASK_PASSWORD ?? '12345678'
+    password = process.env.METAMASK_PASSWORD || '12345678'
   ) {
     // setup metamask
     const page = this.walletPage
@@ -220,6 +220,10 @@ export class Metamask extends Emittery {
     this.#ensureFlaskOrSnap(true)
     const rpcPage = await ensurePageLoadedURL(options.page)
 
+    if (!options.snapId && !process.env.METAMASK_SNAP_ID) {
+      throw new Error('Snap ID is required.')
+    }
+
     const install = rpcPage.evaluate(
       async ({ snapId, version }) => {
         const api = window.ethereum
@@ -228,7 +232,7 @@ export class Metamask extends Emittery {
             method: 'wallet_requestSnaps',
             params: {
               [snapId]: {
-                version: version ?? 'latest',
+                version: version || 'latest',
               },
             },
           })
@@ -239,8 +243,8 @@ export class Metamask extends Emittery {
         }
       },
       {
-        snapId: options.snapId ?? process.env.METAMASK_SNAP_ID,
-        version: options.version ?? process.env.METAMASK_SNAP_VERSION,
+        snapId: process.env.METAMASK_SNAP_ID || options.snapId,
+        version: process.env.METAMASK_SNAP_VERSION || options.version,
       }
     )
     // Snap popup steps

@@ -1,6 +1,6 @@
 import { createFixture } from 'filsnap-testing-tools'
 
-const SNAP_ID = process.env.METAMASK_SNAP_ID ?? 'npm:@chainsafe/filsnap'
+const SNAP_ID = process.env.METAMASK_SNAP_ID || 'npm:@chainsafe/filsnap'
 const { test, expect } = createFixture({
   download: {
     flask: true,
