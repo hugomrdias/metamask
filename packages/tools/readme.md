@@ -46,7 +46,9 @@ test('should get address mainnet', async ({ metamask, page }) => {
 
 Check <https://hugomrdias.github.io/filsnap-testing/modules/tools.html>
 
-## Environmental variables
+## ENV variables
+
+These variables can be used to override the default values.
 
 - `GITHUB_TOKEN` - GitHub API token to download metamask from github releases.
 - `METAMASK_TAG` - Tag of metamask to download. Defaults to `latest`.
