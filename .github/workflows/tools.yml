@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: 18
           cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install
       - run: pnpm -r --filter filsnap-testing-tools run lint
       - run: pnpm -r --filter filsnap-testing-tools exec depcheck
       - run: pnpm dlx playwright install chromium --with-deps

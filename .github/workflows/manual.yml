@@ -29,7 +29,7 @@ jobs:
         with:
           node-version: 18
           cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install
       - run: pnpm dlx playwright install chromium --with-deps
       - run: pnpm -r --filter testing run test
         env:
@@ -48,7 +48,7 @@ jobs:
       - name: Check for playwright-report
         id: check_report
         if: always()
-        uses: andstor/file-existence-action@v1
+        uses: andstor/file-existence-action@v2
         with:
           files: packages/testing/playwright-report
       - name: Add report to web3.storage
