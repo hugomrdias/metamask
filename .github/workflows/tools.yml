@@ -29,9 +29,9 @@ jobs:
           node-version: 18
           cache: 'pnpm'
       - run: pnpm install
-      - run: pnpm -r --filter filsnap-testing-tools run lint
-      - run: pnpm -r --filter filsnap-testing-tools exec depcheck
+      - run: pnpm -r --filter metamask-testing-tools run lint
+      - run: pnpm -r --filter metamask-testing-tools exec depcheck
       - run: pnpm dlx playwright install chromium --with-deps
-      - run: pnpm -r --filter filsnap-testing-tools run test
+      - run: pnpm -r --filter metamask-testing-tools run test
         env:
           GITHUB_TOKEN: ${{ github.token }}
