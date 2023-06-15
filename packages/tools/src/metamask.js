@@ -49,9 +49,21 @@ async function snapApprove(page) {
     .getByRole('button')
     .filter({ hasText: 'Approve & install' })
     .click()
-  await page.getByLabel('Test Networks').click()
-  await page.getByLabel('Filecoin key').click()
-  await page.getByRole('button').filter({ hasText: 'Confirm' }).click()
+  const isVisible = await page
+    .locator('section.snap-install-warning')
+    .isVisible()
+
+  if (isVisible) {
+    const checks = await page
+      .locator('section.snap-install-warning')
+      .getByRole('checkbox')
+      .all()
+    for (const check of checks) {
+      await check.click()
+    }
+    await page.getByRole('button').filter({ hasText: 'Confirm' }).click()
+  }
+  await page.getByTestId('page-container-footer-next').click()
 }
 
 /**
@@ -177,6 +189,7 @@ export class Metamask extends Emittery {
     }
 
     // import wallet
+    await page.getByTestId('onboarding-terms-checkbox').click()
     await page.getByTestId('onboarding-import-wallet').click()
     await page.getByTestId('metametrics-no-thanks').click()
 
@@ -191,7 +204,7 @@ export class Metamask extends Emittery {
     await page.getByTestId('onboarding-complete-done').click()
     await page.getByTestId('pin-extension-next').click()
     await page.getByTestId('pin-extension-done').click()
-
+    await page.getByTestId('popover-close').click()
     return this
   }
 
@@ -204,6 +217,7 @@ export class Metamask extends Emittery {
     if (!this.isFlask) {
       throw new Error('This method is only available for Flask builds.')
     }
+
     if (!skipSnap && !this.#snap) {
       throw new Error(
         'There\'s no snap installed yet. Run "metamask.installSnap()" first.'
