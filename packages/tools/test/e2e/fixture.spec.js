@@ -8,21 +8,6 @@ const { test, expect } = createFixture({
 const SNAP_ID = 'npm:@metamask/test-snap-bip32'
 
 test.describe('snaps', () => {
-  test('should install and return proper response', async ({
-    page,
-    metamask,
-  }) => {
-    await metamask.setup()
-    const result = await metamask.installSnap({
-      snapId: SNAP_ID,
-      page,
-    })
-
-    await expect(page.getByText('Example Domain')).toBeVisible()
-
-    expect(result[SNAP_ID]).toBeTruthy()
-  })
-
   test('should install with warning', async ({ page, metamask }) => {
     await metamask.setup()
     const snapId = 'npm:@metamask/test-snap-bip32'
@@ -38,7 +23,7 @@ test.describe('snaps', () => {
 
   test('should install without warning', async ({ page, metamask }) => {
     await metamask.setup()
-    const snapId = '@metamask/test-snap-dialog'
+    const snapId = 'npm:@metamask/test-snap-dialog'
     const result = await metamask.installSnap({
       snapId,
       page,

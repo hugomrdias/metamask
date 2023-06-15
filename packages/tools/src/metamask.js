@@ -184,8 +184,12 @@ export class Metamask extends Emittery {
   ) {
     // setup metamask
     const page = this.walletPage
+
+    await page.waitForLoadState('domcontentloaded')
     if (this.isFlask) {
-      await page.getByText('accept').click()
+      await page
+        .getByRole('button', { name: 'I accept the risks', exact: true })
+        .click()
     }
 
     // import wallet
