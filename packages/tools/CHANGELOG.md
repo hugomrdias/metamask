@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.0.0](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v0.1.1...metamask-testing-tools-v1.0.0) (2023-06-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* update deps
+
+### Features
+
+* update deps ([486e9c4](https://github.com/hugomrdias/filsnap-testing/commit/486e9c4c73c8740f9fe9c1e4f4dad959c3ccb9e4))
+
+
+### Bug Fixes
+
+* improve reliability ([ddda30e](https://github.com/hugomrdias/filsnap-testing/commit/ddda30e9929c2601b44e679bf3c743772b697632))
+
 ## [0.1.1](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v0.1.0...metamask-testing-tools-v0.1.1) (2023-04-05)
 
 
