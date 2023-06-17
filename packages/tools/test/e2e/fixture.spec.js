@@ -14,6 +14,7 @@ test.describe('snaps', () => {
     const result = await metamask.installSnap({
       snapId,
       page,
+      version: '5.5.0',
     })
 
     await expect(page.getByText('Example Domain')).toBeVisible()
@@ -27,6 +28,7 @@ test.describe('snaps', () => {
     const result = await metamask.installSnap({
       snapId,
       page,
+      version: '5.5.0',
     })
 
     await expect(page.getByText('Example Domain')).toBeVisible()
@@ -39,6 +41,7 @@ test.describe('snaps', () => {
     await metamask.installSnap({
       snapId: SNAP_ID,
       page,
+      version: '5.5.0',
     })
 
     const result = await metamask.getSnaps(page)
@@ -52,6 +55,7 @@ test.describe('snaps', () => {
     const result = await metamask.installSnap({
       snapId: SNAP_ID,
       page,
+      version: '5.5.0',
     })
 
     expect(result[SNAP_ID]).toBeTruthy()
@@ -61,10 +65,10 @@ test.describe('snaps', () => {
     await metamask.setup()
     const result = await metamask.installSnap({
       snapId: SNAP_ID,
-      version: '5.5.0',
+      version: '5.4.0',
       page,
     })
 
-    expect(result[SNAP_ID].version).toBe('5.5.0')
+    expect(result[SNAP_ID].version).toBe('5.4.0')
   })
 })

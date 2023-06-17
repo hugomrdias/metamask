@@ -55,7 +55,7 @@ export interface InstallSnapOptions {
   /**
    * Snap version. Defaults to npm latest published version.
    */
-  version?: string
+  version: string
 }
 
 interface SnapRequest {

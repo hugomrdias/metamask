@@ -250,7 +250,7 @@ export class Metamask extends Emittery {
             method: 'wallet_requestSnaps',
             params: {
               [snapId]: {
-                version: version || 'latest',
+                version,
               },
             },
           })
