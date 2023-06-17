@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.1](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.0.0...metamask-testing-tools-v1.0.1) (2023-06-17)
+
+
+### Bug Fixes
+
+* add clean up for non isolated mode ([ff63b63](https://github.com/hugomrdias/filsnap-testing/commit/ff63b636cf045830defd7964df7e6567d3e530db))
+* force version mm needs it now ([777c5e3](https://github.com/hugomrdias/filsnap-testing/commit/777c5e38b98ae7589a19363ae4d7a8935c756e75))
+
 ## [1.0.0](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v0.1.1...metamask-testing-tools-v1.0.0) (2023-06-15)
 
 
