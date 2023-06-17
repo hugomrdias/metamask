@@ -68,13 +68,24 @@ export function createFixture(opts = {}) {
       }
 
       await use(model)
-      model.clearListeners()
+      if (isolated && model) {
+        model.clearListeners()
+      }
     },
   })
 
   if (!isolated) {
     test.describe.configure({ mode: 'serial' })
   }
+
+  test.afterAll(async () => {
+    if (model) {
+      await model.teardown()
+    }
+    if (ctx) {
+      await ctx.close()
+    }
+  })
   const expect = test.expect
   return { test, expect }
 }
