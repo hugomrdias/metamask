@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.0.1...metamask-testing-tools-v1.0.2) (2023-06-20)
+
+
+### Bug Fixes
+
+* make version optional again ([068f555](https://github.com/hugomrdias/filsnap-testing/commit/068f555db16baa9ab56bfaa25693c084d70fc244))
+
 ## [1.0.1](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.0.0...metamask-testing-tools-v1.0.1) (2023-06-17)
 
 
