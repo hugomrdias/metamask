@@ -21,7 +21,6 @@ test.describe('metamask latest stable', () => {
       return metamask.installSnap({
         snapId: 'foo',
         page,
-        version: '5.5.0',
       })
     }).rejects.toThrow(/This method is only available for Flask builds./)
   })
