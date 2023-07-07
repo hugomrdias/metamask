@@ -45,10 +45,7 @@ async function ensurePageLoadedURL(page) {
  * @param {import('@playwright/test').Page} page
  */
 async function snapApprove(page) {
-  await page
-    .getByRole('button')
-    .filter({ hasText: 'Approve & install' })
-    .click()
+  await page.getByTestId('page-container-footer-next').click()
   const isVisible = await page
     .locator('section.snap-install-warning')
     .isVisible()
@@ -265,11 +262,14 @@ export class Metamask extends Emittery {
         version: process.env.METAMASK_SNAP_VERSION || options.version,
       }
     )
-    // Snap popup steps
+    // Snap connect popup steps
     const wallet = this.walletPage
-    await waitNotification(wallet, 'confirm-permissions')
+    await waitNotification(wallet, 'snaps-connect')
+    await wallet.getByTestId('snap-privacy-warning-scroll').click()
+    await wallet.getByRole('button', { name: 'Accept', exact: true }).click()
     await wallet.getByRole('button').filter({ hasText: 'Connect' }).click()
     try {
+      // Snap install popup steps
       await waitNotification(wallet, 'snap-install')
       await snapApprove(wallet)
     } catch {}
