@@ -11,10 +11,6 @@ npx simple-git-hooks
 
 ## Packages
 
-### [testing](./packages/testing)
-
-Test suite for [FilSnap](https://github.com/ChainSafe/filsnap) using Playwright.
-
 ### [tools](./packages/tools)
 
 This is a collection of tools for testing metamask, metamask flask and metamask snaps.
