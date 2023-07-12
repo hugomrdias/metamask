@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.0](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.0.3...metamask-testing-tools-v1.1.0) (2023-07-12)
+
+
+### Features
+
+* add waitForDialog and support for more dialog events ([ed7de2b](https://github.com/hugomrdias/filsnap-testing/commit/ed7de2bf524429a1d387e4a3f082eb538ae1114e))
+* remove testing and update deps ([9a4a17a](https://github.com/hugomrdias/filsnap-testing/commit/9a4a17a71944a7e773f2576f3b4778334e22a371))
+
 ## [1.0.3](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.0.2...metamask-testing-tools-v1.0.3) (2023-07-07)
 
 
