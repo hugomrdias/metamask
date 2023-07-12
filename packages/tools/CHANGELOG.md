@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.1](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.1.0...metamask-testing-tools-v1.1.1) (2023-07-12)
+
+
+### Bug Fixes
+
+* fix docs generation ([e7cb475](https://github.com/hugomrdias/filsnap-testing/commit/e7cb4759c687feebcb1c5bbeee37fc87a057b87e))
+* fix snap connect url logic ([bd5fc5f](https://github.com/hugomrdias/filsnap-testing/commit/bd5fc5fc97092632cb7ba2613426ac71e7bb9268))
+
 ## [1.1.0](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.0.3...metamask-testing-tools-v1.1.0) (2023-07-12)
 
 
