@@ -1,5 +1,6 @@
 import type { MetaMaskInpageProvider } from '@metamask/providers'
 import type { TruncatedSnap } from '@metamask/snaps-utils'
+import type { SetOptional } from 'type-fest'
 import type {
   Page,
   PlaywrightTestArgs,
@@ -27,10 +28,23 @@ export type TextExtend = TestType<
 >['extend']
 
 export interface FixtureOptions {
+  /**
+   * Options to download metamask.
+   */
   download?: Partial<DownloadMetamaskOptions>
+  /**
+   * Should the metamask instance be isolated. Defaults: true
+   * Each test will have a new metamask instance and new browser context
+   */
   isolated?: boolean
-  snap?: Pick<InstallSnapOptions, 'snapId' | 'version'>
-  seed?: string
+  snap?: SetOptional<InstallSnapOptions, 'url'>
+  /**
+   * Mnemonic to use for metamask instance. Defaults: process.env.MNEMONIC or 'already turtle birth enroll since owner keep patch skirt drift any dinner'
+   */
+  mnemonic?: string
+  /**
+   * Password to use for metamask instance. Defaults: process.env.PASSWORD or '12345678'
+   */
   password?: string
 }
 
@@ -42,16 +56,16 @@ declare global {
 }
 export interface InstallSnapOptions {
   /**
-   * Page to run request on. Defaults: to the test page
+   * URL to install snap from
    */
-  page: Page
+  url: string | URL
   /**
    * Snap ID
    *
    * @example
    * 'npm:@metamask/example-snap'
    */
-  snapId: string
+  id: string
   /**
    * Snap version. Defaults to npm latest published version.
    */

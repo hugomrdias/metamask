@@ -11,9 +11,10 @@ test.describe('snaps', () => {
   test('should install with warning', async ({ page, metamask }) => {
     await metamask.setup()
     const snapId = 'npm:@metamask/test-snap-bip32'
+
     const result = await metamask.installSnap({
-      snapId,
-      page,
+      id: snapId,
+      url: 'http://example.org',
     })
 
     await expect(page.getByText('Example Domain')).toBeVisible()
@@ -25,8 +26,8 @@ test.describe('snaps', () => {
     await metamask.setup()
     const snapId = 'npm:@metamask/test-snap-dialog'
     const result = await metamask.installSnap({
-      snapId,
-      page,
+      id: snapId,
+      url: 'http://example.org',
     })
 
     await expect(page.getByText('Example Domain')).toBeVisible()
@@ -37,8 +38,8 @@ test.describe('snaps', () => {
   test('should get snaps', async ({ metamask, page }) => {
     await metamask.setup()
     await metamask.installSnap({
-      snapId: SNAP_ID,
-      page,
+      id: SNAP_ID,
+      url: 'http://example.org',
     })
 
     const result = await metamask.getSnaps(page)
@@ -50,8 +51,8 @@ test.describe('snaps', () => {
     const page = await context.newPage()
     await page.goto('/')
     const result = await metamask.installSnap({
-      snapId: SNAP_ID,
-      page,
+      id: SNAP_ID,
+      url: 'http://example.org',
     })
 
     expect(result[SNAP_ID]).toBeTruthy()
@@ -60,9 +61,9 @@ test.describe('snaps', () => {
   test('should install on a custom version', async ({ page, metamask }) => {
     await metamask.setup()
     const result = await metamask.installSnap({
-      snapId: SNAP_ID,
+      id: SNAP_ID,
       version: '5.4.0',
-      page,
+      url: 'http://example.org',
     })
 
     expect(result[SNAP_ID].version).toBe('5.4.0')

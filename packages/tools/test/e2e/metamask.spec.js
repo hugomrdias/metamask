@@ -19,8 +19,8 @@ test.describe('metamask latest stable', () => {
 
     await expect(() => {
       return metamask.installSnap({
-        snapId: 'foo',
-        page,
+        id: 'foo',
+        url: 'http://example.org',
       })
     }).rejects.toThrow(/This method is only available for Flask builds./)
   })

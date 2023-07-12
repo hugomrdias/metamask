@@ -3,9 +3,14 @@ import { EthereumRpcError } from 'eth-rpc-errors'
 import { isValidCode } from 'eth-rpc-errors/dist/utils.js'
 import pRetry from 'p-retry'
 
+const DEFAULT_MNEMONIC =
+  process.env.METAMASK_MNEMONIC ||
+  'already turtle birth enroll since owner keep patch skirt drift any dinner'
+const DEFAULT_PASSWORD = process.env.METAMASK_PASSWORD || '12345678'
+
 /**
  * @typedef {import('eth-rpc-errors/dist/classes.js').SerializedEthereumRpcError} SerializedEthereumRpcError
- * @typedef {{notification: import('@playwright/test').Page}} Events
+ * @typedef {{notification: import('@playwright/test').Page, 'snaps-connect': import('@playwright/test').Page}} Events
  */
 
 /**
@@ -64,12 +69,12 @@ async function snapApprove(page) {
 }
 
 /**
- * Wait for a metamask notification
+ * Wait for a metamask dialog
  *
  * @param {import('@playwright/test').Page} page
  * @param {string} name
  */
-function waitNotification(page, name) {
+function waitForDialog(page, name) {
   async function run() {
     if (!page.url().includes(name)) {
       await page.reload({ waitUntil: 'domcontentloaded' })
@@ -161,30 +166,40 @@ export class Metamask extends Emittery {
     this.version = version
     this.isFlask = version.includes('flask')
 
-    this.on(Emittery.listenerAdded, async ({ listener, eventName }) => {
+    this.on(Metamask.listenerAdded, async ({ listener, eventName }) => {
       if (eventName === 'notification') {
-        const page = await waitNotification(this.walletPage, 'confirmation')
+        const page = await waitForDialog(this.walletPage, 'confirmation')
         this.emit('notification', page)
+      } else if (eventName) {
+        const page = await waitForDialog(this.walletPage, eventName?.toString())
+        // @ts-ignore
+        this.emit(eventName, page)
       }
     })
   }
 
   /**
+   * Wait for a dialog
    *
-   * @param {string} seed
+   * @param {string} name - String to match against the dialog url
+   */
+  async waitForDialog(name) {
+    return waitForDialog(this.walletPage, name)
+  }
+
+  /**
+   * Setup Metamask with a mnemonic and password
+   *
+   * @param {string} mnemonic
    * @param {string} password
    */
-  async setup(
-    seed = process.env.METAMASK_SEED ||
-      'already turtle birth enroll since owner keep patch skirt drift any dinner',
-    password = process.env.METAMASK_PASSWORD || '12345678'
-  ) {
+  async setup(mnemonic = DEFAULT_MNEMONIC, password = DEFAULT_PASSWORD) {
     // setup metamask
     const page = this.walletPage
 
-    await page.waitForLoadState('domcontentloaded')
     if (this.isFlask) {
       await page
+        .getByTestId('experimental-area')
         .getByRole('button', { name: 'I accept the risks', exact: true })
         .click()
     }
@@ -194,7 +209,7 @@ export class Metamask extends Emittery {
     await page.getByTestId('onboarding-import-wallet').click()
     await page.getByTestId('metametrics-no-thanks').click()
 
-    for (const [index, seedPart] of seed.split(' ').entries()) {
+    for (const [index, seedPart] of mnemonic.split(' ').entries()) {
       await page.getByTestId(`import-srp__srp-word-${index}`).type(seedPart)
     }
     await page.getByTestId('import-srp-confirm').click()
@@ -233,9 +248,11 @@ export class Metamask extends Emittery {
    */
   async installSnap(options) {
     this.#ensureFlaskOrSnap(true)
-    const rpcPage = await ensurePageLoadedURL(options.page)
+    const rpcPage = await this.context.newPage()
+    await rpcPage.goto(new URL(options.url).toString())
+    await rpcPage.waitForLoadState('domcontentloaded')
 
-    if (!options.snapId && !process.env.METAMASK_SNAP_ID) {
+    if (!options.id && !process.env.METAMASK_SNAP_ID) {
       throw new Error('Snap ID is required.')
     }
 
@@ -258,19 +275,19 @@ export class Metamask extends Emittery {
         }
       },
       {
-        snapId: process.env.METAMASK_SNAP_ID || options.snapId,
+        snapId: process.env.METAMASK_SNAP_ID || options.id,
         version: process.env.METAMASK_SNAP_VERSION || options.version,
       }
     )
     // Snap connect popup steps
     const wallet = this.walletPage
-    await waitNotification(wallet, 'snaps-connect')
+    await waitForDialog(wallet, 'snaps-connect')
     await wallet.getByTestId('snap-privacy-warning-scroll').click()
     await wallet.getByRole('button', { name: 'Accept', exact: true }).click()
     await wallet.getByRole('button').filter({ hasText: 'Connect' }).click()
     try {
       // Snap install popup steps
-      await waitNotification(wallet, 'snap-install')
+      await waitForDialog(wallet, 'snap-install')
       await snapApprove(wallet)
     } catch {}
 
@@ -286,7 +303,9 @@ export class Metamask extends Emittery {
       )
     }
 
-    this.#snap = options.snapId
+    this.#snap = options.id
+
+    await rpcPage.close()
 
     return /** @type {import('./types.js').InstallSnapsResult} */ (result)
   }

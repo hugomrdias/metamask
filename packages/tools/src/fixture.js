@@ -15,7 +15,7 @@ export function createFixture(opts = {}) {
     download: downloadOptions = {},
     isolated = true,
     snap,
-    seed,
+    mnemonic,
     password,
   } = opts
 
@@ -48,10 +48,6 @@ export function createFixture(opts = {}) {
     },
 
     metamask: async ({ context, page, baseURL }, use) => {
-      if (baseURL) {
-        await page.goto(baseURL)
-      }
-
       if (!model || isolated) {
         const extensionId = await findExtensionId(context)
         model = new Metamask(
@@ -62,11 +58,24 @@ export function createFixture(opts = {}) {
         )
 
         if (snap) {
-          await model.setup(seed, password)
-          await model.installSnap({ page, ...snap })
+          const pageURL = snap ? snap.url : baseURL
+          if (!pageURL) {
+            throw new Error(
+              'No page URL provided, either set it this fixture snap config or in your platwright config with "use.baseURL"'
+            )
+          }
+          await model.setup(mnemonic, password)
+          await model.installSnap({
+            url: pageURL,
+            id: snap.id,
+            version: snap.version,
+          })
         }
       }
 
+      if (baseURL) {
+        await page.goto(baseURL)
+      }
       await use(model)
       if (isolated && model) {
         model.clearListeners()
