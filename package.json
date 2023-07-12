@@ -13,7 +13,7 @@
     "test": "pnpm -r --if-present run test",
     "check": "pnpm -r --if-present run check",
     "build": "pnpm -r --if-present run build",
-    "docs": "typedoc --out docs"
+    "docs": "typedoc --out docs --plugin typedoc-plugin-missing-exports"
   },
   "devDependencies": {
     "depcheck": "^1.4.3",

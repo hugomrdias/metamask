@@ -35,8 +35,7 @@
   },
   "typedocOptions": {
     "entryPointStrategy": "packages",
-    "entryPoints": ["packages/tools", "packages/testing"],
-    "excludeExternals": true,
+    "entryPoints": ["packages/tools"],
     "darkHighlightTheme": "github-dark",
     "navigationLinks": {
       "Github": "https://github.com/hugomrdias/filsnap-testing"
