@@ -58,10 +58,10 @@ export function createFixture(opts = {}) {
         )
 
         if (snap) {
-          const pageURL = snap ? snap.url : baseURL
+          const pageURL = snap && snap.url ? snap.url : baseURL
           if (!pageURL) {
             throw new Error(
-              'No page URL provided, either set it this fixture snap config or in your platwright config with "use.baseURL"'
+              'No page URL provided, either set it this fixture snap config or in your playwright config with "use.baseURL"'
             )
           }
           await model.setup(mnemonic, password)
