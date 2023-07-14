@@ -50,8 +50,7 @@
   "scripts": {
     "lint": "tsc --build && eslint '**/*.{js,ts}' && prettier --check '**/*.{js,ts,yml,json}' --ignore-path ../../.gitignore",
     "build": "tsc --build",
-    "test": "pnpm run test:e2e",
-    "test:e2e": "playwright test"
+    "test": "playwright test"
   },
   "dependencies": {
     "@metamask/providers": "^11.1.0",
@@ -64,7 +63,7 @@
     "p-retry": "^5.1.2"
   },
   "devDependencies": {
-    "@types/node": "^20.4.1",
+    "@types/node": "^20.4.2",
     "type-fest": "^3.13.0"
   },
   "eslintConfig": {

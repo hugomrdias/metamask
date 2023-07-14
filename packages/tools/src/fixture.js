@@ -19,10 +19,10 @@ export function createFixture(opts = {}) {
     password,
   } = opts
 
-  /** @type {import('@playwright/test').BrowserContext} */
+  /** @type {import('@playwright/test').BrowserContext | undefined} */
   let ctx
 
-  /** @type {Metamask} */
+  /** @type {Metamask | undefined} */
   let model
 
   const test = /** @type {import('./types').TextExtend} */ (base.extend)({
@@ -42,9 +42,12 @@ export function createFixture(opts = {}) {
       }
 
       await use(ctx)
-      if (isolated) {
-        await ctx.close()
+    },
+    page: async ({ page, baseURL }, use) => {
+      if (baseURL) {
+        await page.goto(baseURL)
       }
+      await use(page)
     },
 
     metamask: async ({ context, page, baseURL }, use) => {
@@ -73,12 +76,11 @@ export function createFixture(opts = {}) {
         }
       }
 
-      if (baseURL) {
-        await page.goto(baseURL)
-      }
       await use(model)
-      if (isolated && model) {
-        model.clearListeners()
+      if (isolated) {
+        await model.teardown()
+        model = undefined
+        ctx = undefined
       }
     },
   })
@@ -88,11 +90,10 @@ export function createFixture(opts = {}) {
   }
 
   test.afterAll(async () => {
-    if (model) {
+    if (model && !isolated) {
       await model.teardown()
-    }
-    if (ctx) {
-      await ctx.close()
+      model = undefined
+      ctx = undefined
     }
   })
   const expect = test.expect
