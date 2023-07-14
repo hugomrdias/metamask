@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.1.1...metamask-testing-tools-v1.1.2) (2023-07-14)
+
+
+### Bug Fixes
+
+* improve fixture cleanup ([cefcbad](https://github.com/hugomrdias/filsnap-testing/commit/cefcbadad16f90d4342a0da07aa2c6061478222e))
+
 ## [1.1.1](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.1.0...metamask-testing-tools-v1.1.1) (2023-07-12)
 
 
