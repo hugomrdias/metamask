@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.3](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.1.2...metamask-testing-tools-v1.1.3) (2023-07-17)
+
+
+### Bug Fixes
+
+* add better error when not loading popup ([56deee1](https://github.com/hugomrdias/filsnap-testing/commit/56deee1797949f3c8665dd92fdfda74443731892))
+* move goto to metamask hooks to avoid race ([d07a5b5](https://github.com/hugomrdias/filsnap-testing/commit/d07a5b5576d260d357d41801835436ca8ac3c34a))
+
 ## [1.1.2](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.1.1...metamask-testing-tools-v1.1.2) (2023-07-14)
 
 
