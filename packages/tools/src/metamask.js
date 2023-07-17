@@ -78,7 +78,7 @@ function waitForDialog(page, name) {
   async function run() {
     if (!page.url().includes(name)) {
       await page.reload({ waitUntil: 'domcontentloaded' })
-      throw new Error('not yet')
+      throw new Error(`Could not find dialog "${name}" from page ${page.url()}`)
     }
     return page
   }
