@@ -303,7 +303,7 @@ export class Metamask extends Emittery {
       )
     }
 
-    this.#snap = options.id
+    this.#snap = process.env.METAMASK_SNAP_ID || options.id
 
     await rpcPage.close()
 
