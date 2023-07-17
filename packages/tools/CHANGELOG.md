@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.4](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.1.3...metamask-testing-tools-v1.1.4) (2023-07-17)
+
+
+### Bug Fixes
+
+* use env vars for snap id ([3a687ca](https://github.com/hugomrdias/filsnap-testing/commit/3a687ca55054111236b5bda5d27aa73e12c0d7e4))
+
 ## [1.1.3](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.1.2...metamask-testing-tools-v1.1.3) (2023-07-17)
 
 
