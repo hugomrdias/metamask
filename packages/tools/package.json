@@ -55,7 +55,7 @@
   "dependencies": {
     "@metamask/providers": "^11.1.0",
     "@metamask/snaps-utils": "^0.32.2",
-    "@playwright/test": "^1.36.0",
+    "@playwright/test": "^1.36.1",
     "conf": "^11.0.1",
     "emittery": "^1.0.1",
     "eth-rpc-errors": "^4.0.3",
@@ -64,7 +64,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.4.2",
-    "type-fest": "^3.13.0"
+    "type-fest": "^4.0.0"
   },
   "eslintConfig": {
     "extends": [

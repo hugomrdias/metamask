@@ -43,12 +43,6 @@ export function createFixture(opts = {}) {
 
       await use(ctx)
     },
-    page: async ({ page, baseURL }, use) => {
-      if (baseURL) {
-        await page.goto(baseURL)
-      }
-      await use(page)
-    },
 
     metamask: async ({ context, page, baseURL }, use) => {
       if (!model || isolated) {
@@ -76,6 +70,9 @@ export function createFixture(opts = {}) {
         }
       }
 
+      if (baseURL) {
+        await page.goto('/')
+      }
       await use(model)
       if (isolated) {
         await model.teardown()
