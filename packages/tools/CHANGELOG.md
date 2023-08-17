@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.5](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.1.4...metamask-testing-tools-v1.1.5) (2023-08-17)
+
+
+### Bug Fixes
+
+* update metamask snaps ([1b5c52d](https://github.com/hugomrdias/filsnap-testing/commit/1b5c52dca2ba26dfb2df399c93dd6ac5622becf6))
+
 ## [1.1.4](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.1.3...metamask-testing-tools-v1.1.4) (2023-07-17)
 
 
