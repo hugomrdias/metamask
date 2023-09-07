@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.6](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.1.5...metamask-testing-tools-v1.1.6) (2023-09-07)
+
+
+### Bug Fixes
+
+* fix waiting for multiple popups in a row ([1a40172](https://github.com/hugomrdias/filsnap-testing/commit/1a40172c630c95a0c280eb02167ecad95b09ebc2))
+
 ## [1.1.5](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.1.4...metamask-testing-tools-v1.1.5) (2023-08-17)
 
 
