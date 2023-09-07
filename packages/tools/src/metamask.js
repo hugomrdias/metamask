@@ -184,6 +184,7 @@ export class Metamask extends Emittery {
    * @param {string} name - String to match against the dialog url
    */
   async waitForDialog(name) {
+    await this.walletPage.reload({ waitUntil: 'domcontentloaded' })
     return waitForDialog(this.walletPage, name)
   }
 
