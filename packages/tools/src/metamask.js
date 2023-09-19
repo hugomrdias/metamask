@@ -45,6 +45,17 @@ async function ensurePageLoadedURL(page) {
 }
 
 /**
+ * @param {import('@playwright/test').Locator} locator
+ */
+async function click(locator) {
+  if (await locator.isVisible()) {
+    await locator.click({
+      force: true,
+    })
+  }
+}
+
+/**
  * Snap approve
  *
  * @param {import('@playwright/test').Page} page
@@ -65,7 +76,7 @@ async function snapApprove(page) {
     }
     await page.getByRole('button').filter({ hasText: 'Confirm' }).click()
   }
-  await page.getByTestId('page-container-footer-next').click()
+  await click(page.getByTestId('page-container-footer-next'))
 }
 
 /**
@@ -83,7 +94,7 @@ function waitForDialog(page, name) {
     return page
   }
 
-  return pRetry(run, { retries: 5 })
+  return pRetry(run, { retries: 3 })
 }
 
 /**
@@ -206,22 +217,29 @@ export class Metamask extends Emittery {
     }
 
     // import wallet
-    await page.getByTestId('onboarding-terms-checkbox').click()
+    const terms = page.getByTestId('onboarding-terms-checkbox')
+    if (await terms.isVisible()) {
+      await terms.click()
+    }
     await page.getByTestId('onboarding-import-wallet').click()
     await page.getByTestId('metametrics-no-thanks').click()
 
     for (const [index, seedPart] of mnemonic.split(' ').entries()) {
-      await page.getByTestId(`import-srp__srp-word-${index}`).type(seedPart)
+      await page.getByTestId(`import-srp__srp-word-${index}`).fill(seedPart)
     }
     await page.getByTestId('import-srp-confirm').click()
-    await page.getByTestId('create-password-new').type(password)
-    await page.getByTestId('create-password-confirm').type(password)
+    await page.getByTestId('create-password-new').fill(password)
+    await page.getByTestId('create-password-confirm').fill(password)
     await page.getByTestId('create-password-terms').click()
     await page.getByTestId('create-password-import').click()
     await page.getByTestId('onboarding-complete-done').click()
     await page.getByTestId('pin-extension-next').click()
     await page.getByTestId('pin-extension-done').click()
-    await page.getByTestId('popover-close').click()
+    const popover = page.getByTestId('popover-close')
+    if (await popover.isVisible()) {
+      await popover.click()
+    }
+    // await page.getByTestId('popover-close').click()
     return this
   }
 
@@ -230,12 +248,8 @@ export class Metamask extends Emittery {
     await this.context.close()
   }
 
-  #ensureFlaskOrSnap(skipSnap = false) {
-    if (!this.isFlask) {
-      throw new Error('This method is only available for Flask builds.')
-    }
-
-    if (!skipSnap && !this.#snap) {
+  #ensureSnap() {
+    if (!this.#snap) {
       throw new Error(
         'There\'s no snap installed yet. Run "metamask.installSnap()" first.'
       )
@@ -248,7 +262,6 @@ export class Metamask extends Emittery {
    * @param {import('./types.js').InstallSnapOptions} options
    */
   async installSnap(options) {
-    this.#ensureFlaskOrSnap(true)
     const rpcPage = await this.context.newPage()
     await rpcPage.goto(new URL(options.url).toString())
     await rpcPage.waitForLoadState('domcontentloaded')
@@ -269,7 +282,6 @@ export class Metamask extends Emittery {
               },
             },
           })
-
           return result
         } catch (error) {
           return /** @type {error} */ (error)
@@ -281,12 +293,13 @@ export class Metamask extends Emittery {
       }
     )
     // Snap connect popup steps
+
     const wallet = this.walletPage
-    await waitForDialog(wallet, 'snaps-connect')
-    await wallet.getByTestId('snap-privacy-warning-scroll').click()
-    await wallet.getByRole('button', { name: 'Accept', exact: true }).click()
-    await wallet.getByRole('button').filter({ hasText: 'Connect' }).click()
     try {
+      await waitForDialog(wallet, 'snaps-connect')
+      await wallet.getByTestId('snap-privacy-warning-scroll').click()
+      await wallet.getByRole('button', { name: 'Accept', exact: true }).click()
+      await wallet.getByRole('button').filter({ hasText: 'Connect' }).click()
       // Snap install popup steps
       await waitForDialog(wallet, 'snap-install')
       await snapApprove(wallet)
@@ -317,7 +330,7 @@ export class Metamask extends Emittery {
    * @param {import('@playwright/test').Page} page - Page to run getSnaps
    */
   getSnaps(page) {
-    this.#ensureFlaskOrSnap()
+    this.#ensureSnap()
     return /** @type {Promise<import('./types.js').InstallSnapsResult>} */ (
       this.#_rpcCall(
         {
@@ -337,7 +350,7 @@ export class Metamask extends Emittery {
    * @returns {Promise<R>}
    */
   invokeSnap(opts) {
-    this.#ensureFlaskOrSnap()
+    this.#ensureSnap()
     return /** @type {Promise<R>} */ (
       this.#_rpcCall(
         {

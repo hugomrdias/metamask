@@ -22,7 +22,7 @@ test.describe('metamask latest stable', () => {
         id: 'foo',
         url: 'http://example.org',
       })
-    }).rejects.toThrow(/This method is only available for Flask builds./)
+    }).rejects.toThrow('Invalid snap ID: Expected the value to satisfy a union')
   })
 
   test('should throw on getSnaps', async ({ page, metamask }) => {
@@ -30,7 +30,9 @@ test.describe('metamask latest stable', () => {
 
     expect(() => {
       return metamask.getSnaps(page)
-    }).toThrow(/This method is only available for Flask builds./)
+    }).toThrow(
+      'There\'s no snap installed yet. Run "metamask.installSnap()" first.'
+    )
   })
 
   test('should throw on invokeSnap', async ({ page, metamask }) => {
@@ -43,6 +45,8 @@ test.describe('metamask latest stable', () => {
           method: 'foo',
         },
       })
-    }).toThrow(/This method is only available for Flask builds./)
+    }).toThrow(
+      'There\'s no snap installed yet. Run "metamask.installSnap()" first.'
+    )
   })
 })

@@ -33,6 +33,8 @@ export function createFixture(opts = {}) {
         // Launch context with extension
         ctx = await chromium.launchPersistentContext('', {
           headless,
+          userAgent:
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36',
           args: [
             ...(headless ? ['--headless=new'] : []),
             `--disable-extensions-except=${pathToExtension}`,
