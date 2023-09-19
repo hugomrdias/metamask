@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.7](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.1.6...metamask-testing-tools-v1.1.7) (2023-09-19)
+
+
+### Bug Fixes
+
+* fake user agent and remove flask checks ([ba0f86c](https://github.com/hugomrdias/filsnap-testing/commit/ba0f86c6c7c0e918f9f05f716e867be912af55e0))
+
 ## [1.1.6](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.1.5...metamask-testing-tools-v1.1.6) (2023-09-07)
 
 
