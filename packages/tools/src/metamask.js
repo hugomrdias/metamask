@@ -62,21 +62,16 @@ async function click(locator) {
  */
 async function snapApprove(page) {
   await page.getByTestId('page-container-footer-next').click()
-  const isVisible = await page
-    .locator('section.snap-install-warning')
-    .isVisible()
+  const warning = page.locator('section.snap-install-warning')
 
-  if (isVisible) {
-    const checks = await page
-      .locator('section.snap-install-warning')
-      .getByRole('checkbox')
-      .all()
+  if (await warning.isVisible()) {
+    const checks = await warning.getByRole('checkbox').all()
     for (const check of checks) {
       await check.click()
     }
     await page.getByRole('button').filter({ hasText: 'Confirm' }).click()
   }
-  await click(page.getByTestId('page-container-footer-next'))
+  await click(page.getByRole('button').filter({ hasText: 'OK' }))
 }
 
 /**
@@ -217,10 +212,8 @@ export class Metamask extends Emittery {
     }
 
     // import wallet
-    const terms = page.getByTestId('onboarding-terms-checkbox')
-    if (await terms.isVisible()) {
-      await terms.click()
-    }
+
+    await click(page.getByTestId('onboarding-terms-checkbox'))
     await page.getByTestId('onboarding-import-wallet').click()
     await page.getByTestId('metametrics-no-thanks').click()
 
@@ -235,11 +228,7 @@ export class Metamask extends Emittery {
     await page.getByTestId('onboarding-complete-done').click()
     await page.getByTestId('pin-extension-next').click()
     await page.getByTestId('pin-extension-done').click()
-    const popover = page.getByTestId('popover-close')
-    if (await popover.isVisible()) {
-      await popover.click()
-    }
-    // await page.getByTestId('popover-close').click()
+    await click(page.getByTestId('popover-close'))
     return this
   }
 
