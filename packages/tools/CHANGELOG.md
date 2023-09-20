@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.9](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.1.8...metamask-testing-tools-v1.1.9) (2023-09-20)
+
+
+### Bug Fixes
+
+* remove force on click ([f70c3eb](https://github.com/hugomrdias/filsnap-testing/commit/f70c3eb35aaaf750e4828f9fd7334d3cda92f35d))
+
 ## [1.1.8](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.1.7...metamask-testing-tools-v1.1.8) (2023-09-19)
 
 
