@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.8](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.1.7...metamask-testing-tools-v1.1.8) (2023-09-19)
+
+
+### Bug Fixes
+
+* fix snap approve logic ([14c53f3](https://github.com/hugomrdias/filsnap-testing/commit/14c53f3bd0436fef5e008aa3110c166d55f56f8c))
+
 ## [1.1.7](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.1.6...metamask-testing-tools-v1.1.7) (2023-09-19)
 
 
