@@ -49,9 +49,7 @@ async function ensurePageLoadedURL(page) {
  */
 async function click(locator) {
   if (await locator.isVisible()) {
-    await locator.click({
-      force: true,
-    })
+    await locator.click()
   }
 }
 
