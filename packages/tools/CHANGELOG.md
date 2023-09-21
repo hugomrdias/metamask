@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.10](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.1.9...metamask-testing-tools-v1.1.10) (2023-09-21)
+
+
+### Bug Fixes
+
+* go back to 5 retries ([b8c73a4](https://github.com/hugomrdias/filsnap-testing/commit/b8c73a4bd82f58c8d4d23bdb3789a4bef5c23e12))
+
 ## [1.1.9](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.1.8...metamask-testing-tools-v1.1.9) (2023-09-20)
 
 
