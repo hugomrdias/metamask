@@ -1,13 +1,24 @@
 import type { MetaMaskInpageProvider } from '@metamask/providers'
 import type { TruncatedSnap } from '@metamask/snaps-utils'
 import type { SetOptional } from 'type-fest'
+
 import type {
   Page,
+  BrowserContext,
   PlaywrightTestArgs,
   PlaywrightWorkerArgs,
   TestType,
 } from '@playwright/test'
 import type { Metamask } from './metamask.js'
+
+interface Extension {
+  id: string
+  title: string
+  findPage: (
+    context: BrowserContext,
+    extensionId: string
+  ) => Promise<Page> | null
+}
 
 export interface DownloadMetamaskOptions {
   repo?: `${string}/${string}`
@@ -17,6 +28,7 @@ export interface DownloadMetamaskOptions {
   dir?: string
   asset?: string
   flask?: boolean
+  extensions?: Extension[]
   browser?: 'chrome' | 'firefox'
 }
 

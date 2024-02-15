@@ -10,16 +10,15 @@ const SNAP_ID = 'npm:@metamask/test-snap-bip32'
 test.describe('snaps', () => {
   test('should install with warning', async ({ page, metamask }) => {
     await metamask.setup()
-    const snapId = 'npm:@metamask/test-snap-bip32'
 
     const result = await metamask.installSnap({
-      id: snapId,
+      id: SNAP_ID,
       url: 'http://example.org',
     })
 
     await expect(page.getByText('Example Domain')).toBeVisible()
 
-    expect(result[snapId].id).toBe(snapId)
+    expect(result[SNAP_ID].id).toBe(SNAP_ID)
   })
 
   test('should install without warning', async ({ page, metamask }) => {
