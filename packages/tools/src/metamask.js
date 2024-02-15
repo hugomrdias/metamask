@@ -211,7 +211,7 @@ export class Metamask extends Emittery {
 
     // import wallet
 
-    await click(page.getByTestId('onboarding-terms-checkbox'))
+    await page.getByTestId('onboarding-terms-checkbox').click()
     await page.getByTestId('onboarding-import-wallet').click()
     await page.getByTestId('metametrics-no-thanks').click()
 
@@ -312,7 +312,7 @@ export class Metamask extends Emittery {
   }
 
   /**
-   * Install a snap
+   * Get snaps
    *
    * @param {import('@playwright/test').Page} page - Page to run getSnaps
    */
