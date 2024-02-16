@@ -55,16 +55,16 @@
   "dependencies": {
     "@metamask/providers": "^13.0.0",
     "@metamask/snaps-utils": "^1.0.2",
-    "@playwright/test": "^1.38.0",
+    "@playwright/test": "^1.41.2",
     "conf": "^11.0.2",
-    "emittery": "^1.0.1",
+    "emittery": "^1.0.3",
     "eth-rpc-errors": "^4.0.3",
-    "fflate": "^0.8.1",
-    "p-retry": "^6.0.0"
+    "fflate": "^0.8.2",
+    "p-retry": "^6.2.0"
   },
   "devDependencies": {
-    "@types/node": "^20.6.3",
-    "type-fest": "^4.3.1"
+    "@types/node": "^20.11.19",
+    "type-fest": "^4.10.2"
   },
   "eslintConfig": {
     "extends": [
