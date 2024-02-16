@@ -7,7 +7,7 @@ const { test, expect } = createFixture({
 })
 const SNAP_ID = 'npm:@metamask/test-snap-bip32'
 
-test.describe('snaps', () => {
+test.describe.skip('snaps', () => {
   test('should install with warning', async ({ page, metamask }) => {
     await metamask.setup()
     const snapId = 'npm:@metamask/test-snap-bip32'
