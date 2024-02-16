@@ -87,7 +87,7 @@ function waitForDialog(page, name) {
     return page
   }
 
-  return pRetry(run, { retries: 5 })
+  return pRetry(run, { retries: 5, factor: 1 })
 }
 
 /**
@@ -280,7 +280,6 @@ export class Metamask extends Emittery {
       }
     )
     // Snap connect popup steps
-
     const wallet = this.walletPage
     try {
       await waitForDialog(wallet, 'snaps-connect')

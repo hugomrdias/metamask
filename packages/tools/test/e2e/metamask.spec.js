@@ -22,7 +22,9 @@ test.describe('metamask latest stable', () => {
         id: 'foo',
         url: 'http://example.org',
       })
-    }).rejects.toThrow('Invalid snap ID: Expected the value to satisfy a union')
+    }).rejects.toThrow(
+      'Expected caveat to have a value property of a non-empty object of snap IDs.: At path: value.foo -- Expected the value to satisfy a union of `intersection | string`, but received: "foo".'
+    )
   })
 
   test('should throw on getSnaps', async ({ page, metamask }) => {
