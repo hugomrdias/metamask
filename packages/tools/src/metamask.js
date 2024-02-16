@@ -87,7 +87,7 @@ function waitForDialog(page, name) {
     return page
   }
 
-  return pRetry(run, { retries: 5, factor: 1 })
+  return pRetry(run, { retries: 3 })
 }
 
 /**
