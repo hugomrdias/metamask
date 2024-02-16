@@ -6,7 +6,8 @@ const { test, expect } = createFixture({
   },
 })
 
-test.describe('metamask flask latest stable', () => {
+// eslint-disable-next-line no-only-tests/no-only-tests
+test.describe.only('metamask flask latest stable', () => {
   test('should be flask', async ({ metamask }) => {
     expect(metamask.isFlask).toBe(true)
   })
