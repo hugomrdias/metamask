@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.0](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.1.10...metamask-testing-tools-v1.2.0) (2024-02-22)
+
+
+### Features
+
+* ability to add extensions to the playwright environment ([#30](https://github.com/hugomrdias/filsnap-testing/issues/30)) ([85e99f3](https://github.com/hugomrdias/filsnap-testing/commit/85e99f3a850ddf1a73b7e1610122b39dc613bf44))
+
+
+### Bug Fixes
+
+* failing tests in metamask.spec.js ([#27](https://github.com/hugomrdias/filsnap-testing/issues/27)) ([4afcd9e](https://github.com/hugomrdias/filsnap-testing/commit/4afcd9e2f7d4357c3303e230c3310ee0f8edb773))
+* tweaked wait for popups retries ([#29](https://github.com/hugomrdias/filsnap-testing/issues/29)) ([5e51815](https://github.com/hugomrdias/filsnap-testing/commit/5e518150c98b5b79d6883bbb10e18e34293c56ee))
+
 ## [1.1.10](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.1.9...metamask-testing-tools-v1.1.10) (2023-09-21)
 
 
