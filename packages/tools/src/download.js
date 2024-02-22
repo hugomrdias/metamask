@@ -84,6 +84,7 @@ export async function download({
   dir = defaultDirectory,
   flask = false,
   browser = 'chrome',
+  extensions = [],
 }) {
   /** @type {Conf<{ latestTag: string; latestCheck: number; }>} */
   const config = new Conf({
@@ -109,15 +110,36 @@ export async function download({
     ? `flask-${browser}-${tag.replace('v', '')}-flask.0`
     : `${browser}-${tag.replace('v', '')}`
 
-  const outFolder = path.join(dir, asset)
+  const metamaskOutFolder = path.join(dir, asset)
+  const outFolders = [metamaskOutFolder]
 
-  if (fs.existsSync(outFolder)) {
-    return outFolder
+  if (extensions.length > 0) {
+    for (const extension of extensions) {
+      const extensionOutFolder = path.join(dir, extension.id)
+      if (fs.existsSync(extensionOutFolder)) {
+        outFolders.push(extensionOutFolder)
+        continue
+      }
+      const extensionData = await downloadExtensionById(extension.id, dir)
+      outFolders.push(extensionOutFolder)
+
+      const filePath = path.resolve(dir, `${extension.id}.crx`)
+      if (filePath !== null && extensionData !== null) {
+        await extractCrxFile(filePath, extensionData)
+      }
+    }
   }
 
-  unzip(await getAsset({ repo, userAgent, token, tag, asset }), outFolder)
+  if (fs.existsSync(metamaskOutFolder)) {
+    return outFolders
+  }
 
-  return outFolder
+  unzip(
+    await getAsset({ repo, userAgent, token, tag, asset }),
+    metamaskOutFolder
+  )
+
+  return outFolders
 }
 
 /**
@@ -140,4 +162,104 @@ function unzip(data, outDir) {
       fs.writeFileSync(file, content)
     }
   }
+}
+
+/**
+ * Downloads a Chrome extension (.crx file) and extracts it to a specified directory.
+ *
+ * @param {string} extensionId - The ID of the Chrome extension to download.
+ * @param {string} dir - The directory where the .crx file will be downloaded and extracted.
+ * @returns {Promise<string|null>} The path to the extracted directory or null if an error occurs.
+ */
+const downloadExtensionById = async (extensionId, dir = defaultDirectory) => {
+  const url = `https://clients2.google.com/service/update2/crx?response=redirect&prodversion=49.0&acceptformat=crx3&x=id%3D${extensionId}%26installsource%3Dondemand%26uc`
+
+  try {
+    const response = await fetch(url)
+    if (!response.ok) {
+      throw new Error(`Error fetching the extension: ${response.statusText}`)
+    }
+
+    const filePath = path.resolve(dir, `${extensionId}.crx`)
+    const fileStream = fs.createWriteStream(filePath)
+
+    if (response.body) {
+      const reader = response.body.getReader()
+
+      /**
+       * Processes the stream from a Fetch API response.
+       *
+       * @param {ReadableStreamReadResult<Uint8Array>} readResult - The result of reading from the stream.
+       * @returns {Promise<void>} A promise that resolves when the stream processing is complete.
+       */
+      const processStream = async ({ done, value }) => {
+        if (done) {
+          fileStream.end()
+          return
+        }
+        fileStream.write(value)
+        return reader.read().then(processStream)
+      }
+
+      await reader.read().then(processStream)
+
+      await new Promise((resolve, reject) => {
+        fileStream.on('finish', resolve)
+        fileStream.on('error', reject)
+      })
+
+      return path.resolve(dir, extensionId)
+    } else {
+      throw new Error('Response body is null')
+    }
+  } catch {
+    // eslint-disable-next-line unicorn/no-null
+    return null // Return null in case of an error
+  }
+}
+
+/**
+ * Strips the CRX header from the file data.
+ *
+ * @param {Buffer} data - The original .crx file data.
+ * @returns {Buffer} The ZIP data with the CRX header removed.
+ */
+function stripCrxHeader(data) {
+  // CRX3 files start with "Cr24", followed by version, public key length, and signature length
+  if (data.subarray(0, 4).toString() === 'Cr24') {
+    // Skipping the CRX header to reach the ZIP part
+    // The header size varies, so we need to calculate it
+    const version = data.readUInt32LE(4)
+    if (version === 2 || version === 3) {
+      // For CRX3, the header is more complex; we might need additional parsing
+      // This example skips directly to the ZIP part for simplicity
+      const publicKeyLength = data.readUInt32LE(8)
+      const signatureLength = data.readUInt32LE(12)
+      const headerSize = 16 + publicKeyLength + signatureLength // Basic CRX3 header size calculation
+      return data.subarray(headerSize)
+    }
+  }
+  // If not a CRX file or unable to process, return the original data
+  return data
+}
+
+/**
+ * Extracts a .crx file using fflate by first stripping its header.
+ *
+ * @param {string} crxFilePath - The path to the .crx file to be extracted.
+ * @param {string} extractToDirectory - The directory where the .crx file will be extracted.
+ * @returns {Promise<void>} A promise that resolves when the extraction is complete.
+ */
+async function extractCrxFile(crxFilePath, extractToDirectory) {
+  fs.mkdirSync(extractToDirectory, { recursive: true })
+  const data = fs.readFileSync(crxFilePath)
+
+  const zipHeaderIndex = data.indexOf(Buffer.from([0x50, 0x4b, 0x03, 0x04]))
+  if (zipHeaderIndex === -1) {
+    throw new Error('ZIP header not found in CRX file.')
+  }
+
+  const zipData = stripCrxHeader(data.subarray(zipHeaderIndex))
+
+  unzip(zipData, extractToDirectory)
 }

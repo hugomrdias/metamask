@@ -10,7 +10,8 @@ export default defineConfig({
   forbidOnly: Boolean(process.env.CI),
   maxFailures: process.env.CI ? 2 : 0,
   retries: process.env.CI ? 2 : 1,
-  workers: process.env.CI ? 1 : undefined,
+  // force 1 worker on local and CI because of https://github.com/hugomrdias/filsnap-testing/issues/31
+  workers: 1,
   reporter: process.env.CI ? [['html'], ['list']] : 'list',
   use: {
     baseURL: 'http://example.org',

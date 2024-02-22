@@ -95,6 +95,7 @@ function waitForDialog(page, name) {
  */
 export async function findExtensionId(ctx) {
   let [background] = ctx.backgroundPages()
+
   if (!background) {
     background = await ctx.waitForEvent('backgroundpage')
   }
@@ -251,6 +252,7 @@ export class Metamask extends Emittery {
   async installSnap(options) {
     const rpcPage = await this.context.newPage()
     await rpcPage.goto(new URL(options.url).toString())
+
     await rpcPage.waitForLoadState('domcontentloaded')
 
     if (!options.id && !process.env.METAMASK_SNAP_ID) {
@@ -259,8 +261,37 @@ export class Metamask extends Emittery {
 
     const install = rpcPage.evaluate(
       async ({ snapId, version }) => {
-        const api = window.ethereum
+        // eslint-disable-next-line unicorn/consistent-function-scoping
+        const getRequestProvider = () => {
+          return new Promise((resolve) => {
+            // Define the event handler directly. This assumes the window is already loaded.
+            // @ts-ignore
+            const handler = (event) => {
+              const { rdns } = event.detail.info
+              switch (rdns) {
+                case 'io.metamask':
+                case 'io.metamask.flask':
+                case 'io.metamask.mmi': {
+                  window.removeEventListener(
+                    'eip6963:announceProvider',
+                    handler
+                  )
+                  resolve(event.detail.provider)
+                  break
+                }
+                default: {
+                  break
+                }
+              }
+            }
+
+            window.addEventListener('eip6963:announceProvider', handler)
+            window.dispatchEvent(new Event('eip6963:requestProvider'))
+          })
+        }
+
         try {
+          const api = await getRequestProvider()
           const result = await api.request({
             method: 'wallet_requestSnaps',
             params: {
@@ -363,10 +394,35 @@ export class Metamask extends Emittery {
     /** @type {Promise<R>} */
     // @ts-ignore
     const result = await rpcPage.evaluate(async (arg) => {
-      const api = window.ethereum
-      try {
-        const result = await api.request(arg)
+      // eslint-disable-next-line unicorn/consistent-function-scoping
+      const getRequestProvider = () => {
+        return new Promise((resolve) => {
+          // Define the event handler directly. This assumes the window is already loaded.
+          // @ts-ignore
+          const handler = (event) => {
+            const { rdns } = event.detail.info
+            switch (rdns) {
+              case 'io.metamask':
+              case 'io.metamask.flask':
+              case 'io.metamask.mmi': {
+                window.removeEventListener('eip6963:announceProvider', handler)
+                resolve(event.detail.provider)
+                break
+              }
+              default: {
+                // Optionally reject or resolve with null/undefined if no provider is found.
+                break
+              }
+            }
+          }
 
+          window.addEventListener('eip6963:announceProvider', handler)
+          window.dispatchEvent(new Event('eip6963:requestProvider'))
+        })
+      }
+      try {
+        const api = await getRequestProvider()
+        const result = await api.request(arg)
         return result
       } catch (error) {
         return /** @type {error} */ (error)
