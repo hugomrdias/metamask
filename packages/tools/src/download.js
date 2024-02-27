@@ -1,7 +1,6 @@
 import fs from 'fs'
 import path from 'path'
 import { unzipSync } from 'fflate'
-// @ts-ignore
 import Conf from 'conf'
 
 const GITHUB_API_VERSION = '2022-11-28'

@@ -3,8 +3,8 @@ import type { TruncatedSnap } from '@metamask/snaps-utils'
 import type { SetOptional } from 'type-fest'
 
 import type {
-  Page,
   BrowserContext,
+  Page,
   PlaywrightTestArgs,
   PlaywrightWorkerArgs,
   TestType,
