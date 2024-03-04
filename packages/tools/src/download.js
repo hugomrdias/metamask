@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { unzipSync } from 'fflate'
+
 // @ts-ignore
 import Conf from 'conf'
 

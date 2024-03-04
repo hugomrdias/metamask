@@ -79,6 +79,9 @@ async function snapApprove(page) {
  * @param {string} name
  */
 function waitForDialog(page, name) {
+  /**
+   *
+   */
   async function run() {
     if (!page.url().includes(name)) {
       await page.reload({ waitUntil: 'domcontentloaded' })
@@ -385,7 +388,7 @@ export class Metamask extends Emittery {
   /**
    * @template R
    *
-   * @param {import('@metamask/providers/dist/BaseProvider.js').RequestArguments} arg
+   * @param {import('@metamask/providers').RequestArguments} arg
    * @param {import('@playwright/test').Page} page
    */
   async #_rpcCall(arg, page) {

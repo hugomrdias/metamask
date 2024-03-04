@@ -40,7 +40,9 @@ const { test, expect } = createFixture({
   },
 })
 
-// @ts-ignore
+/**
+ * @param {{ [s: string]: any; } | ArrayLike<any>} data
+ */
 async function setupExtraExtensions(data) {
   for (const [key, value] of Object.entries(data)) {
     if (key === rainbowExtensionId) {

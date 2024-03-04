@@ -100,7 +100,6 @@ export function createFixture(opts = {}) {
 
       await page.close()
       // @ts-ignore
-      // eslint-disable-next-line no-unused-vars
       for (const ext of downloadOptions.extensions) {
         // the passed extensionId and the installed extensionId are different,
         // this is because chrome generates a uniq id based on the absolute

@@ -3,13 +3,13 @@ import type { TruncatedSnap } from '@metamask/snaps-utils'
 import type { SetOptional } from 'type-fest'
 
 import type {
-  Page,
   BrowserContext,
+  Page,
   PlaywrightTestArgs,
   PlaywrightWorkerArgs,
   TestType,
 } from '@playwright/test'
-import type { Metamask } from './metamask.js'
+import type { Metamask } from './metamask'
 
 interface Extension {
   id: string
