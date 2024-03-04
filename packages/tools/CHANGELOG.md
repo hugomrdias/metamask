@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.2.0...metamask-testing-tools-v1.2.1) (2024-03-04)
+
+
+### Bug Fixes
+
+* update metamask deps and types ([6897732](https://github.com/hugomrdias/filsnap-testing/commit/68977328397ba1d5a3290e6c869e345b20e8c962))
+
 ## [1.2.0](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.1.10...metamask-testing-tools-v1.2.0) (2024-02-22)
 
 
