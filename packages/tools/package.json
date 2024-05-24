@@ -69,7 +69,7 @@
 	},
 	"devDependencies": {
 		"@types/node": "^20.11.24",
-		"type-fest": "^4.11.0"
+		"type-fest": "^4.18.2"
 	},
 	"depcheck": {
 		"specials": [
