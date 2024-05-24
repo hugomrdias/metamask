@@ -11,10 +11,16 @@ npx simple-git-hooks
 
 ## Packages
 
-### [tools](./packages/tools)
+### [metamask-testing-tools](./packages/tools)
 
 This is a collection of tools for testing metamask, metamask flask and metamask snaps.
 
+## Contributing
+
+Read contributing guidelines [here](.github/CONTRIBUTING.md).
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/hugomrdias/metamask)
+
 ## License
 
-MIT © [Hugo Dias](http://hugodias.me)
+[MIT](./license) © [Hugo Dias](http://hugodias.me)

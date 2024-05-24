@@ -85,7 +85,7 @@ export async function download({
   dir = defaultDirectory,
   flask = false,
   browser = 'chrome',
-  extensions = [],
+  extensionsIds: extensions = [],
 }) {
   /** @type {Conf<{ latestTag: string; latestCheck: number; }>} */
   const config = new Conf({
@@ -116,17 +116,17 @@ export async function download({
 
   if (extensions.length > 0) {
     for (const extension of extensions) {
-      const extensionOutFolder = path.join(dir, extension.id)
+      const extensionOutFolder = path.join(dir, extension)
       if (fs.existsSync(extensionOutFolder)) {
         outFolders.push(extensionOutFolder)
         continue
       }
-      const extensionData = await downloadExtensionById(extension.id, dir)
+      const extensionData = await downloadExtensionById(extension, dir)
       outFolders.push(extensionOutFolder)
 
-      const filePath = path.resolve(dir, `${extension.id}.crx`)
+      const filePath = path.resolve(dir, `${extension}.crx`)
       if (filePath !== null && extensionData !== null) {
-        await extractCrxFile(filePath, extensionData)
+        extractCrxFile(filePath, extensionData)
       }
     }
   }
@@ -210,9 +210,8 @@ const downloadExtensionById = async (extensionId, dir = defaultDirectory) => {
       })
 
       return path.resolve(dir, extensionId)
-    } else {
-      throw new Error('Response body is null')
     }
+    throw new Error('Response body is null')
   } catch {
     // eslint-disable-next-line unicorn/no-null
     return null // Return null in case of an error
@@ -249,9 +248,8 @@ function stripCrxHeader(data) {
  *
  * @param {string} crxFilePath - The path to the .crx file to be extracted.
  * @param {string} extractToDirectory - The directory where the .crx file will be extracted.
- * @returns {Promise<void>} A promise that resolves when the extraction is complete.
  */
-async function extractCrxFile(crxFilePath, extractToDirectory) {
+function extractCrxFile(crxFilePath, extractToDirectory) {
   fs.mkdirSync(extractToDirectory, { recursive: true })
   const data = fs.readFileSync(crxFilePath)
 

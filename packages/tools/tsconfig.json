@@ -8,6 +8,7 @@
   "include": ["src", "test"],
   "exclude": ["node_modules", "dist", "out"],
   "typedocOptions": {
+    "entryPointStrategy": "resolve",
     "entryPoints": ["src/index.js", "src/fixture.js", "src/metamask.js"],
     "includeVersion": true,
     "excludeExternals": true,

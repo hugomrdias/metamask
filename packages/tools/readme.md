@@ -2,8 +2,6 @@
 
 This is a collection of tools for testing metamask, metamask flask and metamask snaps with [Playwright](https://playwright.dev/).
 
-> Note: Currently metamask >= v10.28.0 is not supported.
-
 ## Install
 
 ```bash

@@ -3,24 +3,19 @@ import { createFixture } from '../../src/fixture.js'
 const { test, expect } = createFixture()
 
 test.describe('metamask latest stable', () => {
-  test('should not be flask', async ({ page, metamask }) => {
-    expect(metamask.isFlask).toBe(false)
-  })
-
   test('should run setup', async ({ metamask }) => {
-    expect(metamask.isFlask).toBe(false)
     await metamask.setup()
 
-    await expect(metamask.walletPage.getByText('Account 1')).toBeVisible()
+    await expect(metamask.page.getByText('Account 1')).toBeVisible()
   })
 
-  test('should throw on installSnap', async ({ page, metamask }) => {
+  test('should throw on installSnap', async ({ metamask, page }) => {
     await metamask.setup()
 
     await expect(() => {
       return metamask.installSnap({
         id: 'foo',
-        url: 'http://example.org',
+        page,
       })
     }).rejects.toThrow(
       'Expected caveat to have a value property of a non-empty object of snap IDs.: At path: value.foo -- Expected the value to satisfy a union of `intersection | string`, but received: "foo".'

@@ -1,7 +1,7 @@
 import { createFixture } from '../../src/fixture.js'
 
 const { test, expect } = createFixture({
-  download: {
+  downloadOptions: {
     flask: true,
   },
 })
@@ -13,7 +13,7 @@ test.describe('snaps', () => {
 
     const result = await metamask.installSnap({
       id: SNAP_ID,
-      url: 'http://example.org',
+      page,
     })
 
     await expect(page.getByText('Example Domain')).toBeVisible()
@@ -26,7 +26,7 @@ test.describe('snaps', () => {
     const snapId = 'npm:@metamask/test-snap-dialog'
     const result = await metamask.installSnap({
       id: snapId,
-      url: 'http://example.org',
+      page,
     })
 
     await expect(page.getByText('Example Domain')).toBeVisible()
@@ -38,7 +38,7 @@ test.describe('snaps', () => {
     await metamask.setup()
     await metamask.installSnap({
       id: SNAP_ID,
-      url: 'http://example.org',
+      page,
     })
 
     const result = await metamask.getSnaps(page)
@@ -51,7 +51,7 @@ test.describe('snaps', () => {
     await page.goto('/')
     const result = await metamask.installSnap({
       id: SNAP_ID,
-      url: 'http://example.org',
+      page,
     })
 
     expect(result[SNAP_ID]).toBeTruthy()
@@ -62,7 +62,7 @@ test.describe('snaps', () => {
     const result = await metamask.installSnap({
       id: SNAP_ID,
       version: '5.4.0',
-      url: 'http://example.org',
+      page,
     })
 
     expect(result[SNAP_ID].version).toBe('5.4.0')

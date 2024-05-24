@@ -1,33 +1,104 @@
 import { test as base, chromium } from '@playwright/test'
+import pWaitFor from 'p-wait-for'
 import { download } from './download.js'
-import {
-  Metamask,
-  findExtensionId,
-  findVersion,
-  findWallet,
-} from './metamask.js'
+import { Metamask } from './metamask.js'
 
 /**
+ * @typedef {import('./types.js').Extension} Extension
+ */
+
+/**
+ * @param {import('@playwright/test').BrowserContext} ctx
+ * @param {string} extensionId
+ */
+export async function findExtensionPage(ctx, extensionId) {
+  let page = ctx
+    .pages()
+    .find((p) => p.url().startsWith(`chrome-extension://${extensionId}`))
+
+  if (!page) {
+    page = await ctx.waitForEvent('page', {
+      predicate: (page) => {
+        return page.url().startsWith(`chrome-extension://${extensionId}`)
+      },
+    })
+  }
+  await page.waitForLoadState('networkidle')
+  return page
+}
+
+/**
+ * @param {import('@playwright/test').BrowserContext} ctx
+ * @param {number} [extensionsNumber]
+ */
+export async function findExtensions(ctx, extensionsNumber = 1) {
+  /** @type {import('./types.js').Extension[]} */
+  const extensions = []
+
+  /** @type {string[]} */
+  const urls = []
+  const backgroundPages = ctx.backgroundPages()
+
+  for (const page of backgroundPages) {
+    if (page.url().includes('chrome-extension')) {
+      urls.push(page.url())
+    }
+  }
+
+  const serviceWorkers = ctx.serviceWorkers()
+  for (const worker of serviceWorkers) {
+    if (worker.url().includes('chrome-extension')) {
+      urls.push(worker.url())
+    }
+  }
+
+  ctx.on('backgroundpage', (page) => {
+    if (page.url().includes('chrome-extension')) {
+      urls.push(page.url())
+    }
+  })
+
+  ctx.on('serviceworker', (worker) => {
+    if (worker.url().includes('chrome-extension')) {
+      urls.push(worker.url())
+    }
+  })
+
+  await pWaitFor(() => urls.length === extensionsNumber)
+  const extensionIds = urls.map((url) => url.split('/')[2])
+
+  for (const id of extensionIds) {
+    const page = await findExtensionPage(ctx, id)
+    extensions.push({
+      title: await page.title(),
+      url: page.url(),
+      id,
+      page,
+    })
+  }
+
+  return extensions
+}
+
+/**
+ * Create a new metamask fixture with the given options
+ *
  * @param {import('./types.js').FixtureOptions} opts
  */
 export function createFixture(opts = {}) {
   const {
-    download: downloadOptions = { extensions: [] },
+    downloadOptions = {},
     isolated = true,
     snap,
     mnemonic,
     password,
   } = opts
 
-  if (!downloadOptions.extensions) {
-    downloadOptions.extensions = []
-  }
-
   /** @type {import('@playwright/test').BrowserContext | undefined} */
   let ctx
 
   /** @type {Metamask | undefined} */
-  let model
+  let mm
 
   const test = /** @type {import('./types').TextExtend} */ (base.extend)({
     context: async ({ headless }, use) => {
@@ -48,28 +119,34 @@ export function createFixture(opts = {}) {
       }
 
       await use(ctx)
+
+      if (isolated) {
+        await ctx.close()
+        ctx = undefined
+      }
     },
 
     metamask: async ({ context, page, baseURL }, use) => {
-      if (!model || isolated) {
-        const extensionId = await findExtensionId(context)
-        model = new Metamask(
+      if (!mm || isolated) {
+        const extensions = await findExtensions(
           context,
-          extensionId,
-          await findWallet(context, extensionId),
-          await findVersion(context, extensionId)
+          downloadOptions.extensionsIds
+            ? downloadOptions.extensionsIds.length + 1
+            : 1
         )
 
+        mm = new Metamask(extensions, context)
+
         if (snap) {
-          const pageURL = snap && snap.url ? snap.url : baseURL
-          if (!pageURL) {
+          if (!baseURL) {
             throw new Error(
               'No page URL provided, either set it this fixture snap config or in your playwright config with "use.baseURL"'
             )
           }
-          await model.setup(mnemonic, password)
-          await model.installSnap({
-            url: pageURL,
+          await page.goto('/')
+          await mm.setup(mnemonic, password)
+          await mm.installSnap({
+            page,
             id: snap.id,
             version: snap.version,
           })
@@ -79,52 +156,13 @@ export function createFixture(opts = {}) {
       if (baseURL) {
         await page.goto('/')
       }
-      await use(model)
+
+      await use(mm)
+
       if (isolated) {
-        await model.teardown()
-        model = undefined
-        ctx = undefined
+        mm.teardown()
+        mm = undefined
       }
-    },
-
-    extraExtensions: async ({ context }, use) => {
-      const data = {}
-      const page = await context.newPage()
-      const client = await context.newCDPSession(page)
-
-      const { targetInfos } = await client.send('Target.getTargets')
-      // Filter the targets to find extensions. This might require custom logic based on your needs.
-      const extensionTargets = targetInfos.filter((target) =>
-        target.url.includes('chrome-extension://')
-      )
-
-      await page.close()
-      // @ts-ignore
-      for (const ext of downloadOptions.extensions) {
-        // the passed extensionId and the installed extensionId are different,
-        // this is because chrome generates a uniq id based on the absolute
-        // path extension location on fs
-        const target = extensionTargets.find(
-          (target) => target.title === ext.title
-        )
-        const installedExtensionId = target?.url.split('/')[2]
-
-        // @ts-ignore
-        data[ext.id] = {
-          id: installedExtensionId,
-          // @ts-ignore
-          page: await ext.findPage(context, installedExtensionId),
-        }
-      }
-
-      /**
-       * @param {(arg0: {}) => any} fn
-       */
-      async function callback(fn) {
-        return await fn(data)
-      }
-
-      await use(callback)
     },
   })
 
@@ -132,13 +170,13 @@ export function createFixture(opts = {}) {
     test.describe.configure({ mode: 'serial' })
   }
 
-  test.afterAll(async () => {
-    if (model && !isolated) {
-      await model.teardown()
-      model = undefined
-      ctx = undefined
-    }
-  })
+  // test.afterAll(() => {
+  //   if (mm && !isolated) {
+  //     mm.teardown()
+  //     mm = undefined
+  //   }
+  // })
+
   const expect = test.expect
   return { test, expect }
 }

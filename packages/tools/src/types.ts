@@ -3,7 +3,6 @@ import type { TruncatedSnap } from '@metamask/snaps-utils'
 import type { SetOptional } from 'type-fest'
 
 import type {
-  BrowserContext,
   Page,
   PlaywrightTestArgs,
   PlaywrightWorkerArgs,
@@ -11,13 +10,11 @@ import type {
 } from '@playwright/test'
 import type { Metamask } from './metamask'
 
-interface Extension {
-  id: string
+export interface Extension {
   title: string
-  findPage: (
-    context: BrowserContext,
-    extensionId: string
-  ) => Promise<Page> | null
+  url: string
+  id: string
+  page: Page
 }
 
 export interface DownloadMetamaskOptions {
@@ -28,7 +25,16 @@ export interface DownloadMetamaskOptions {
   dir?: string
   asset?: string
   flask?: boolean
-  extensions?: Extension[]
+  /**
+   * Extensions to install after metamask is installed using chrome store id
+   *
+   * https://chromewebstore.google.com/detail/rainbow/opfgelmcmbiajamepnmloijbpoleiama
+   *
+   * @example ['opfgelmcmbiajamepnmloijbpoleiama']
+   *
+   *
+   */
+  extensionsIds?: string[]
   browser?: 'chrome' | 'firefox'
 }
 
@@ -43,13 +49,17 @@ export interface FixtureOptions {
   /**
    * Options to download metamask.
    */
-  download?: Partial<DownloadMetamaskOptions>
+  downloadOptions?: Partial<DownloadMetamaskOptions>
   /**
    * Should the metamask instance be isolated. Defaults: true
    * Each test will have a new metamask instance and new browser context
    */
   isolated?: boolean
-  snap?: SetOptional<InstallSnapOptions, 'url'>
+  /**
+   * Preinstall metamask and snap before running tests. Defaults: false
+   * Make sure `baseURL` is set in the test config
+   */
+  snap?: SetOptional<InstallSnapOptions, 'page'>
   /**
    * Mnemonic to use for metamask instance. Defaults: process.env.MNEMONIC or 'already turtle birth enroll since owner keep patch skirt drift any dinner'
    */
@@ -68,10 +78,6 @@ declare global {
 }
 export interface InstallSnapOptions {
   /**
-   * URL to install snap from
-   */
-  url: string | URL
-  /**
    * Snap ID
    *
    * @example
@@ -82,6 +88,11 @@ export interface InstallSnapOptions {
    * Snap version. Defaults to npm latest published version.
    */
   version?: string
+
+  /**
+   * Page to install snap on.
+   */
+  page: Page
 }
 
 interface SnapRequest {
