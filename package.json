@@ -16,7 +16,7 @@
 		"@biomejs/biome": "^1.7.3",
 		"@hugomrdias/configs": "^0.1.7",
 		"depcheck": "^1.4.7",
-		"lint-staged": "^15.2.2",
+		"lint-staged": "^15.2.4",
 		"simple-git-hooks": "^2.11.1",
 		"typedoc": "^0.25.13",
 		"typedoc-plugin-missing-exports": "^2.2.0",
