@@ -11,9 +11,7 @@ npx simple-git-hooks
 
 ## Packages
 
-### [metamask-testing-tools](./packages/tools)
-
-This is a collection of tools for testing metamask, metamask flask and metamask snaps.
+- [metamask-testing-tools](./packages/tools) - This is a collection of tools for testing metamask, metamask flask and metamask snaps.
 
 ## Contributing
 

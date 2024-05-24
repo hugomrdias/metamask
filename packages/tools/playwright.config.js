@@ -10,6 +10,7 @@ export default defineConfig({
   maxFailures: process.env.CI ? 2 : 1,
   retries: process.env.CI ? 2 : 0,
   reporter: process.env.CI ? [['html'], ['list']] : 'list',
+  workers: process.env.CI ? 1 : 2,
   use: {
     baseURL: 'http://example.org',
     trace: 'on-first-retry',
