@@ -51,7 +51,7 @@ jobs:
           files: packages/testing/playwright-report
       - name: Add report to web3.storage
         if: always() && steps.check_report.outputs.files_exists == 'true'
-        uses: web3-storage/add-to-web3@v2
+        uses: web3-storage/add-to-web3@v3
         id: add_to_web3_storage
         with:
           path_to_add: packages/testing/playwright-report
