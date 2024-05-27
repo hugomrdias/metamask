@@ -1,4 +1,4 @@
-# Filsnap Testing Monorepo
+# Metamask Tools Monorepo
 
 ## Install
 
