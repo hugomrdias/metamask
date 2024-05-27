@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.4](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v1.2.3...metamask-testing-tools-v1.2.4) (2024-05-27)
+
+
+### Bug Fixes
+
+* fix pnpm mismatch ([893db70](https://github.com/hugomrdias/metamask/commit/893db702308d391a0232f4c9526b61bdb6089f86))
+
 ## [1.2.3](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v1.2.2...metamask-testing-tools-v1.2.3) (2024-05-27)
 
 
