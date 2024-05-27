@@ -30,5 +30,5 @@ jobs:
           name: playwright-report
           path: packages/testing/playwright-report/
           retention-days: 30
-      - run: POSTMARK_SERVER_TOKEN=${{ secrets.POSTMARK_TOKEN }} npx postmark-cli email raw -f "CI Notifications <ci@decentralised.dev>" -t hugomrdias@gmail.com --subject "[${{github.repository}}] metamask-testing-tools CI Failed" --text "Cron run failed \n ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+      - run: POSTMARK_SERVER_TOKEN=${{ secrets.POSTMARK_TOKEN }} npx postmark-cli email raw -f "CI Notifications <ci@decentralised.dev>" -t hugomrdias@gmail.com --subject "[${{github.repository}}] Workflow Failed" --html "Workflow <code>${{ github.workflow }}</code> <b>failed</b> ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/job/${{ github.job}}"
         if: failure()
