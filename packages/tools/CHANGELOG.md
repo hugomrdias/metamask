@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v1.2.2...metamask-testing-tools-v1.2.3) (2024-05-27)
+
+
+### Bug Fixes
+
+* tests npm publish ([12b4116](https://github.com/hugomrdias/metamask/commit/12b411658195bace9f61ea08961e4561e16df0f6))
+
 ## [1.2.2](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v1.2.1...metamask-testing-tools-v1.2.2) (2024-05-27)
 
 
