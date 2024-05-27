@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.2](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v1.2.1...metamask-testing-tools-v1.2.2) (2024-05-27)
+
+
+### Bug Fixes
+
+* deps updates ([5a6fa5f](https://github.com/hugomrdias/metamask/commit/5a6fa5f22bbd50dd5d4fd402e07beea4944701cf))
+* isolation, extra extensions and speed ([e86cecf](https://github.com/hugomrdias/metamask/commit/e86cecfce524f0a8fcaad63c579d7d843bb4c75d))
+
 ## [1.2.1](https://github.com/hugomrdias/filsnap-testing/compare/metamask-testing-tools-v1.2.0...metamask-testing-tools-v1.2.1) (2024-03-04)
 
 
