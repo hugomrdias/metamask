@@ -57,7 +57,7 @@
 		"test": "playwright test"
 	},
 	"dependencies": {
-		"@metamask/providers": "^16.1.0",
+		"@metamask/providers": "^17.0.0",
 		"@metamask/snaps-utils": "^7.4.0",
 		"@playwright/test": "^1.44.1",
 		"conf": "^12.0.0",
