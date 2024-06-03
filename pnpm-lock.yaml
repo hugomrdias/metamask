@@ -36,11 +36,11 @@ importers:
   packages/tools:
     dependencies:
       '@metamask/providers':
-        specifier: ^16.1.0
-        version: 16.1.0
+        specifier: ^17.0.0
+        version: 17.0.0(webextension-polyfill@0.12.0)
       '@metamask/snaps-utils':
-        specifier: ^7.4.0
-        version: 7.4.0(@babel/runtime@7.24.6)(@metamask/approval-controller@6.0.2)
+        specifier: ^7.4.1
+        version: 7.4.1(@babel/runtime@7.24.6)(@metamask/approval-controller@7.0.0)(webextension-polyfill@0.12.0)
       '@playwright/test':
         specifier: ^1.44.1
         version: 1.44.1
@@ -64,8 +64,8 @@ importers:
         version: 5.0.2
     devDependencies:
       '@types/node':
-        specifier: ^20.12.12
-        version: 20.12.12
+        specifier: ^20.14.0
+        version: 20.14.0
       type-fest:
         specifier: ^4.18.2
         version: 4.18.3
@@ -262,16 +262,20 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@metamask/approval-controller@6.0.2':
-    resolution: {integrity: sha512-G5FmEwRkKJPjCh3sA6g8eoYOcmLj/Y6Kllh663fYYbt1DZHHJtkrWBuaUnbTySS0VYqbTInpcgSRzuawE1VMgw==}
-    engines: {node: '>=16.0.0'}
+  '@metamask/approval-controller@7.0.0':
+    resolution: {integrity: sha512-8/OogfKqe7IRXqjOVrc2fiiqzmdRKZ/AU2oWQXSl+vMfm3TQkzW9hd9jMpXsypg7qeQQ1OmckzkSJMAynNe4YA==}
+    engines: {node: ^18.18 || >=20}
 
   '@metamask/base-controller@5.0.2':
     resolution: {integrity: sha512-izOaXXnLz9OXbdika0ZvIDf24pgsWNPI02Lm0E4eMU61ICpV78bzQB7YyIbMtF6MWnItw1RnX9jN6zNEmp5pdA==}
     engines: {node: '>=16.0.0'}
 
-  '@metamask/controller-utils@9.1.0':
-    resolution: {integrity: sha512-17XQhyhR1bC7NjQHJF2KhxStVeoFW8liQ/Z526cI3uVcKOgYRxxDwBiRGs+xzv9XAm7f1W73W83wnb8fcBxlxg==}
+  '@metamask/base-controller@6.0.0':
+    resolution: {integrity: sha512-N1fyGh76Kouf3jnb8oPEKTgtU/rxkbv9KTJqwp6Wr3HwZQCGvDkoz+iS3N2apYwstIGuMd7NMrcs8v6SSWunIQ==}
+    engines: {node: ^18.18 || >=20}
+
+  '@metamask/controller-utils@10.0.0':
+    resolution: {integrity: sha512-vO6lwIr3VSkkR/A9VCzxcpgLJhzgMvUvaAU9SF8ulXIhRIh3Eur4VDcXtcKNGNB8oTZcKbKJrsmAJCVfPZQ+zQ==}
     engines: {node: '>=16.0.0'}
 
   '@metamask/eth-query@4.0.0':
@@ -288,8 +292,8 @@ packages:
     resolution: {integrity: sha512-IoQPmql8q7ABLruW7i4EYVHWUbF74yrp63bRuXV5Zf9BQwcn5H9Ww1eLtROYvI1bUXwOiHZ6qT5CWTrDc/t/AA==}
     engines: {node: '>=16.0.0'}
 
-  '@metamask/json-rpc-middleware-stream@7.0.1':
-    resolution: {integrity: sha512-hsveICXi/56do/mxgwE4IApWwOfZ204iWtSiCcLayEDCLS96X/tqnW1xXvNTrk1l4PtSUHajsyHBY67I89bTIA==}
+  '@metamask/json-rpc-middleware-stream@7.0.2':
+    resolution: {integrity: sha512-yUdzsJK04Ev98Ck4D7lmRNQ8FPioXYhEUZOMS01LXW8qTvPGiRVXmVltj2p4wrLkh0vW7u6nv0mNl5xzC5Qmfg==}
     engines: {node: '>=16.0.0'}
 
   '@metamask/key-tree@9.1.1':
@@ -304,15 +308,17 @@ packages:
     resolution: {integrity: sha512-+ItrieVZie3j2LfYE0QkdW3dsEMfMEp419IGx1zyeLqjRZ14iQUPRO0H6CGgfAAoC0x6k2PfCAGRwJUA9BMrqA==}
     engines: {node: ^16.20 || ^18.16 || >=20}
 
-  '@metamask/permission-controller@9.0.2':
-    resolution: {integrity: sha512-4EV39Y8Sg88kQiMZ5eAYW5rOkPFb23FzhAVSv0bwOdOEFBJc/tDel8SmX68XQCrTwOgkUmatiUpNDj22r0ujrA==}
+  '@metamask/permission-controller@9.1.1':
+    resolution: {integrity: sha512-h4EakReO5JFDZBIAjXXOiwaMGqrQvNp6/6kQfDYREvT+tIpjGD5JUaqgwBblLkPCLeip57hIqxeobPlgmCfATA==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
       '@metamask/approval-controller': ^6.0.0
 
-  '@metamask/providers@16.1.0':
-    resolution: {integrity: sha512-znVCvux30+3SaUwcUGaSf+pUckzT5ukPRpcBmy+muBLC0yaWnBcvDqGfcsw6CBIenUdFrVoAFa8B6jsuCY/a+g==}
+  '@metamask/providers@17.0.0':
+    resolution: {integrity: sha512-l4nI3d7XViq57rTIHMR3FNqzsrTMrf5JMKcxnA5xCvS2Xj85/PeQeTG4jGmms3WWhc/nouZoEs99z/pWFJcbig==}
     engines: {node: ^18.18 || >=20}
+    peerDependencies:
+      webextension-polyfill: ^0.10.0 || ^0.11.0 || ^0.12.0
 
   '@metamask/rpc-errors@6.2.1':
     resolution: {integrity: sha512-VTgWkjWLzb0nupkFl1duQi9Mk8TGT9rsdnQg6DeRrYEFxtFOh0IF8nAwxM/4GWqDl6uIB06lqUBgUrAVWl62Bw==}
@@ -334,12 +340,12 @@ packages:
     resolution: {integrity: sha512-72fQIAxCFSQ/25c0VgPj/XIL8K6Xm8nRuHYayhLmsSgRbHlNXzwVhMieK3yztBqMFD5Hi+9gKsl0HkMMORoqzg==}
     engines: {node: ^18.16 || >=20}
 
-  '@metamask/snaps-sdk@4.2.0':
-    resolution: {integrity: sha512-LQlq12CH+BYJPhflL9AFX9FihKxljfW86WFBP43JRlJwSkzWYLAFhTg0bzuv5AMOQI+LAXMhNABuSHTS954bFA==}
+  '@metamask/snaps-sdk@4.4.1':
+    resolution: {integrity: sha512-SNtkyIOYdaadFKPSpnGfNu7dXHiTXogHusQdmIHkqidWQaFTIEnKuViePTPgBCdx17/nwu/ZBEhq0AlugRsZ6w==}
     engines: {node: ^18.16 || >=20}
 
-  '@metamask/snaps-utils@7.4.0':
-    resolution: {integrity: sha512-Gb2IGxQUGWrg0pj4FVb1zdC23ufLWub4qTMuf45HPZnluX2x+GRFGKYCgoTZ+x2PWh9Zwra+nrHbXqOoxcT8nw==}
+  '@metamask/snaps-utils@7.4.1':
+    resolution: {integrity: sha512-IPoZTh90Bg4LJJCmkRig1QIyXOgdziuZqdx3c521gHaKpMlcOFl1fvII17X9yVF9SUtTSDoj1R4//4e5rnLZnw==}
     engines: {node: ^18.16 || >=20}
 
   '@metamask/utils@8.4.0':
@@ -392,8 +398,8 @@ packages:
   '@types/ms@0.7.34':
     resolution: {integrity: sha512-nG96G3Wp6acyAgJqGasjODb+acrI7KltPiRxzHPXnP3NgI28bpQDRv53olbqGXbfcgF5aiiHmO3xpwEpS5Ld9g==}
 
-  '@types/node@20.12.12':
-    resolution: {integrity: sha512-eWLDGF/FOSPtAvEqeRAQ4C8LSA7M1I7i0ky1I8U7kD1J5ITyW3AsRhQrKVoWf5pFKZ2kILsEGJhsI9r93PYnOw==}
+  '@types/node@20.14.0':
+    resolution: {integrity: sha512-5cHBxFGJx6L4s56Bubp4fglrEpmyJypsqI6RgzMfBHWUJQGWAAi8cWcgetEbZXHYXo9C2Fa4EEds/uSyS4cxmA==}
 
   '@types/parse-json@4.0.2':
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==}
@@ -507,8 +513,8 @@ packages:
     resolution: {integrity: sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==}
     engines: {node: '>=10'}
 
-  caniuse-lite@1.0.30001623:
-    resolution: {integrity: sha512-X/XhAVKlpIxWPpgRTnlgZssJrF0m6YtRA0QDWgsBNT12uZM6LPRydR7ip405Y3t1LamD8cP2TZFEDZFBf5ApcA==}
+  caniuse-lite@1.0.30001627:
+    resolution: {integrity: sha512-4zgNiB8nTyV/tHhwZrFs88ryjls/lHiqFhrxCW4qSTeuRByBVnPYpDInchOIySWknznucaf31Z4KYqjfbrecVw==}
 
   chalk@2.4.2:
     resolution: {integrity: sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==}
@@ -593,6 +599,15 @@ packages:
       supports-color:
         optional: true
 
+  debug@4.3.5:
+    resolution: {integrity: sha512-pt0bNEmneDIvdL1Xsd9oDQ/wrQRkXDT4AUWlNZNPKvW5x/jyO9VFXkJUP07vQ2upmw5PlaITaPKc31jK13V+jg==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+
   deep-freeze-strict@1.1.1:
     resolution: {integrity: sha512-QemROZMM2IvhAcCFvahdX2Vbm4S/txeq5rFYU9fh4mQP79WTMW5c/HkQ2ICl1zuzcDZdPZ6zarDxQeQMsVYoNA==}
 
@@ -615,8 +630,8 @@ packages:
     resolution: {integrity: sha512-xaBe6ZT4DHPkg0k4Ytbvn5xoxgpG0jOS1dYxSOwAHPuNLjP3/OzN0gH55SrLqpx8cBfSaVt91lXYkApjb+nYdQ==}
     engines: {node: '>=16'}
 
-  electron-to-chromium@1.4.783:
-    resolution: {integrity: sha512-bT0jEz/Xz1fahQpbZ1D7LgmPYZ3iHVY39NcWWro1+hA2IvjiPeaXtfSqrQ+nXjApMvQRE2ASt1itSLRrebHMRQ==}
+  electron-to-chromium@1.4.788:
+    resolution: {integrity: sha512-ubp5+Ev/VV8KuRoWnfP2QF2Bg+O2ZFdb49DiiNbz2VmgkIqrnyYaqIOqj8A6K/3p1xV0QcU5hBQ1+BmB6ot1OA==}
 
   emittery@1.0.3:
     resolution: {integrity: sha512-tJdCJitoy2lrC2ldJcqN4vkqJ00lT+tOWNT1hBJjO/3FDMJa5TTIiYGCKGkn/WfCyOzUMObeohbVTj00fhiLiA==}
@@ -1279,8 +1294,8 @@ packages:
   vscode-textmate@8.0.0:
     resolution: {integrity: sha512-AFbieoL7a5LMqcnOF04ji+rpXadgOXnZsxQr//r83kLPr7biP7am3g9zbaZIaBGwBRWeSvoMD4mgPdX3e4NWBg==}
 
-  webextension-polyfill@0.10.0:
-    resolution: {integrity: sha512-c5s35LgVa5tFaHhrZDnr3FpQpjj1BB+RXhLTYUxGqBVN460HkbM8TBtEqdXWbpTKfzwCcjAZVF7zXCYSKtcp9g==}
+  webextension-polyfill@0.12.0:
+    resolution: {integrity: sha512-97TBmpoWJEE+3nFBQ4VocyCdLKfw54rFaJ6EVQYLBCXqCIpLSZkwGgASpv4oPt9gdKCJ80RJlcmNzNn008Ag6Q==}
 
   when-exit@2.1.2:
     resolution: {integrity: sha512-u9J+toaf3CCxCAzM/484qNAxQE75rFdVgiFEEV8Xps2gzYhf0tx73s1WXDQhkwV17E3MxRMz40m7Ekd2/121Lg==}
@@ -1360,7 +1375,7 @@ snapshots:
       '@babel/traverse': 7.24.6
       '@babel/types': 7.24.6
       convert-source-map: 2.0.0
-      debug: 4.3.4
+      debug: 4.3.5
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.1
@@ -1545,9 +1560,9 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
 
-  '@metamask/approval-controller@6.0.2':
+  '@metamask/approval-controller@7.0.0':
     dependencies:
-      '@metamask/base-controller': 5.0.2
+      '@metamask/base-controller': 6.0.0
       '@metamask/rpc-errors': 6.2.1
       '@metamask/utils': 8.4.0
       nanoid: 3.3.7
@@ -1561,7 +1576,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@metamask/controller-utils@9.1.0(@babel/runtime@7.24.6)':
+  '@metamask/base-controller@6.0.0':
+    dependencies:
+      '@metamask/utils': 8.4.0
+      immer: 9.0.21
+    transitivePeerDependencies:
+      - supports-color
+
+  '@metamask/controller-utils@10.0.0(@babel/runtime@7.24.6)':
     dependencies:
       '@ethereumjs/util': 8.1.0
       '@metamask/eth-query': 4.0.0
@@ -1595,7 +1617,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@metamask/json-rpc-middleware-stream@7.0.1':
+  '@metamask/json-rpc-middleware-stream@7.0.2':
     dependencies:
       '@metamask/json-rpc-engine': 8.0.2
       '@metamask/safe-event-emitter': 3.1.1
@@ -1624,11 +1646,11 @@ snapshots:
       once: 1.4.0
       readable-stream: 3.6.2
 
-  '@metamask/permission-controller@9.0.2(@babel/runtime@7.24.6)(@metamask/approval-controller@6.0.2)':
+  '@metamask/permission-controller@9.1.1(@babel/runtime@7.24.6)(@metamask/approval-controller@7.0.0)':
     dependencies:
-      '@metamask/approval-controller': 6.0.2
+      '@metamask/approval-controller': 7.0.0
       '@metamask/base-controller': 5.0.2
-      '@metamask/controller-utils': 9.1.0(@babel/runtime@7.24.6)
+      '@metamask/controller-utils': 10.0.0(@babel/runtime@7.24.6)
       '@metamask/json-rpc-engine': 8.0.2
       '@metamask/rpc-errors': 6.2.1
       '@metamask/utils': 8.4.0
@@ -1640,10 +1662,10 @@ snapshots:
       - '@babel/runtime'
       - supports-color
 
-  '@metamask/providers@16.1.0':
+  '@metamask/providers@17.0.0(webextension-polyfill@0.12.0)':
     dependencies:
       '@metamask/json-rpc-engine': 8.0.2
-      '@metamask/json-rpc-middleware-stream': 7.0.1
+      '@metamask/json-rpc-middleware-stream': 7.0.2
       '@metamask/object-multiplex': 2.0.0
       '@metamask/rpc-errors': 6.2.1
       '@metamask/safe-event-emitter': 3.1.1
@@ -1653,7 +1675,7 @@ snapshots:
       fast-deep-equal: 3.1.3
       is-stream: 2.0.1
       readable-stream: 3.6.2
-      webextension-polyfill: 0.10.0
+      webextension-polyfill: 0.12.0
     transitivePeerDependencies:
       - supports-color
 
@@ -1682,28 +1704,29 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@metamask/snaps-sdk@4.2.0':
+  '@metamask/snaps-sdk@4.4.1(webextension-polyfill@0.12.0)':
     dependencies:
       '@metamask/key-tree': 9.1.1
-      '@metamask/providers': 16.1.0
+      '@metamask/providers': 17.0.0(webextension-polyfill@0.12.0)
       '@metamask/rpc-errors': 6.2.1
       '@metamask/utils': 8.4.0
       fast-xml-parser: 4.4.0
       superstruct: 1.0.4
     transitivePeerDependencies:
       - supports-color
+      - webextension-polyfill
 
-  '@metamask/snaps-utils@7.4.0(@babel/runtime@7.24.6)(@metamask/approval-controller@6.0.2)':
+  '@metamask/snaps-utils@7.4.1(@babel/runtime@7.24.6)(@metamask/approval-controller@7.0.0)(webextension-polyfill@0.12.0)':
     dependencies:
       '@babel/core': 7.24.6
       '@babel/types': 7.24.6
       '@metamask/base-controller': 5.0.2
       '@metamask/key-tree': 9.1.1
-      '@metamask/permission-controller': 9.0.2(@babel/runtime@7.24.6)(@metamask/approval-controller@6.0.2)
+      '@metamask/permission-controller': 9.1.1(@babel/runtime@7.24.6)(@metamask/approval-controller@7.0.0)
       '@metamask/rpc-errors': 6.2.1
       '@metamask/slip44': 3.1.0
       '@metamask/snaps-registry': 3.1.0
-      '@metamask/snaps-sdk': 4.2.0
+      '@metamask/snaps-sdk': 4.4.1(webextension-polyfill@0.12.0)
       '@metamask/utils': 8.4.0
       '@noble/hashes': 1.4.0
       '@scure/base': 1.1.6
@@ -1721,6 +1744,7 @@ snapshots:
       - '@babel/runtime'
       - '@metamask/approval-controller'
       - supports-color
+      - webextension-polyfill
 
   '@metamask/utils@8.4.0':
     dependencies:
@@ -1728,7 +1752,7 @@ snapshots:
       '@noble/hashes': 1.4.0
       '@scure/base': 1.1.6
       '@types/debug': 4.1.12
-      debug: 4.3.4
+      debug: 4.3.5
       pony-cause: 2.1.11
       semver: 7.6.2
       superstruct: 1.0.4
@@ -1774,7 +1798,7 @@ snapshots:
 
   '@types/bn.js@5.1.5':
     dependencies:
-      '@types/node': 20.12.12
+      '@types/node': 20.14.0
 
   '@types/debug@4.1.12':
     dependencies:
@@ -1786,7 +1810,7 @@ snapshots:
 
   '@types/ms@0.7.34': {}
 
-  '@types/node@20.12.12':
+  '@types/node@20.14.0':
     dependencies:
       undici-types: 5.26.5
 
@@ -1891,8 +1915,8 @@ snapshots:
 
   browserslist@4.23.0:
     dependencies:
-      caniuse-lite: 1.0.30001623
-      electron-to-chromium: 1.4.783
+      caniuse-lite: 1.0.30001627
+      electron-to-chromium: 1.4.788
       node-releases: 2.0.14
       update-browserslist-db: 1.0.16(browserslist@4.23.0)
 
@@ -1902,7 +1926,7 @@ snapshots:
 
   camelcase@6.3.0: {}
 
-  caniuse-lite@1.0.30001623: {}
+  caniuse-lite@1.0.30001627: {}
 
   chalk@2.4.2:
     dependencies:
@@ -1992,6 +2016,10 @@ snapshots:
     dependencies:
       ms: 2.1.2
 
+  debug@4.3.5:
+    dependencies:
+      ms: 2.1.2
+
   deep-freeze-strict@1.1.1: {}
 
   depcheck@1.4.7:
@@ -2032,7 +2060,7 @@ snapshots:
     dependencies:
       type-fest: 3.13.1
 
-  electron-to-chromium@1.4.783: {}
+  electron-to-chromium@1.4.788: {}
 
   emittery@1.0.3: {}
 
@@ -2093,7 +2121,7 @@ snapshots:
   extension-port-stream@3.0.0:
     dependencies:
       readable-stream: 3.6.2
-      webextension-polyfill: 0.10.0
+      webextension-polyfill: 0.12.0
 
   fast-deep-equal@3.1.3: {}
 
@@ -2592,7 +2620,7 @@ snapshots:
 
   vscode-textmate@8.0.0: {}
 
-  webextension-polyfill@0.10.0: {}
+  webextension-polyfill@0.12.0: {}
 
   when-exit@2.1.2: {}
 

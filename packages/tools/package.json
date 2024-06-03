@@ -57,8 +57,8 @@
 		"test": "playwright test"
 	},
 	"dependencies": {
-		"@metamask/providers": "^16.1.0",
-		"@metamask/snaps-utils": "^7.4.0",
+		"@metamask/providers": "^17.0.0",
+		"@metamask/snaps-utils": "^7.4.1",
 		"@playwright/test": "^1.44.1",
 		"conf": "^12.0.0",
 		"emittery": "^1.0.3",
@@ -68,7 +68,7 @@
 		"p-wait-for": "^5.0.2"
 	},
 	"devDependencies": {
-		"@types/node": "^20.12.12",
+		"@types/node": "^20.14.0",
 		"type-fest": "^4.18.2"
 	},
 	"depcheck": {
