@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.5](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v1.2.4...metamask-testing-tools-v1.2.5) (2024-06-03)
+
+
+### Bug Fixes
+
+* fix metamask setup change and improve setup steps ([91f223b](https://github.com/hugomrdias/metamask/commit/91f223b1aaf14721a7b96fc371c6bd57393cf7ba))
+
 ## [1.2.4](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v1.2.3...metamask-testing-tools-v1.2.4) (2024-05-27)
 
 
