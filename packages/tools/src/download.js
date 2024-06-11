@@ -106,6 +106,7 @@ export async function download({
     tag = config.get('latestTag')
   }
 
+  console.log('🚀 ~ file: download.js:108 ~ tag:', tag)
   let asset = 'metamask-'
   asset += flask
     ? `flask-${browser}-${tag.replace('v', '')}-flask.0`

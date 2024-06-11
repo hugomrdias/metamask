@@ -1,4 +1,4 @@
-name: Cron
+name: Manual/Cron
 env:
   CI: true
   FORCE_COLOR: 1
@@ -6,6 +6,11 @@ env:
 on:
   schedule:
     - cron: '0 0 * * *'
+  workflow_dispatch:
+    inputs:
+      metamask-tag:
+        description: 'Metamask tag to download. ie. "v10.27.0"'
+
 jobs:
   test:
     timeout-minutes: 60
@@ -22,14 +27,16 @@ jobs:
       - run: pnpm install
       - run: pnpm -r --filter metamask-testing-tools exec playwright install --with-deps
       - run: pnpm -r --filter metamask-testing-tools run test
-        id: tests
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          METAMASK_TAG: ${{ inputs.metamask-tag }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report
-          path: packages/testing/playwright-report/
+          path: |
+              packages/testing/playwright-report/
+              packages/testing/test-results/*/trace.zip/
           retention-days: 30
       - run: POSTMARK_SERVER_TOKEN=${{ secrets.POSTMARK_TOKEN }} npx postmark-cli email raw -f "CI Notifications <ci@decentralised.dev>" -t hugomrdias@gmail.com --subject "[${{github.repository}}] Workflow Failed" --html "Workflow <b>${{ github.workflow }}</b> Job <b>${{ github.job}}</b> failed! <br/> ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-        if: failure()
+        if: failure() && github.event_name == 'schedule' 

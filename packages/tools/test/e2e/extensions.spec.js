@@ -3,7 +3,7 @@ import { createFixture } from '../../src/fixture.js'
 const password = '12345678'
 const rainbowExtensionId = 'opfgelmcmbiajamepnmloijbpoleiama'
 
-const { test, expect } = createFixture({
+const flask = createFixture({
   downloadOptions: {
     flask: true,
     extensionsIds: [rainbowExtensionId],
@@ -26,21 +26,47 @@ async function setupExtraExtensions(data) {
   }
 }
 
-test.describe('snaps rainbow', () => {
-  test('should install metamask when rainbow is present', async ({
-    page,
-    metamask,
-  }) => {
-    await metamask.setup()
-    await metamask.setupExtraExtensions(setupExtraExtensions)
+flask.test.describe('snaps rainbow flask metamask', () => {
+  flask.test(
+    'should install metamask when rainbow is present',
+    async ({ page, metamask }) => {
+      await metamask.setup()
+      await metamask.setupExtraExtensions(setupExtraExtensions)
 
-    const snapId = 'npm:@metamask/test-snap-dialog'
-    const result = await metamask.installSnap({
-      id: snapId,
-      page,
-    })
+      const snapId = 'npm:@metamask/test-snap-dialog'
+      const result = await metamask.installSnap({
+        id: snapId,
+        page,
+      })
 
-    await expect(page.getByText('Example Domain')).toBeVisible()
-    expect(result[snapId].id).toBe(snapId)
-  })
+      await flask.expect(page.getByText('Example Domain')).toBeVisible()
+      flask.expect(result[snapId].id).toBe(snapId)
+    }
+  )
+})
+
+const main = createFixture({
+  downloadOptions: {
+    flask: true,
+    extensionsIds: [rainbowExtensionId],
+  },
+})
+
+main.test.describe('snaps rainbow main metamask', () => {
+  main.test(
+    'should install metamask when rainbow is present',
+    async ({ page, metamask }) => {
+      await metamask.setup()
+      await metamask.setupExtraExtensions(setupExtraExtensions)
+
+      const snapId = 'npm:@metamask/test-snap-dialog'
+      const result = await metamask.installSnap({
+        id: snapId,
+        page,
+      })
+
+      await main.expect(page.getByText('Example Domain')).toBeVisible()
+      main.expect(result[snapId].id).toBe(snapId)
+    }
+  )
 })
