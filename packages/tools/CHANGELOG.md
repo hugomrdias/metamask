@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.6](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v1.2.5...metamask-testing-tools-v1.2.6) (2024-06-12)
+
+
+### Bug Fixes
+
+* make faster and pin extension ([38fa70b](https://github.com/hugomrdias/metamask/commit/38fa70bd1e8186897655e1cde900eab807e0e271))
+
 ## [1.2.5](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v1.2.4...metamask-testing-tools-v1.2.5) (2024-06-03)
 
 
