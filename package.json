@@ -6,7 +6,7 @@
 		"packages/*"
 	],
 	"scripts": {
-		"format": "biome check --apply --no-errors-on-unmatched --files-ignore-unknown=true .",
+		"fix": "biome check --fix --no-errors-on-unmatched --files-ignore-unknown=true",
 		"clean": "rm -rf docs node_modules pnpm-lock.yaml packages/*/{pnpm-lock.yaml,coverage,.nyc_output,dist,node_modules,.next}",
 		"lint": "pnpm -r --if-present run lint",
 		"test": "pnpm -r --if-present run test",
@@ -15,20 +15,16 @@
 		"docs": "typedoc --out docs --plugin typedoc-plugin-missing-exports"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "^1.7.3",
-		"@hugomrdias/configs": "^0.1.7",
+		"@biomejs/biome": "^1.8.1",
+		"@hugomrdias/configs": "^0.1.8",
 		"depcheck": "^1.4.7",
-		"lint-staged": "^15.2.5",
 		"simple-git-hooks": "^2.11.1",
 		"typedoc": "^0.25.13",
 		"typedoc-plugin-missing-exports": "^2.2.0",
 		"typescript": "5.4.5"
 	},
 	"simple-git-hooks": {
-		"pre-commit": "npx lint-staged"
-	},
-	"lint-staged": {
-		"*": "biome check --no-errors-on-unmatched --files-ignore-unknown=true"
+		"pre-commit": "pnpm exec biome check --no-errors-on-unmatched --files-ignore-unknown=true --staged"
 	},
 	"engines": {
 		"node": ">=20"

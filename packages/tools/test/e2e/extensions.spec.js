@@ -7,6 +7,7 @@ const flask = createFixture({
   downloadOptions: {
     flask: true,
     extensionsIds: [rainbowExtensionId],
+    tag: 'v11.16.5',
   },
 })
 
@@ -47,8 +48,8 @@ flask.test.describe('snaps rainbow flask metamask', () => {
 
 const main = createFixture({
   downloadOptions: {
-    flask: true,
     extensionsIds: [rainbowExtensionId],
+    tag: 'v11.16.5',
   },
 })
 
@@ -59,8 +60,9 @@ main.test.describe('snaps rainbow main metamask', () => {
       await metamask.setup()
       await metamask.setupExtraExtensions(setupExtraExtensions)
 
-      const snapId = 'npm:@metamask/test-snap-dialog'
+      const snapId = 'npm:filsnap'
       const result = await metamask.installSnap({
+        version: '1.0.2',
         id: snapId,
         page,
       })

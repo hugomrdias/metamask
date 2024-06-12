@@ -52,13 +52,13 @@
 		"node": ">=20"
 	},
 	"scripts": {
-		"lint": "tsc --build && biome check --no-errors-on-unmatched --files-ignore-unknown=true .",
+		"lint": "tsc --build && biome check --no-errors-on-unmatched --files-ignore-unknown=true",
 		"build": "tsc --build",
 		"test": "playwright test"
 	},
 	"dependencies": {
 		"@metamask/providers": "^17.0.0",
-		"@metamask/snaps-utils": "^7.4.1",
+		"@metamask/snaps-utils": "^7.5.0",
 		"@playwright/test": "^1.44.1",
 		"conf": "^12.0.0",
 		"emittery": "^1.0.3",
@@ -68,8 +68,8 @@
 		"p-wait-for": "^5.0.2"
 	},
 	"devDependencies": {
-		"@types/node": "^20.14.0",
-		"type-fest": "^4.18.2"
+		"@types/node": "^20.14.2",
+		"type-fest": "^4.20.0"
 	},
 	"depcheck": {
 		"specials": [

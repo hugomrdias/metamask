@@ -160,21 +160,11 @@ export class Metamask extends Emittery {
     await page.getByTestId('import-srp-confirm').click()
     await page.getByTestId('create-password-new').fill(password)
     await page.getByTestId('create-password-confirm').fill(password)
-    await page
-      .getByTestId('create-password-terms')
-      .click({ force: true, noWaitAfter: true })
-    await page
-      .getByTestId('create-password-import')
-      .click({ force: true, noWaitAfter: true })
-    await page
-      .getByTestId('onboarding-complete-done')
-      .click({ force: true, noWaitAfter: true })
-    await page
-      .getByTestId('pin-extension-next')
-      .click({ force: true, noWaitAfter: true })
-    await page
-      .getByTestId('pin-extension-done')
-      .click({ force: true, noWaitAfter: true })
+    await page.getByTestId('create-password-terms').click({ delay: 300 })
+    await page.getByTestId('create-password-import').click({ delay: 300 })
+    await page.getByTestId('onboarding-complete-done').click({ delay: 300 })
+    await page.getByTestId('pin-extension-next').click({ delay: 300 })
+    await page.getByTestId('pin-extension-done').click({ delay: 300 })
     return this
   }
 

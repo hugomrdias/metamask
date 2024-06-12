@@ -114,6 +114,14 @@ export function createFixture(opts = {}) {
             ...(headless ? ['--headless=new'] : []),
             `--disable-extensions-except=${extensionPaths.join(',')}`,
             `--load-extension=${extensionPaths.join(',')}`,
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-gl-drawing-for-tests',
+            '--enable-automation',
+            '--disable-gpu',
+            ...(headless ? [] : ['--auto-open-devtools-for-tabs']),
+            // '--offscreen-document-testing',
+            // '--enable-experimental-extension-apis',
           ],
         })
       }
