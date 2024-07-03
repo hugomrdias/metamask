@@ -60,7 +60,7 @@
 		"@metamask/providers": "^17.0.0",
 		"@metamask/snaps-utils": "^7.5.0",
 		"@playwright/test": "^1.44.1",
-		"conf": "^13.0.0",
+		"conf": "^13.0.1",
 		"emittery": "^1.0.3",
 		"eth-rpc-errors": "^4.0.3",
 		"fflate": "^0.8.2",
