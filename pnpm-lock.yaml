@@ -33,8 +33,8 @@ importers:
   packages/tools:
     dependencies:
       '@metamask/providers':
-        specifier: ^17.0.0
-        version: 17.0.0(webextension-polyfill@0.12.0)
+        specifier: ^17.1.2
+        version: 17.1.2(webextension-polyfill@0.12.0)
       '@metamask/snaps-utils':
         specifier: ^7.5.0
         version: 7.6.0(@babel/runtime@7.24.7)(@metamask/approval-controller@7.0.0)(webextension-polyfill@0.12.0)
@@ -281,17 +281,13 @@ packages:
     peerDependencies:
       '@babel/runtime': ^7.0.0
 
-  '@metamask/json-rpc-engine@8.0.2':
-    resolution: {integrity: sha512-IoQPmql8q7ABLruW7i4EYVHWUbF74yrp63bRuXV5Zf9BQwcn5H9Ww1eLtROYvI1bUXwOiHZ6qT5CWTrDc/t/AA==}
-    engines: {node: '>=16.0.0'}
-
-  '@metamask/json-rpc-engine@9.0.0':
-    resolution: {integrity: sha512-/zVBHbDG2VsJMUxKIcNGwg/f9NbMcJxee1qWRtC5HHmyCv5uqfArxOK6yHpjW02d9ENtrj18uWUtP7/ofSoeoQ==}
+  '@metamask/json-rpc-engine@9.0.2':
+    resolution: {integrity: sha512-wteoGUDhiqCgyO6Gdjnm6n+7raoRS+dRHOIsTc7LK2zpezAynav9BIK7QWPcJZeieMTSG5HuYrQf+epLbcdB/g==}
     engines: {node: ^18.18 || >=20}
 
-  '@metamask/json-rpc-middleware-stream@7.0.2':
-    resolution: {integrity: sha512-yUdzsJK04Ev98Ck4D7lmRNQ8FPioXYhEUZOMS01LXW8qTvPGiRVXmVltj2p4wrLkh0vW7u6nv0mNl5xzC5Qmfg==}
-    engines: {node: '>=16.0.0'}
+  '@metamask/json-rpc-middleware-stream@8.0.2':
+    resolution: {integrity: sha512-8z7GAUYj3EFVkxiTjaND2x9Q8iURoKhwIyzLMZChLTiJ/XKRJwvtJ9cG2KIeL3GnNsPkVH97xngRmTaYAM6yDg==}
+    engines: {node: ^18.18 || >=20}
 
   '@metamask/key-tree@9.1.1':
     resolution: {integrity: sha512-Z/KEbNlNvLeaBIjw+ibtC8gfLAm7X152JPcLo2KJgw8wMxKjwq/OjkI3XIqn7hFRA2HWCm3MWJPcABQsXWPQcQ==}
@@ -311,14 +307,18 @@ packages:
     peerDependencies:
       '@metamask/approval-controller': ^7.0.0
 
-  '@metamask/providers@17.0.0':
-    resolution: {integrity: sha512-l4nI3d7XViq57rTIHMR3FNqzsrTMrf5JMKcxnA5xCvS2Xj85/PeQeTG4jGmms3WWhc/nouZoEs99z/pWFJcbig==}
+  '@metamask/providers@17.1.2':
+    resolution: {integrity: sha512-hACtF02yaUYThvWrRtVU4JAc+ZLCZ4PJUYBw6dK9Rze50J7zCxtss2mB7H8w76iLx//b5hjgXx6y92gPVjuYWg==}
     engines: {node: ^18.18 || >=20}
     peerDependencies:
       webextension-polyfill: ^0.10.0 || ^0.11.0 || ^0.12.0
 
   '@metamask/rpc-errors@6.3.0':
     resolution: {integrity: sha512-B1UIG/0xWkaDs/d6xrxsRf7kmFLdk8YE0HUToaFumjwQM36AjBsqEzVyemPTQv0SIrAPFnSmkLt053JOWcu5iw==}
+    engines: {node: '>=16.0.0'}
+
+  '@metamask/rpc-errors@6.3.1':
+    resolution: {integrity: sha512-ugDY7cKjF4/yH5LtBaOIKHw/AiGGSAmzptAUEiAEGr/78LwuzcXAxmzEQfSfMIfI+f9Djr8cttq1pRJJKfTuCg==}
     engines: {node: '>=16.0.0'}
 
   '@metamask/safe-event-emitter@3.1.1':
@@ -349,8 +349,16 @@ packages:
     resolution: {integrity: sha512-TOm+Lt/lCJk9j/3QT2LucrPewRmqI7/GKT+blK2IIOAkBMS+9TmeNjd2Y+TlfpSSYstaYsGZyz1XwpiTCg6RLA==}
     engines: {node: '>=16.0.0'}
 
+  '@metamask/superstruct@3.1.0':
+    resolution: {integrity: sha512-N08M56HdOgBfRKkrgCMZvQppkZGcArEop3kixNEtVbJKm6P9Cfg0YkI6X0s1g78sNrj2fWUwvJADdZuzJgFttA==}
+    engines: {node: '>=16.0.0'}
+
   '@metamask/utils@8.5.0':
     resolution: {integrity: sha512-I6bkduevXb72TIM9q2LRO63JSsF9EXduh3sBr9oybNX2hNNpr/j1tEjXrsG0Uabm4MJ1xkGAQEMwifvKZIkyxQ==}
+    engines: {node: '>=16.0.0'}
+
+  '@metamask/utils@9.1.0':
+    resolution: {integrity: sha512-g2REf+xSt0OZfMoNNdC4+/Yy8eP3KUqvIArel54XRFKPoXbHI6+YjFfrLtfykWBjffOp7DTfIc3Kvk5TLfuiyg==}
     engines: {node: '>=16.0.0'}
 
   '@noble/curves@1.4.0':
@@ -643,9 +651,11 @@ packages:
     resolution: {integrity: sha512-A5EmesHW6rfnZ9ysHQjPdJRni0SRar0tjtG5MNtm9n5TUvsYU8oozprtRD4AqHxcZWWlVuAmQo2nWKfN9oyjTw==}
     engines: {node: '>=0.10.0'}
 
-  extension-port-stream@3.0.0:
-    resolution: {integrity: sha512-an2S5quJMiy5bnZKEf6AkfH/7r8CzHvhchU40gxN+OM6HPhe7Z9T1FUychcf2M9PpPOO0Hf7BAEfJkw2TDIBDw==}
+  extension-port-stream@4.2.0:
+    resolution: {integrity: sha512-i5IgiPVMVrHN+Zx8PRjvFsOw8L1A3sboVwPZghDjW9Yp1BMmBDE6mCcTNu4xMXPYduBOwI3CBK7wd72LcOyD6g==}
     engines: {node: '>=12.0.0'}
+    peerDependencies:
+      webextension-polyfill: ^0.10.0 || ^0.11.0 || ^0.12.0
 
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
@@ -1400,7 +1410,7 @@ snapshots:
   '@metamask/approval-controller@7.0.0':
     dependencies:
       '@metamask/base-controller': 6.0.0
-      '@metamask/rpc-errors': 6.3.0
+      '@metamask/rpc-errors': 6.3.1
       '@metamask/utils': 8.5.0
       nanoid: 3.3.7
     transitivePeerDependencies:
@@ -1439,27 +1449,19 @@ snapshots:
       '@metamask/number-to-bn': 1.7.1
       bn.js: 5.2.1
 
-  '@metamask/json-rpc-engine@8.0.2':
+  '@metamask/json-rpc-engine@9.0.2':
     dependencies:
-      '@metamask/rpc-errors': 6.3.0
+      '@metamask/rpc-errors': 6.3.1
       '@metamask/safe-event-emitter': 3.1.1
-      '@metamask/utils': 8.5.0
+      '@metamask/utils': 9.1.0
     transitivePeerDependencies:
       - supports-color
 
-  '@metamask/json-rpc-engine@9.0.0':
+  '@metamask/json-rpc-middleware-stream@8.0.2':
     dependencies:
-      '@metamask/rpc-errors': 6.3.0
+      '@metamask/json-rpc-engine': 9.0.2
       '@metamask/safe-event-emitter': 3.1.1
-      '@metamask/utils': 8.5.0
-    transitivePeerDependencies:
-      - supports-color
-
-  '@metamask/json-rpc-middleware-stream@7.0.2':
-    dependencies:
-      '@metamask/json-rpc-engine': 8.0.2
-      '@metamask/safe-event-emitter': 3.1.1
-      '@metamask/utils': 8.5.0
+      '@metamask/utils': 9.1.0
       readable-stream: 3.6.2
     transitivePeerDependencies:
       - supports-color
@@ -1489,8 +1491,8 @@ snapshots:
       '@metamask/approval-controller': 7.0.0
       '@metamask/base-controller': 6.0.0
       '@metamask/controller-utils': 11.0.0(@babel/runtime@7.24.7)
-      '@metamask/json-rpc-engine': 9.0.0
-      '@metamask/rpc-errors': 6.3.0
+      '@metamask/json-rpc-engine': 9.0.2
+      '@metamask/rpc-errors': 6.3.1
       '@metamask/utils': 8.5.0
       '@types/deep-freeze-strict': 1.1.2
       deep-freeze-strict: 1.1.1
@@ -1500,16 +1502,16 @@ snapshots:
       - '@babel/runtime'
       - supports-color
 
-  '@metamask/providers@17.0.0(webextension-polyfill@0.12.0)':
+  '@metamask/providers@17.1.2(webextension-polyfill@0.12.0)':
     dependencies:
-      '@metamask/json-rpc-engine': 8.0.2
-      '@metamask/json-rpc-middleware-stream': 7.0.2
+      '@metamask/json-rpc-engine': 9.0.2
+      '@metamask/json-rpc-middleware-stream': 8.0.2
       '@metamask/object-multiplex': 2.0.0
-      '@metamask/rpc-errors': 6.3.0
+      '@metamask/rpc-errors': 6.3.1
       '@metamask/safe-event-emitter': 3.1.1
-      '@metamask/utils': 8.5.0
+      '@metamask/utils': 9.1.0
       detect-browser: 5.3.0
-      extension-port-stream: 3.0.0
+      extension-port-stream: 4.2.0(webextension-polyfill@0.12.0)
       fast-deep-equal: 3.1.3
       is-stream: 2.0.1
       readable-stream: 3.6.2
@@ -1520,6 +1522,13 @@ snapshots:
   '@metamask/rpc-errors@6.3.0':
     dependencies:
       '@metamask/utils': 8.5.0
+      fast-safe-stringify: 2.1.1
+    transitivePeerDependencies:
+      - supports-color
+
+  '@metamask/rpc-errors@6.3.1':
+    dependencies:
+      '@metamask/utils': 9.1.0
       fast-safe-stringify: 2.1.1
     transitivePeerDependencies:
       - supports-color
@@ -1545,8 +1554,8 @@ snapshots:
   '@metamask/snaps-sdk@5.0.0(webextension-polyfill@0.12.0)':
     dependencies:
       '@metamask/key-tree': 9.1.1
-      '@metamask/providers': 17.0.0(webextension-polyfill@0.12.0)
-      '@metamask/rpc-errors': 6.3.0
+      '@metamask/providers': 17.1.2(webextension-polyfill@0.12.0)
+      '@metamask/rpc-errors': 6.3.1
       '@metamask/utils': 8.5.0
       superstruct: 1.0.4
     transitivePeerDependencies:
@@ -1586,10 +1595,26 @@ snapshots:
 
   '@metamask/superstruct@3.0.0': {}
 
+  '@metamask/superstruct@3.1.0': {}
+
   '@metamask/utils@8.5.0':
     dependencies:
       '@ethereumjs/tx': 4.2.0
       '@metamask/superstruct': 3.0.0
+      '@noble/hashes': 1.4.0
+      '@scure/base': 1.1.7
+      '@types/debug': 4.1.12
+      debug: 4.3.5
+      pony-cause: 2.1.11
+      semver: 7.6.2
+      uuid: 9.0.1
+    transitivePeerDependencies:
+      - supports-color
+
+  '@metamask/utils@9.1.0':
+    dependencies:
+      '@ethereumjs/tx': 4.2.0
+      '@metamask/superstruct': 3.1.0
       '@noble/hashes': 1.4.0
       '@scure/base': 1.1.7
       '@types/debug': 4.1.12
@@ -1917,7 +1942,7 @@ snapshots:
     dependencies:
       homedir-polyfill: 1.0.3
 
-  extension-port-stream@3.0.0:
+  extension-port-stream@4.2.0(webextension-polyfill@0.12.0):
     dependencies:
       readable-stream: 3.6.2
       webextension-polyfill: 0.12.0
