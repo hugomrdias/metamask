@@ -58,7 +58,7 @@
 	},
 	"dependencies": {
 		"@metamask/providers": "^17.0.0",
-		"@metamask/snaps-utils": "^7.5.0",
+		"@metamask/snaps-utils": "^8.0.1",
 		"@playwright/test": "^1.44.1",
 		"conf": "^13.0.1",
 		"emittery": "^1.0.3",
