@@ -2,6 +2,7 @@ import Emittery from 'emittery'
 import { EthereumRpcError } from 'eth-rpc-errors'
 import { isValidCode } from 'eth-rpc-errors/dist/utils.js'
 import pRetry from 'p-retry'
+import pWaitFor from 'p-wait-for'
 
 const DEFAULT_MNEMONIC =
   process.env.METAMASK_MNEMONIC ||
@@ -69,10 +70,17 @@ async function snapApprove(page) {
  * @param {string} name
  */
 async function waitForDialog(page, name) {
-  await page.reload()
   async function run() {
+    let done = false
+    page.on('request', (request) => {
+      if (request.url().includes('_locales/en/messages.json')) {
+        done = true
+      }
+    })
+
+    await page.reload()
+    await pWaitFor(() => done)
     if (!page.url().includes(name)) {
-      await page.reload()
       throw new Error(`Could not find dialog "${name}" from page ${page.url()}`)
     }
     return page
@@ -91,10 +99,12 @@ export class Metamask extends Emittery {
   /**
    * @param {import('./types.js').Extension[]} extensions
    * @param {import("@playwright/test").BrowserContext} context
+   * @param {boolean} [isFlask]
    */
-  constructor(extensions, context) {
+  constructor(extensions, context, isFlask = false) {
     super()
 
+    this.isFlask = isFlask
     this.context = context
     this.extension = extensions.find((ext) => ext.title === 'MetaMask')
     if (!this.extension) {
@@ -142,9 +152,9 @@ export class Metamask extends Emittery {
     const page = this.page
 
     // flask warning
-    const experimental = page.getByTestId('experimental-area')
-    if ((await experimental.count()) > 0) {
-      await experimental
+    if (this.isFlask) {
+      await page
+        .getByTestId('experimental-area')
         .getByRole('button', { name: 'I accept the risks', exact: true })
         .click()
     }
@@ -249,7 +259,7 @@ export class Metamask extends Emittery {
       await wallet.getByRole('button', { name: 'Accept', exact: true }).click()
       await wallet.getByRole('button').filter({ hasText: 'Connect' }).click()
       // Snap install popup steps
-      await this.waitForDialog('snap-install')
+      // await this.waitForDialog('snap-install')
       await snapApprove(wallet)
     } catch {
       // ignore

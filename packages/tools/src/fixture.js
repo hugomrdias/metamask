@@ -143,7 +143,7 @@ export function createFixture(opts = {}) {
             : 1
         )
 
-        mm = new Metamask(extensions, context)
+        mm = new Metamask(extensions, context, opts.downloadOptions?.flask)
 
         if (snap) {
           if (!baseURL) {
