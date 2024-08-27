@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.7](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v1.2.6...metamask-testing-tools-v1.2.7) (2024-08-26)
+
+
+### Bug Fixes
+
+* tweak reload and update deps ([d0a1987](https://github.com/hugomrdias/metamask/commit/d0a1987363370f287e84256e0f53f3295b0dec18))
+
 ## [1.2.6](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v1.2.5...metamask-testing-tools-v1.2.6) (2024-06-12)
 
 
