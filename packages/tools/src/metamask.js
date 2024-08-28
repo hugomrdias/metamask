@@ -1,8 +1,10 @@
+import delay from 'delay'
 import Emittery from 'emittery'
 import { EthereumRpcError } from 'eth-rpc-errors'
-import { isValidCode } from 'eth-rpc-errors/dist/utils.js'
 import pRetry from 'p-retry'
 import pWaitFor from 'p-wait-for'
+
+import { ensurePageLoadedURL, isMetamaskRpcError } from './utils.js'
 
 const DEFAULT_MNEMONIC =
   process.env.METAMASK_MNEMONIC ||
@@ -10,40 +12,8 @@ const DEFAULT_MNEMONIC =
 const DEFAULT_PASSWORD = process.env.METAMASK_PASSWORD || '12345678'
 
 /**
- * @typedef {import('eth-rpc-errors/dist/classes.js').SerializedEthereumRpcError} SerializedEthereumRpcError
- * @typedef {{notification: import('@playwright/test').Page, 'snaps-connect': import('@playwright/test').Page}} Events
+ * @typedef {{confirmation: import('@playwright/test').Page, 'snaps-connect': import('@playwright/test').Page, error: Error}} Events
  */
-
-/**
- *
- * @param {unknown} obj
- * @returns {obj is SerializedEthereumRpcError}
- */
-function isMetamaskRpcError(obj) {
-  if (!obj) return false
-  if (typeof obj !== 'object') return false
-  if (!('code' in obj)) return false
-  if (!('message' in obj)) return false
-
-  // @ts-ignore
-  if (isValidCode(obj.code)) {
-    return true
-  }
-
-  return false
-}
-
-/**
- *
- * @param {import('@playwright/test').Page} page
- */
-function ensurePageLoadedURL(page) {
-  if (page.url() === 'about:blank') {
-    throw new Error('Go to a page first')
-  }
-
-  return page
-}
 
 /**
  * Snap approve
@@ -51,6 +21,10 @@ function ensurePageLoadedURL(page) {
  * @param {import('@playwright/test').Page} page
  */
 async function snapApprove(page) {
+  await page.getByTestId('snap-privacy-warning-scroll').click()
+  await page.getByRole('button', { name: 'Accept', exact: true }).click()
+  await page.getByTestId('page-container-footer-next').click()
+
   await page.getByTestId('page-container-footer-next').click()
   const warning = page.getByRole('dialog')
 
@@ -59,9 +33,9 @@ async function snapApprove(page) {
     for (const check of checks) {
       await check.click()
     }
-    await warning.getByRole('button').filter({ hasText: 'Confirm' }).click()
+    await warning.getByTestId('snap-install-warning-modal-confirm').click()
   }
-  await page.getByRole('button').filter({ hasText: 'OK' }).click()
+  await page.getByTestId('page-container-footer-next').click()
 }
 
 /**
@@ -80,6 +54,7 @@ async function waitForDialog(page, name) {
 
     await page.reload()
     await pWaitFor(() => done)
+    await delay(500)
     if (!page.url().includes(name)) {
       throw new Error(`Could not find dialog "${name}" from page ${page.url()}`)
     }
@@ -114,14 +89,42 @@ export class Metamask extends Emittery {
     this.extraExtensions = extensions.filter((ext) => ext.title !== 'MetaMask')
     this.#snap = undefined
 
+    // this.page.on('console', redirectConsole)
+    // this.page.on('pageerror', (err) => {
+    //   console.log(err.message)
+    // })
+
+    // context.on('request', async (request) => {
+    //   if (
+    //     request.url().includes('acl.execution.metamask.io/latest/registry.json')
+    //   ) {
+    //     console.log('REGISTRY', request.url())
+    //     console.log('HEADERS', await request.allHeaders())
+    //   }
+    // })
+
+    // context.on('response', async (response) => {
+    //   if (
+    //     response
+    //       .url()
+    //       .includes('acl.execution.metamask.io/latest/registry.json')
+    //   ) {
+    //     console.log(response.url())
+
+    //     console.log('BODY', await response.text())
+    //     console.log('HEADERS', await response.allHeaders())
+    //   }
+    // })
+
     this.on(Metamask.listenerAdded, async ({ eventName }) => {
-      if (eventName === 'notification') {
-        const page = await this.waitForDialog('confirmation')
-        this.emit('notification', page)
-      } else if (eventName) {
-        const page = await this.waitForDialog(eventName?.toString())
-        // @ts-ignore
-        this.emit(eventName, page)
+      if (eventName) {
+        try {
+          const page = await waitForDialog(this.page, eventName?.toString())
+          // @ts-ignore
+          this.emit(eventName, page)
+        } catch (error) {
+          this.emit('error', /** @type {Error} */ (error))
+        }
       }
     })
   }
@@ -129,10 +132,18 @@ export class Metamask extends Emittery {
   /**
    * Wait for a dialog
    *
-   * @param {string} name - String to match against the dialog url
+   * @param {(page: import('@playwright/test').Page) => Promise<void>} fn - Function to run after confirmation
    */
-  waitForDialog(name) {
-    return waitForDialog(this.page, name)
+  waitForDialog(fn) {
+    const page = this.page
+    async function run() {
+      await page.reload()
+      if (fn) {
+        await fn(page)
+      }
+    }
+
+    return pRetry(run, { retries: 3 })
   }
 
   /**
@@ -170,8 +181,9 @@ export class Metamask extends Emittery {
     await page.getByTestId('import-srp-confirm').click()
     await page.getByTestId('create-password-new').fill(password)
     await page.getByTestId('create-password-confirm').fill(password)
-    await page.getByTestId('create-password-terms').click({ delay: 300 })
-    await page.getByTestId('create-password-import').click({ delay: 300 })
+    await page.getByTestId('create-password-terms').click()
+    await page.getByTestId('create-password-import').click()
+    await delay(1000)
     await page.getByTestId('onboarding-complete-done').click({ delay: 300 })
     await page.getByTestId('pin-extension-next').click({ delay: 300 })
     await page.getByTestId('pin-extension-done').click({ delay: 300 })
@@ -241,6 +253,7 @@ export class Metamask extends Emittery {
               },
             },
           })
+
           return result
         } catch (error) {
           return /** @type {error} */ (error)
@@ -251,16 +264,11 @@ export class Metamask extends Emittery {
         version: process.env.METAMASK_SNAP_VERSION || options.version,
       }
     )
+
     // Snap connect popup steps
-    const wallet = this.page
     try {
-      await this.waitForDialog('snaps-connect')
-      await wallet.getByTestId('snap-privacy-warning-scroll').click()
-      await wallet.getByRole('button', { name: 'Accept', exact: true }).click()
-      await wallet.getByRole('button').filter({ hasText: 'Connect' }).click()
-      // Snap install popup steps
-      // await this.waitForDialog('snap-install')
-      await snapApprove(wallet)
+      await waitForDialog(this.page, 'snaps-connect')
+      await snapApprove(this.page)
     } catch {
       // ignore
     }
@@ -351,8 +359,7 @@ export class Metamask extends Emittery {
     // @ts-ignore
     const result = await rpcPage.evaluate(async (arg) => {
       const getRequestProvider = () => {
-        return new Promise((resolve) => {
-          // Define the event handler directly. This assumes the window is already loaded.
+        return new Promise((resolve, reject) => {
           // @ts-ignore
           const handler = (event) => {
             const { rdns } = event.detail.info
@@ -360,15 +367,15 @@ export class Metamask extends Emittery {
               case 'io.metamask':
               case 'io.metamask.flask':
               case 'io.metamask.mmi': {
-                window.removeEventListener('eip6963:announceProvider', handler)
                 resolve(event.detail.provider)
                 break
               }
               default: {
-                // Optionally reject or resolve with null/undefined if no provider is found.
+                reject(new Error('No provider found'))
                 break
               }
             }
+            window.removeEventListener('eip6963:announceProvider', handler)
           }
 
           window.addEventListener('eip6963:announceProvider', handler)

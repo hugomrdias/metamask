@@ -104,12 +104,14 @@ export function createFixture(opts = {}) {
     context: async ({ headless }, use) => {
       const extensionPaths = [await download(downloadOptions)]
 
+      // https://playwright.dev/docs/service-workers-experimental
+      // @ts-ignore
+      process.env.PW_EXPERIMENTAL_SERVICE_WORKER_NETWORK_EVENTS = 1
+
       if (!ctx || isolated) {
         // Launch context with extension
         ctx = await chromium.launchPersistentContext('', {
           headless,
-          userAgent:
-            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36',
           args: [
             ...(headless ? ['--headless=new'] : []),
             `--disable-extensions-except=${extensionPaths.join(',')}`,
@@ -119,6 +121,7 @@ export function createFixture(opts = {}) {
             '--disable-gl-drawing-for-tests',
             '--enable-automation',
             '--disable-gpu',
+            '--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
             ...(headless ? [] : ['--auto-open-devtools-for-tabs']),
             // '--offscreen-document-testing',
             // '--enable-experimental-extension-apis',

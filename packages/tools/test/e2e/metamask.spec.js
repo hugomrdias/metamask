@@ -1,10 +1,6 @@
 import { createFixture } from '../../src/fixture.js'
 
-const { test, expect } = createFixture({
-  downloadOptions: {
-    tag: 'v11.16.5',
-  },
-})
+const { test, expect } = createFixture()
 
 test.describe('metamask latest stable', () => {
   test('should run setup', async ({ metamask }) => {

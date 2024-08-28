@@ -7,7 +7,6 @@ const flask = createFixture({
   downloadOptions: {
     flask: true,
     extensionsIds: [rainbowExtensionId],
-    tag: 'v11.16.5',
   },
 })
 
@@ -49,7 +48,6 @@ flask.test.describe('snaps rainbow flask metamask', () => {
 const main = createFixture({
   downloadOptions: {
     extensionsIds: [rainbowExtensionId],
-    tag: 'v11.16.5',
   },
 })
 
@@ -69,6 +67,50 @@ main.test.describe('snaps rainbow main metamask', () => {
 
       await main.expect(page.getByText('Example Domain')).toBeVisible()
       main.expect(result[snapId].id).toBe(snapId)
+    }
+  )
+})
+
+const main2 = createFixture({
+  downloadOptions: {
+    flask: true,
+  },
+})
+
+main2.test.describe('snaps install metamask and filsnap', () => {
+  main2.test(
+    'should install metamask and filsnap',
+    async ({ page, metamask }) => {
+      await metamask.setup()
+
+      const snapId = 'npm:filsnap'
+      const result = await metamask.installSnap({
+        id: snapId,
+        page,
+      })
+
+      await main2.expect(page.getByText('Example Domain')).toBeVisible()
+      main2.expect(result[snapId].id).toBe(snapId)
+
+      metamask.on('confirmation', async (page) => {
+        await page.getByTestId('confirmation-submit-button').click()
+      })
+      const config = await metamask.invokeSnap({
+        request: {
+          method: 'fil_configure',
+          params: {
+            network: 'testnet',
+          },
+        },
+        page,
+      })
+
+      main2.expect(config.result).toEqual({
+        derivationPath: "m/44'/1'/0'/0/0",
+        rpc: { url: 'https://api.calibration.node.glif.io', token: '' },
+        network: 'testnet',
+        unit: { decimals: 18, symbol: 'tFIL' },
+      })
     }
   )
 })

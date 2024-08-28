@@ -3,7 +3,6 @@ import { createFixture } from '../../src/fixture.js'
 let fixture = createFixture({
   downloadOptions: {
     flask: true,
-    tag: 'v11.16.5',
   },
 })
 

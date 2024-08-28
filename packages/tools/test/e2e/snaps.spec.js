@@ -3,7 +3,6 @@ import { createFixture } from '../../src/fixture.js'
 const { test, expect } = createFixture({
   downloadOptions: {
     flask: true,
-    tag: 'v11.16.5',
   },
 })
 const SNAP_ID = 'npm:@metamask/test-snap-bip32'

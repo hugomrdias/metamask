@@ -61,6 +61,7 @@
 		"@metamask/snaps-utils": "^8.0.1",
 		"@playwright/test": "^1.46.1",
 		"conf": "^13.0.1",
+		"delay": "^6.0.0",
 		"emittery": "^1.0.3",
 		"eth-rpc-errors": "^4.0.3",
 		"fflate": "^0.8.2",
@@ -68,7 +69,7 @@
 		"p-wait-for": "^5.0.2"
 	},
 	"devDependencies": {
-		"@types/node": "^22.5.0",
+		"@types/node": "^22.5.1",
 		"type-fest": "^4.25.0"
 	},
 	"depcheck": {
