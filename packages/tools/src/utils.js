@@ -95,7 +95,6 @@ export async function redirectConsole(msg) {
   if (msgArgs && msgArgs.length > 0) {
     consoleFn.apply(console, msgArgs)
   } else if (text) {
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log(`🌐 ${text}`)
   }
 }

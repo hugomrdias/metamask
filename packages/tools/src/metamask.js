@@ -4,7 +4,11 @@ import { EthereumRpcError } from 'eth-rpc-errors'
 import pRetry from 'p-retry'
 import pWaitFor from 'p-wait-for'
 
-import { ensurePageLoadedURL, isMetamaskRpcError } from './utils.js'
+import {
+  ensurePageLoadedURL,
+  isMetamaskRpcError,
+  redirectConsole,
+} from './utils.js'
 
 const DEFAULT_MNEMONIC =
   process.env.METAMASK_MNEMONIC ||
@@ -90,14 +94,14 @@ export class Metamask extends Emittery {
     this.extraExtensions = extensions.filter((ext) => ext.title !== 'MetaMask')
     this.#snap = undefined
 
-    // this.page.on('console', redirectConsole)
-    // this.page.on('pageerror', (err) => {
-    //   console.log('[ERROR]', err.message)
-    // })
+    this.page.on('console', redirectConsole)
+    this.page.on('pageerror', (err) => {
+      console.log('[ERROR]', err.message)
+    })
 
-    // this.context.on('weberror', (webError) => {
-    //   console.log(`Uncaught exception: "${webError.error()}"`)
-    // })
+    this.context.on('weberror', (webError) => {
+      console.log(`Uncaught exception: "${webError.error()}"`)
+    })
     // context.on('request', async (request) => {
     //   if (
     //     request.url().includes('acl.execution.metamask.io/latest/registry.json')
@@ -187,7 +191,7 @@ export class Metamask extends Emittery {
     await page.getByTestId('create-password-confirm').fill(password)
     await page.getByTestId('create-password-terms').click()
     await page.getByTestId('create-password-import').click()
-    await delay(500)
+    await delay(1000)
     await page.getByTestId('onboarding-complete-done').click()
     await delay(300)
     await page.getByTestId('pin-extension-next').click()
