@@ -181,13 +181,6 @@ export function createFixture(opts = {}) {
     test.describe.configure({ mode: 'serial' })
   }
 
-  // test.afterAll(() => {
-  //   if (mm && !isolated) {
-  //     mm.teardown()
-  //     mm = undefined
-  //   }
-  // })
-
   const expect = test.expect
   return { test, expect }
 }

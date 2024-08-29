@@ -36,6 +36,7 @@ async function snapApprove(page) {
     await warning.getByTestId('snap-install-warning-modal-confirm').click()
   }
   await page.getByTestId('page-container-footer-next').click()
+  await delay(500)
 }
 
 /**
@@ -91,9 +92,12 @@ export class Metamask extends Emittery {
 
     // this.page.on('console', redirectConsole)
     // this.page.on('pageerror', (err) => {
-    //   console.log(err.message)
+    //   console.log('[ERROR]', err.message)
     // })
 
+    // this.context.on('weberror', (webError) => {
+    //   console.log(`Uncaught exception: "${webError.error()}"`)
+    // })
     // context.on('request', async (request) => {
     //   if (
     //     request.url().includes('acl.execution.metamask.io/latest/registry.json')
@@ -183,10 +187,12 @@ export class Metamask extends Emittery {
     await page.getByTestId('create-password-confirm').fill(password)
     await page.getByTestId('create-password-terms').click()
     await page.getByTestId('create-password-import').click()
-    await delay(1000)
-    await page.getByTestId('onboarding-complete-done').click({ delay: 300 })
-    await page.getByTestId('pin-extension-next').click({ delay: 300 })
-    await page.getByTestId('pin-extension-done').click({ delay: 300 })
+    await delay(500)
+    await page.getByTestId('onboarding-complete-done').click()
+    await delay(300)
+    await page.getByTestId('pin-extension-next').click()
+    await delay(300)
+    await page.getByTestId('pin-extension-done').click()
     return this
   }
 
@@ -359,23 +365,24 @@ export class Metamask extends Emittery {
     // @ts-ignore
     const result = await rpcPage.evaluate(async (arg) => {
       const getRequestProvider = () => {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
+          // Define the event handler directly. This assumes the window is already loaded.
           // @ts-ignore
           const handler = (event) => {
             const { rdns } = event.detail.info
+
             switch (rdns) {
               case 'io.metamask':
               case 'io.metamask.flask':
               case 'io.metamask.mmi': {
+                window.removeEventListener('eip6963:announceProvider', handler)
                 resolve(event.detail.provider)
                 break
               }
               default: {
-                reject(new Error('No provider found'))
                 break
               }
             }
-            window.removeEventListener('eip6963:announceProvider', handler)
           }
 
           window.addEventListener('eip6963:announceProvider', handler)

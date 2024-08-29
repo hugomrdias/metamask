@@ -82,17 +82,6 @@ export async function redirectConsole(msg) {
   }
   const text = msg.text()
 
-  // skip browser informational warnings
-  if (
-    text?.includes(
-      'Synchronous XMLHttpRequest on the main thread is deprecated'
-    ) ||
-    text?.includes('Clear-Site-Data')
-  ) {
-    return
-  }
-
-  // const { url, lineNumber, columnNumber } = msg.location()
   let msgArgs
 
   try {
@@ -106,6 +95,7 @@ export async function redirectConsole(msg) {
   if (msgArgs && msgArgs.length > 0) {
     consoleFn.apply(console, msgArgs)
   } else if (text) {
-    console.error(`🌐 ${text}`)
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+    console.log(`🌐 ${text}`)
   }
 }
