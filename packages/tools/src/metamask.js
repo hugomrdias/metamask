@@ -4,11 +4,7 @@ import { EthereumRpcError } from 'eth-rpc-errors'
 import pRetry from 'p-retry'
 import pWaitFor from 'p-wait-for'
 
-import {
-  ensurePageLoadedURL,
-  isMetamaskRpcError,
-  redirectConsole,
-} from './utils.js'
+import { ensurePageLoadedURL, isMetamaskRpcError } from './utils.js'
 
 const DEFAULT_MNEMONIC =
   process.env.METAMASK_MNEMONIC ||
@@ -94,14 +90,14 @@ export class Metamask extends Emittery {
     this.extraExtensions = extensions.filter((ext) => ext.title !== 'MetaMask')
     this.#snap = undefined
 
-    this.page.on('console', redirectConsole)
-    this.page.on('pageerror', (err) => {
-      console.log('[ERROR]', err.message)
-    })
+    // this.page.on('console', redirectConsole)
+    // this.page.on('pageerror', (err) => {
+    //   console.log('[ERROR]', err.message)
+    // })
 
-    this.context.on('weberror', (webError) => {
-      console.log(`Uncaught exception: "${webError.error()}"`)
-    })
+    // this.context.on('weberror', (webError) => {
+    //   console.log(`Uncaught exception: "${webError.error()}"`)
+    // })
     // context.on('request', async (request) => {
     //   if (
     //     request.url().includes('acl.execution.metamask.io/latest/registry.json')
@@ -221,11 +217,6 @@ export class Metamask extends Emittery {
     if (!options.id && !process.env.METAMASK_SNAP_ID) {
       throw new Error('Snap ID is required.')
     }
-
-    options.page.on('console', redirectConsole)
-    options.page.on('pageerror', (err) => {
-      console.log('[ERROR]', err.message)
-    })
     const install = options.page.evaluate(
       async ({ snapId, version }) => {
         const getRequestProvider = () => {
@@ -234,12 +225,6 @@ export class Metamask extends Emittery {
             // @ts-ignore
             const handler = (event) => {
               const { rdns } = event.detail.info
-
-              console.log(
-                '🚀 ~ file: metamask.js:230 ~ Metamask ~ handler ~ rdns:',
-                rdns
-              )
-
               switch (rdns) {
                 case 'io.metamask':
                 case 'io.metamask.flask':
@@ -276,8 +261,6 @@ export class Metamask extends Emittery {
 
           return result
         } catch (error) {
-          console.log('🚀 ~ file: metamask.js:274 ~ Metamask ~ error:', error)
-
           return /** @type {error} */ (error)
         }
       },
@@ -376,11 +359,6 @@ export class Metamask extends Emittery {
    */
   async #_rpcCall(arg, page) {
     const rpcPage = ensurePageLoadedURL(page)
-
-    page.on('console', redirectConsole)
-    page.on('pageerror', (err) => {
-      console.log('[ERROR]', err.message)
-    })
     /** @type {Promise<R>} */
     // @ts-ignore
     const result = await rpcPage.evaluate(async (arg) => {
@@ -390,12 +368,6 @@ export class Metamask extends Emittery {
           // @ts-ignore
           const handler = (event) => {
             const { rdns } = event.detail.info
-
-            console.log(
-              '🚀 ~ file: metamask.js:396 ~ Metamask ~ handler ~ rdns:',
-              rdns
-            )
-
             switch (rdns) {
               case 'io.metamask':
               case 'io.metamask.flask':
@@ -419,11 +391,6 @@ export class Metamask extends Emittery {
         const result = await api.request(arg)
         return result
       } catch (error) {
-        console.log(
-          '🚀 ~ file: metamask.js:425 ~ Metamask ~ result ~ error:',
-          error
-        )
-
         return /** @type {error} */ (error)
       }
     }, arg)
