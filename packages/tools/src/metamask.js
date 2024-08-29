@@ -28,7 +28,7 @@ async function snapApprove(page) {
   await page.getByTestId('snap-privacy-warning-scroll').click()
   await page.getByRole('button', { name: 'Accept', exact: true }).click()
   await page.getByTestId('page-container-footer-next').click()
-
+  await delay(500)
   await page.getByTestId('page-container-footer-next').click()
   const warning = page.getByRole('dialog')
 
@@ -94,14 +94,14 @@ export class Metamask extends Emittery {
     this.extraExtensions = extensions.filter((ext) => ext.title !== 'MetaMask')
     this.#snap = undefined
 
-    this.page.on('console', redirectConsole)
-    this.page.on('pageerror', (err) => {
-      console.log('[ERROR]', err.message)
-    })
+    // this.page.on('console', redirectConsole)
+    // this.page.on('pageerror', (err) => {
+    //   console.log('[ERROR]', err.message)
+    // })
 
-    this.context.on('weberror', (webError) => {
-      console.log(`Uncaught exception: "${webError.error()}"`)
-    })
+    // this.context.on('weberror', (webError) => {
+    //   console.log(`Uncaught exception: "${webError.error()}"`)
+    // })
     // context.on('request', async (request) => {
     //   if (
     //     request.url().includes('acl.execution.metamask.io/latest/registry.json')
@@ -176,13 +176,13 @@ export class Metamask extends Emittery {
         .getByTestId('experimental-area')
         .getByRole('button', { name: 'I accept the risks', exact: true })
         .click()
+      await delay(300)
     }
-
     // import wallet
     await page.getByTestId('onboarding-terms-checkbox').click()
     await page.getByTestId('onboarding-import-wallet').click()
     await page.getByTestId('metametrics-no-thanks').click()
-
+    await delay(300)
     for (const [index, seedPart] of mnemonic.split(' ').entries()) {
       await page.getByTestId(`import-srp__srp-word-${index}`).fill(seedPart)
     }
