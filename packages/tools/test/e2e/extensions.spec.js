@@ -92,7 +92,7 @@ main2.test.describe('snaps install metamask and filsnap', () => {
       await main2.expect(page.getByText('Example Domain')).toBeVisible()
       main2.expect(result[snapId].id).toBe(snapId)
 
-      metamask.on('confirmation', async (page) => {
+      metamask.once('confirmation').then(async (page) => {
         await page.getByTestId('confirmation-submit-button').click()
       })
       const config = await metamask.invokeSnap({
