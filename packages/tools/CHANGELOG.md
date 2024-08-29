@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.8](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v1.2.7...metamask-testing-tools-v1.2.8) (2024-08-29)
+
+
+### Bug Fixes
+
+* fix user agent, logging and wait for dialog ([a286934](https://github.com/hugomrdias/metamask/commit/a2869349ff3aecc4e878ceae9df4f01827dd9272))
+* improve setup and install ([3d66b6d](https://github.com/hugomrdias/metamask/commit/3d66b6d6bc1931b173119f4a12c81b15327f5689))
+
 ## [1.2.7](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v1.2.6...metamask-testing-tools-v1.2.7) (2024-08-26)
 
 
