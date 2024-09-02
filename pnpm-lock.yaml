@@ -67,8 +67,8 @@ importers:
         specifier: ^22.5.2
         version: 22.5.2
       type-fest:
-        specifier: ^4.25.0
-        version: 4.25.0
+        specifier: ^4.26.0
+        version: 4.26.0
 
 packages:
 
@@ -1122,8 +1122,8 @@ packages:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
 
-  type-fest@4.25.0:
-    resolution: {integrity: sha512-bRkIGlXsnGBRBQRAY56UXBm//9qH4bmJfFvq83gSz41N282df+fjy8ofcEgc1sM8geNt5cl6mC2g9Fht1cs8Aw==}
+  type-fest@4.26.0:
+    resolution: {integrity: sha512-OduNjVJsFbifKb57UqZ2EMP1i4u64Xwow3NYXUtBbD4vIwJdQd4+xl8YDou1dlm4DVrtwT/7Ky8z8WyCULVfxw==}
     engines: {node: '>=16'}
 
   typedoc-plugin-missing-exports@3.0.0:
@@ -1957,7 +1957,7 @@ snapshots:
 
   dot-prop@9.0.0:
     dependencies:
-      type-fest: 4.25.0
+      type-fest: 4.26.0
 
   electron-to-chromium@1.5.13: {}
 
@@ -2363,7 +2363,7 @@ snapshots:
     dependencies:
       is-number: 7.0.0
 
-  type-fest@4.25.0: {}
+  type-fest@4.26.0: {}
 
   typedoc-plugin-missing-exports@3.0.0(typedoc@0.26.6(typescript@5.5.4)):
     dependencies:
