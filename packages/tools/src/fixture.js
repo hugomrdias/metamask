@@ -2,6 +2,7 @@ import { test as base, chromium } from '@playwright/test'
 import pWaitFor from 'p-wait-for'
 import { download } from './download.js'
 import { Metamask } from './metamask.js'
+import { redirectConsole } from './utils.js'
 
 /**
  * @typedef {import('./types.js').Extension} Extension
@@ -138,6 +139,15 @@ export function createFixture(opts = {}) {
     },
 
     metamask: async ({ context, page, baseURL }, use) => {
+      page.on('console', redirectConsole)
+      page.on('pageerror', (err) => {
+        console.log('Page Uncaught exception', err.message)
+      })
+
+      context.on('weberror', (webError) => {
+        console.log(`Context Uncaught exception: "${webError.error()}"`)
+      })
+
       if (!mm || isolated) {
         const extensions = await findExtensions(
           context,

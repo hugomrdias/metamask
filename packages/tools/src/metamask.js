@@ -96,11 +96,7 @@ export class Metamask extends Emittery {
 
     this.page.on('console', redirectConsole)
     this.page.on('pageerror', (err) => {
-      console.log('[ERROR]', err.message)
-    })
-
-    this.context.on('weberror', (webError) => {
-      console.log(`Uncaught exception: "${webError.error()}"`)
+      console.log('Wallet Page Uncaught exception', err.message)
     })
     // context.on('request', async (request) => {
     //   if (
