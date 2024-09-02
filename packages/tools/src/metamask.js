@@ -21,10 +21,11 @@ const DEFAULT_PASSWORD = process.env.METAMASK_PASSWORD || '12345678'
  * @param {import('@playwright/test').Page} page
  */
 async function snapApprove(page) {
+  // snaps connect
   await page.getByTestId('snap-privacy-warning-scroll').click()
   await page.getByRole('button', { name: 'Accept', exact: true }).click()
   await page.getByTestId('page-container-footer-next').click()
-  await delay(500)
+  // snap install
   await page.getByTestId('page-container-footer-next').click()
   const warning = page.getByRole('dialog')
 
@@ -36,7 +37,6 @@ async function snapApprove(page) {
     await warning.getByTestId('snap-install-warning-modal-confirm').click()
   }
   await page.getByTestId('page-container-footer-next').click()
-  await delay(500)
 }
 
 /**
@@ -127,6 +127,11 @@ export class Metamask extends Emittery {
           // @ts-ignore
           this.emit(eventName, page)
         } catch (error) {
+          // console.log(
+          //   '🚀 ~ file: metamask.js:131 ~ Metamask ~ this.on ~ error:',
+          //   error
+          // )
+
           this.emit('error', /** @type {Error} */ (error))
         }
       }
@@ -291,6 +296,8 @@ export class Metamask extends Emittery {
     }
 
     this.#snap = process.env.METAMASK_SNAP_ID || options.id
+
+    await delay(1000)
 
     return /** @type {import('./types.js').InstallSnapsResult} */ (result)
   }
