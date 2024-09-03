@@ -31,7 +31,7 @@ jobs:
       - run: pnpm install
       - run: pnpm -r --filter metamask-testing-tools run lint
       - run: pnpm -r --filter metamask-testing-tools exec depcheck
-      - run: pnpm -r --filter metamask-testing-tools exec playwright install chrome --with-deps
+      - run: pnpm -r --filter metamask-testing-tools exec playwright install --with-deps
       - run: pnpm -r --filter metamask-testing-tools run test
         env:
           GITHUB_TOKEN: ${{ github.token }}
