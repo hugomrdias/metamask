@@ -76,7 +76,7 @@ const main2 = createFixture({
 })
 
 main2.test.describe('snaps install metamask and filsnap', () => {
-  main2.test.only(
+  main2.test(
     'should install metamask and filsnap',
     async ({ page, metamask }) => {
       await metamask.setup()
