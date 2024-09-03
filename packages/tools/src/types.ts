@@ -17,6 +17,14 @@ export interface Extension {
   page: Page
 }
 
+export type SetupExtraExtensionsFn = (data: Extension[]) => Promise<void>
+
+export interface SetupOptions {
+  mnemonic?: string
+  password?: string
+  setupExtraExtensions?: SetupExtraExtensionsFn
+}
+
 export interface DownloadMetamaskOptions {
   repo?: `${string}/${string}`
   tag?: string

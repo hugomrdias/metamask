@@ -38,6 +38,8 @@ export async function findExtensions(ctx, extensionsNumber = 1) {
 
   /** @type {string[]} */
   const urls = []
+
+  // manifest v2
   const backgroundPages = ctx.backgroundPages()
 
   for (const page of backgroundPages) {
@@ -45,19 +47,20 @@ export async function findExtensions(ctx, extensionsNumber = 1) {
       urls.push(page.url())
     }
   }
-
-  const serviceWorkers = ctx.serviceWorkers()
-  for (const worker of serviceWorkers) {
-    if (worker.url().includes('chrome-extension')) {
-      urls.push(worker.url())
-    }
-  }
-
   ctx.on('backgroundpage', (page) => {
     if (page.url().includes('chrome-extension')) {
       urls.push(page.url())
     }
   })
+
+  // manifest v3
+  const serviceWorkers = ctx.serviceWorkers()
+
+  for (const worker of serviceWorkers) {
+    if (worker.url().includes('chrome-extension')) {
+      urls.push(worker.url())
+    }
+  }
 
   ctx.on('serviceworker', (worker) => {
     if (worker.url().includes('chrome-extension')) {
@@ -67,9 +70,9 @@ export async function findExtensions(ctx, extensionsNumber = 1) {
 
   await pWaitFor(() => urls.length === extensionsNumber)
   const extensionIds = urls.map((url) => url.split('/')[2])
-
   for (const id of extensionIds) {
     const page = await findExtensionPage(ctx, id)
+
     extensions.push({
       title: await page.title(),
       url: page.url(),
@@ -129,7 +132,6 @@ export function createFixture(opts = {}) {
           ],
         })
       }
-
       await use(ctx)
 
       if (isolated) {
@@ -139,14 +141,14 @@ export function createFixture(opts = {}) {
     },
 
     metamask: async ({ context, page, baseURL }, use) => {
-      page.on('console', redirectConsole)
-      page.on('pageerror', (err) => {
-        console.log('Page Uncaught exception', err.message)
-      })
+      // page.on('console', redirectConsole)
+      // page.on('pageerror', (err) => {
+      //   console.log('Page Uncaught exception', err.message)
+      // })
 
-      context.on('weberror', (webError) => {
-        console.log(`Context Uncaught exception: "${webError.error()}"`)
-      })
+      // context.on('weberror', (webError) => {
+      //   console.log(`Context Uncaught exception: "${webError.error()}"`)
+      // })
 
       if (!mm || isolated) {
         const extensions = await findExtensions(
@@ -165,7 +167,7 @@ export function createFixture(opts = {}) {
             )
           }
           await page.goto('/')
-          await mm.setup(mnemonic, password)
+          await mm.setup({ mnemonic, password })
           await mm.installSnap({
             page,
             id: snap.id,

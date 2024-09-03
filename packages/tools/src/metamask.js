@@ -1,5 +1,4 @@
 import delay from 'delay'
-import Emittery from 'emittery'
 import { EthereumRpcError } from 'eth-rpc-errors'
 import pRetry from 'p-retry'
 import pWaitFor from 'p-wait-for'
@@ -56,8 +55,7 @@ async function waitForDialog(page, name) {
         done = true
       }
     })
-
-    await page.reload()
+    await page.reload({ waitUntil: 'networkidle' })
     await pWaitFor(() => done)
     await delay(500)
     if (!page.url().includes(name)) {
@@ -66,15 +64,17 @@ async function waitForDialog(page, name) {
     return page
   }
 
-  return pRetry(run, { retries: 3 })
+  return pRetry(run, { retries: 3, factor: 1 })
 }
 
 /**
- * @extends Emittery<Events>
  */
-export class Metamask extends Emittery {
+export class Metamask {
   /** @type {string | undefined} */
   #snap
+
+  /** @type {import('@playwright/test').Page} */
+  page
 
   /**
    * @param {import('./types.js').Extension[]} extensions
@@ -82,22 +82,21 @@ export class Metamask extends Emittery {
    * @param {boolean} [isFlask]
    */
   constructor(extensions, context, isFlask = false) {
-    super()
-
     this.isFlask = isFlask
     this.context = context
     this.extension = extensions.find((ext) => ext.title === 'MetaMask')
     if (!this.extension) {
       throw new Error('MetaMask extension not found')
     }
-    this.page = this.extension.page
     this.extraExtensions = extensions.filter((ext) => ext.title !== 'MetaMask')
     this.#snap = undefined
+    this.page = this.extension.page
 
-    this.page.on('console', redirectConsole)
-    this.page.on('pageerror', (err) => {
-      console.log('Wallet Page Uncaught exception', err.message)
-    })
+    // this.#page.on('console', redirectConsole)
+    // this.#page.on('pageerror', (err) => {
+    //   console.log('Wallet Page Uncaught exception', err.message)
+    // })
+
     // context.on('request', async (request) => {
     //   if (
     //     request.url().includes('acl.execution.metamask.io/latest/registry.json')
@@ -119,60 +118,33 @@ export class Metamask extends Emittery {
     //     console.log('HEADERS', await response.allHeaders())
     //   }
     // })
-
-    this.on(Metamask.listenerAdded, async ({ eventName }) => {
-      if (eventName) {
-        try {
-          const page = await waitForDialog(this.page, eventName?.toString())
-          // @ts-ignore
-          this.emit(eventName, page)
-        } catch (error) {
-          console.log(
-            '🚀 ~ file: metamask.js:131 ~ Metamask ~ this.on ~ error:',
-            error
-          )
-
-          this.emit('error', /** @type {Error} */ (error))
-        }
-      }
-    })
   }
 
   /**
    * Wait for a dialog
    *
-   * @param {(page: import('@playwright/test').Page) => Promise<void>} fn - Function to run after confirmation
+   * @param {string} name
    */
-  waitForDialog(fn) {
-    const page = this.page
-    async function run() {
-      await page.reload()
-      if (fn) {
-        await fn(page)
-      }
-    }
-
-    return pRetry(run, { retries: 3 })
-  }
-
-  /**
-   * @param {(arg0: import("./types.js").Extension[]) => Promise<void>} fn
-   */
-  setupExtraExtensions(fn) {
-    return fn(this.extraExtensions)
+  waitForDialog(name) {
+    return waitForDialog(this.page, name)
   }
 
   /**
    * Setup Metamask with a mnemonic and password
    *
-   * @param {string} mnemonic
-   * @param {string} password
+   * @param {import('./types.js').SetupOptions} options
    */
-  async setup(mnemonic = DEFAULT_MNEMONIC, password = DEFAULT_PASSWORD) {
+  async setup(options = {}) {
+    const { mnemonic = DEFAULT_MNEMONIC, password = DEFAULT_PASSWORD } = options
+
     const page = this.page
 
-    // flask warning
+    if (options.setupExtraExtensions) {
+      await options.setupExtraExtensions(this.extraExtensions)
+    }
+
     if (this.isFlask) {
+      // flask warning
       await page
         .getByTestId('experimental-area')
         .getByRole('button', { name: 'I accept the risks', exact: true })
@@ -202,7 +174,7 @@ export class Metamask extends Emittery {
   }
 
   teardown() {
-    this.clearListeners()
+    // todo
   }
 
   #ensureSnap() {
@@ -254,7 +226,6 @@ export class Metamask extends Emittery {
 
         try {
           const api = await getRequestProvider()
-
           const result = await api.request({
             method: 'wallet_requestSnaps',
             params: {
@@ -277,17 +248,15 @@ export class Metamask extends Emittery {
 
     // Snap connect popup steps
     try {
-      await waitForDialog(this.page, 'snaps-connect')
-      await snapApprove(this.page)
+      const page = await this.waitForDialog('snaps-connect')
+      await snapApprove(page)
     } catch {
       // ignore
     }
 
     const result = await install
-
-    if (isMetamaskRpcError(result)) {
+    if (isMetamaskRpcError(result))
       throw new EthereumRpcError(result.code, result.message, result.data)
-    }
 
     if (!result) {
       throw new Error(

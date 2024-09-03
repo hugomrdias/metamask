@@ -11,7 +11,7 @@ const flask = createFixture({
 })
 
 /**
- * @param {import('../../src/types.js').Extension[]} data
+ * @type {import('../../src/types.js').SetupExtraExtensionsFn}
  */
 async function setupExtraExtensions(data) {
   for (const extension of data) {
@@ -30,8 +30,7 @@ flask.test.describe('snaps rainbow flask metamask', () => {
   flask.test(
     'should install metamask when rainbow is present',
     async ({ page, metamask }) => {
-      await metamask.setup()
-      await metamask.setupExtraExtensions(setupExtraExtensions)
+      await metamask.setup({ setupExtraExtensions })
 
       const snapId = 'npm:@metamask/test-snap-dialog'
       const result = await metamask.installSnap({
@@ -55,8 +54,7 @@ main.test.describe('snaps rainbow main metamask', () => {
   main.test(
     'should install metamask when rainbow is present',
     async ({ page, metamask }) => {
-      await metamask.setup()
-      await metamask.setupExtraExtensions(setupExtraExtensions)
+      await metamask.setup({ setupExtraExtensions })
 
       const snapId = 'npm:filsnap'
       const result = await metamask.installSnap({
@@ -92,9 +90,10 @@ main2.test.describe('snaps install metamask and filsnap', () => {
       await main2.expect(page.getByText('Example Domain')).toBeVisible()
       main2.expect(result[snapId].id).toBe(snapId)
 
-      metamask.once('confirmation').then(async (page) => {
+      metamask.waitForDialog('confirmation').then(async (page) => {
         await page.getByTestId('confirmation-submit-button').click()
       })
+
       const config = await metamask.invokeSnap({
         request: {
           method: 'fil_configure',
