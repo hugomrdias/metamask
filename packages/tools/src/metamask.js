@@ -35,8 +35,8 @@ async function snapApprove(page) {
     }
     await warning.getByTestId('snap-install-warning-modal-confirm').click()
   }
-  await page.getByTestId('page-container-footer-next').click()
   await delay(1000)
+  await page.getByTestId('page-container-footer-next').click()
 }
 
 /**
