@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.0.0...metamask-testing-tools-v2.0.1) (2024-09-03)
+
+
+### Bug Fixes
+
+* tweak delay in snap approve ([9ef89a4](https://github.com/hugomrdias/metamask/commit/9ef89a43c7b6c8247ca1c2666e95335dbd544a79))
+
 ## [2.0.0](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v1.2.8...metamask-testing-tools-v2.0.0) (2024-09-03)
 
 
