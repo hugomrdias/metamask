@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.0.0](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v1.2.8...metamask-testing-tools-v2.0.0) (2024-09-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove events and extensions extra method
+
+### Features
+
+* remove events and extensions extra method ([07ba32b](https://github.com/hugomrdias/metamask/commit/07ba32bbead3303504855516452ae113c18cd1d9))
+
+
+### Bug Fixes
+
+* mm needs to await a bit after snap install ([5208169](https://github.com/hugomrdias/metamask/commit/52081697ac97b167457db36e1024759cba75b6ae))
+* tweak mm setup ([d20ec12](https://github.com/hugomrdias/metamask/commit/d20ec12b6eefe7ef1c1473bfd0c283bff63126ac))
+
 ## [1.2.8](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v1.2.7...metamask-testing-tools-v1.2.8) (2024-08-29)
 
 
