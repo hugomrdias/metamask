@@ -2,7 +2,6 @@ import { test as base, chromium } from '@playwright/test'
 import pWaitFor from 'p-wait-for'
 import { download } from './download.js'
 import { Metamask } from './metamask.js'
-import { redirectConsole } from './utils.js'
 
 /**
  * @typedef {import('./types.js').Extension} Extension
