@@ -3,11 +3,7 @@ import { EthereumRpcError } from 'eth-rpc-errors'
 import pRetry from 'p-retry'
 import pWaitFor from 'p-wait-for'
 
-import {
-  ensurePageLoadedURL,
-  isMetamaskRpcError,
-  redirectConsole,
-} from './utils.js'
+import { ensurePageLoadedURL, isMetamaskRpcError } from './utils.js'
 
 const DEFAULT_MNEMONIC =
   process.env.METAMASK_MNEMONIC ||
