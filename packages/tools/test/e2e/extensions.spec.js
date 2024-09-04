@@ -86,6 +86,7 @@ main2.test.describe('snaps install metamask and filsnap', () => {
         id: snapId,
         page,
       })
+      await metamask.page.getByTestId('confirmation-submit-button').click()
 
       await main2.expect(page.getByText('Example Domain')).toBeVisible()
       main2.expect(result[snapId].id).toBe(snapId)
