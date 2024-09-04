@@ -35,8 +35,8 @@ jobs:
         with:
           name: playwright-report
           path: |
-              packages/testing/playwright-report/
-              packages/testing/test-results/*/trace.zip
+              packages/tools/playwright-report/
+              packages/tools/test-results/*/trace.zip
           retention-days: 30
       - run: POSTMARK_SERVER_TOKEN=${{ secrets.POSTMARK_TOKEN }} npx postmark-cli email raw -f "CI Notifications <ci@decentralised.dev>" -t hugomrdias@gmail.com --subject "[${{github.repository}}] Workflow Failed" --html "Workflow <b>${{ github.workflow }}</b> Job <b>${{ github.job}}</b> failed! <br/> ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
         if: failure() && github.event_name == 'schedule' 
