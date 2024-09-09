@@ -59,7 +59,7 @@
 	"dependencies": {
 		"@metamask/providers": "^17.1.2",
 		"@metamask/snaps-utils": "^8.0.1",
-		"@playwright/test": "^1.46.1",
+		"@playwright/test": "^1.47.0",
 		"conf": "^13.0.1",
 		"delay": "^6.0.0",
 		"eth-rpc-errors": "^4.0.3",
