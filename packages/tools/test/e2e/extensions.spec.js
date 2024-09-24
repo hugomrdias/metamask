@@ -58,7 +58,6 @@ main.test.describe('snaps rainbow main metamask', () => {
 
       const snapId = 'npm:filsnap'
       const result = await metamask.installSnap({
-        version: '1.0.2',
         id: snapId,
         page,
       })
