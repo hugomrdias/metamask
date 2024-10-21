@@ -36,8 +36,8 @@ importers:
         specifier: ^17.2.0
         version: 17.2.0(webextension-polyfill@0.12.0)
       '@metamask/snaps-utils':
-        specifier: ^8.1.1
-        version: 8.1.1(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)(webextension-polyfill@0.12.0)
+        specifier: ^8.4.1
+        version: 8.4.1(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)(webextension-polyfill@0.12.0)
       '@playwright/test':
         specifier: ^1.47.2
         version: 1.47.2
@@ -321,12 +321,12 @@ packages:
     resolution: {integrity: sha512-MnG1BBJk4UK9iJArK+h/iz8wlt+xjsvgnj0k39p5658hWZu6cuumHoV1EIupCwsCv7XXOBLc8iAgjvITXKC1FQ==}
     engines: {node: ^18.16 || >=20}
 
-  '@metamask/snaps-sdk@6.5.1':
-    resolution: {integrity: sha512-uQEZZNjKwHZZfu9StwlmvTFle5MqiheO6AQctVhpYGJ1kjJ7Qwa+vJhMd0Ox1QI9C3qaUCqxOCDV0mpd1jPRKg==}
+  '@metamask/snaps-sdk@6.9.0':
+    resolution: {integrity: sha512-wPiZNvmkUXTGJ5yLIN9s+KZuB9zx4bz5LurUpufQ8geaMenQ2ZSyg8vqx7hj25q3yk3W2KncV3wnBmtixjucRA==}
     engines: {node: ^18.16 || >=20}
 
-  '@metamask/snaps-utils@8.1.1':
-    resolution: {integrity: sha512-oKwm+0r2WIFinMo07RYAQVb2Khr/T+c8+V0m4iT9WfJHVNG8mHUMonH3ae2jksZ0/327na0mYVj804PLQ88SNA==}
+  '@metamask/snaps-utils@8.4.1':
+    resolution: {integrity: sha512-SbnwZ8suVXX/Zx8kVoE8QETY6DCHqBPjf7uyU2wxHR3puR0SVY7/UL9DG2U1UN3vQZfs9Ja0A87k1M+QynDUAw==}
     engines: {node: ^18.16 || >=20}
 
   '@metamask/superstruct@3.1.0':
@@ -558,7 +558,7 @@ packages:
     resolution: {integrity: sha512-Fu4hJdvzeylCfQPp9SGWidpzrMs7tTrlu6Vb8XGaRGck8QSNZJJp538Wrb60Lax4fPwR64ViY468OIUTbRlGZg==}
 
   concat-map@0.0.1:
-    resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=}
+    resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
 
   conf@13.0.1:
     resolution: {integrity: sha512-l9Uwc9eOnz39oADzGO2cSBDi7siv8lwO+31ocQ2nOJijnDiW3pxqm9VV10DPYUO28wW83DjABoUqY1nfHRR2hQ==}
@@ -799,7 +799,7 @@ packages:
     engines: {node: '>=0.10.0'}
 
   is-hex-prefixed@1.0.0:
-    resolution: {integrity: sha1-fY035q135dEnFIkTxXPggtd39VQ=}
+    resolution: {integrity: sha512-WvtOiug1VFrE9v1Cydwm+FnXd3+w9GaeVUss5W4v/SLy3UW00vP+6iNF2SdnfiBoLy4bTqVdkftNGTUeOFVsbA==}
     engines: {node: '>=6.5.0', npm: '>=3'}
 
   is-network-error@1.1.0:
@@ -1120,7 +1120,7 @@ packages:
     engines: {node: '>=8'}
 
   strip-hex-prefix@1.0.0:
-    resolution: {integrity: sha1-DF8VX+8RUTczd96du1iNoFUA428=}
+    resolution: {integrity: sha512-q8d4ue7JGEiVcypji1bALTos+0pWtyGlivAWyPuTkHzuTCJqrK9sWxYQZUq6Nq3cuyv3bm734IhHvHtGGURU6A==}
     engines: {node: '>=6.5.0', npm: '>=3'}
 
   strnum@1.0.5:
@@ -1620,7 +1620,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@metamask/snaps-sdk@6.5.1(webextension-polyfill@0.12.0)':
+  '@metamask/snaps-sdk@6.9.0(webextension-polyfill@0.12.0)':
     dependencies:
       '@metamask/key-tree': 9.1.2
       '@metamask/providers': 17.2.0(webextension-polyfill@0.12.0)
@@ -1631,7 +1631,7 @@ snapshots:
       - supports-color
       - webextension-polyfill
 
-  '@metamask/snaps-utils@8.1.1(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)(webextension-polyfill@0.12.0)':
+  '@metamask/snaps-utils@8.4.1(@babel/runtime@7.25.6)(@metamask/approval-controller@7.0.4)(webextension-polyfill@0.12.0)':
     dependencies:
       '@babel/core': 7.25.2
       '@babel/types': 7.25.6
@@ -1641,7 +1641,7 @@ snapshots:
       '@metamask/rpc-errors': 6.3.1
       '@metamask/slip44': 4.0.0
       '@metamask/snaps-registry': 3.2.1
-      '@metamask/snaps-sdk': 6.5.1(webextension-polyfill@0.12.0)
+      '@metamask/snaps-sdk': 6.9.0(webextension-polyfill@0.12.0)
       '@metamask/superstruct': 3.1.0
       '@metamask/utils': 9.2.1
       '@noble/hashes': 1.5.0
