@@ -1,7 +1,5 @@
-import delay from 'delay'
 import { EthereumRpcError } from 'eth-rpc-errors'
 import pRetry from 'p-retry'
-import pWaitFor from 'p-wait-for'
 
 import { ensurePageLoadedURL, isMetamaskRpcError } from './utils.js'
 
@@ -20,11 +18,18 @@ const DEFAULT_PASSWORD = process.env.METAMASK_PASSWORD || '12345678'
  * @param {import('@playwright/test').Page} page
  */
 async function snapApprove(page) {
+  if (page.url().includes('snap-update')) {
+    await page.getByTestId('page-container-footer-next').click()
+    await page.getByTestId('page-container-footer-next').click()
+    return
+  }
   // snaps connect
   await page.getByTestId('snap-privacy-warning-scroll').click()
   await page.getByRole('button', { name: 'Accept', exact: true }).click()
   await page.getByTestId('page-container-footer-next').click()
+
   // snap install
+  await page.waitForURL('**/snap-install')
   await page.getByTestId('page-container-footer-next').click()
   const warning = page.getByRole('dialog')
 
@@ -35,33 +40,29 @@ async function snapApprove(page) {
     }
     await warning.getByTestId('snap-install-warning-modal-confirm').click()
   }
-  await delay(1000)
+  await page.waitForURL('**/snap-install-result')
   await page.getByTestId('page-container-footer-next').click()
 }
 
 /**
  * Wait for a metamask notification
+ *
+ *
  * @param {import('@playwright/test').Page} page - Metamask page to wait for notification
- * @param {string} name
+ * @param {string | RegExp | ((url: URL) => boolean)} name - A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation. Note that if the parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to the string.
+ * @param {string} extension - extension homepage
  */
-async function waitForDialog(page, name) {
+function waitForDialog(page, name, extension) {
   async function run() {
-    let done = false
-    page.on('request', (request) => {
-      if (request.url().includes('_locales/en/messages.json')) {
-        done = true
-      }
-    })
-    await page.reload({ waitUntil: 'networkidle' })
-    await pWaitFor(() => done)
-    await delay(500)
-    if (!page.url().includes(name)) {
-      throw new Error(`Could not find dialog "${name}" from page ${page.url()}`)
-    }
+    await page.goto(extension)
+    await page.waitForURL(name, { timeout: 1000 })
     return page
   }
 
-  return pRetry(run, { retries: 3, factor: 1 })
+  return pRetry(run, {
+    retries: 3,
+    factor: 1,
+  })
 }
 
 /**
@@ -82,6 +83,7 @@ export class Metamask {
     this.isFlask = isFlask
     this.context = context
     this.extension = extensions.find((ext) => ext.title === 'MetaMask')
+
     if (!this.extension) {
       throw new Error('MetaMask extension not found')
     }
@@ -120,10 +122,26 @@ export class Metamask {
   /**
    * Wait for a dialog
    *
-   * @param {string} name
+   * @param {string | RegExp | ((url: URL) => boolean)} name - A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation. Note that if the parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to the string.
    */
   waitForDialog(name) {
-    return waitForDialog(this.page, name)
+    return waitForDialog(this.page, name, this.extension.url)
+  }
+
+  /**
+   * Wait for metamask confirmation dialog to appear and confirm or cancel
+   *
+   * @param {boolean} [confirm=true]
+   */
+  async waitForConfirmation(confirm = true) {
+    const page = await this.waitForDialog((url) => {
+      return url.hash.includes('confirmation')
+    })
+    if (confirm) {
+      await page.getByTestId('confirmation-submit-button').click()
+    } else {
+      await page.getByTestId('confirmation-cancel-button').click()
+    }
   }
 
   /**
@@ -146,26 +164,30 @@ export class Metamask {
         .getByTestId('experimental-area')
         .getByRole('button', { name: 'I accept the risks', exact: true })
         .click()
-      await delay(300)
     }
     // import wallet
+    await page.waitForURL('**/welcome')
     await page.getByTestId('onboarding-terms-checkbox').click()
     await page.getByTestId('onboarding-import-wallet').click()
     await page.getByTestId('metametrics-no-thanks').click()
-    await delay(300)
+
+    await page.waitForURL('**/import-with-recovery-phrase')
     for (const [index, seedPart] of mnemonic.split(' ').entries()) {
       await page.getByTestId(`import-srp__srp-word-${index}`).fill(seedPart)
     }
     await page.getByTestId('import-srp-confirm').click()
+
+    await page.waitForURL('**/create-password')
     await page.getByTestId('create-password-new').fill(password)
     await page.getByTestId('create-password-confirm').fill(password)
     await page.getByTestId('create-password-terms').click()
     await page.getByTestId('create-password-import').click()
-    await delay(1000)
+
+    await page.waitForURL('**/completion')
     await page.getByTestId('onboarding-complete-done').click()
-    await delay(300)
+
+    await page.waitForURL('**/pin-extension')
     await page.getByTestId('pin-extension-next').click()
-    await delay(300)
     await page.getByTestId('pin-extension-done').click()
     return this
   }
@@ -191,6 +213,7 @@ export class Metamask {
     if (!options.id && !process.env.METAMASK_SNAP_ID) {
       throw new Error('Snap ID is required.')
     }
+
     const install = options.page.evaluate(
       async ({ snapId, version }) => {
         const getRequestProvider = () => {
@@ -245,13 +268,14 @@ export class Metamask {
 
     // Snap connect popup steps
     try {
-      const page = await this.waitForDialog('snaps-connect')
+      const page = await this.waitForDialog('**/{snaps-connect,snap-update}')
       await snapApprove(page)
     } catch {
       // ignore
     }
 
     const result = await install
+
     if (isMetamaskRpcError(result))
       throw new EthereumRpcError(result.code, result.message, result.data)
 
@@ -262,8 +286,6 @@ export class Metamask {
     }
 
     this.#snap = process.env.METAMASK_SNAP_ID || options.id
-
-    await delay(1000)
 
     return /** @type {import('./types.js').InstallSnapsResult} */ (result)
   }

@@ -67,4 +67,24 @@ test.describe('snaps', () => {
 
     expect(result[SNAP_ID].version).toBe('5.4.0')
   })
+
+  test('should install filsnap and update with another install', async ({
+    page,
+    metamask,
+  }) => {
+    await metamask.setup()
+    await metamask.installSnap({
+      id: 'npm:filsnap',
+      version: '1.0.3',
+      page,
+    })
+
+    const update = await metamask.installSnap({
+      id: 'npm:filsnap',
+      version: '1.1.0',
+      page,
+    })
+
+    expect(update['npm:filsnap'].version).toBe('1.1.0')
+  })
 })
