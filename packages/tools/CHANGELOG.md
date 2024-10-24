@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.0.1...metamask-testing-tools-v2.1.0) (2024-10-24)
+
+
+### Features
+
+* removed all the delays and add waitForConfirmation with auto confirm ([f5cd674](https://github.com/hugomrdias/metamask/commit/f5cd674ab149737c377398f9bdfdaf7d2918d457))
+
 ## [2.0.1](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.0.0...metamask-testing-tools-v2.0.1) (2024-09-03)
 
 
