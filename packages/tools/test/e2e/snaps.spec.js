@@ -4,6 +4,7 @@ const { test, expect } = createFixture({
   downloadOptions: {
     flask: true,
   },
+  cacheUserDir: true,
 })
 const SNAP_ID = 'npm:@metamask/test-snap-bip32'
 
@@ -61,11 +62,11 @@ test.describe('snaps', () => {
     await metamask.setup()
     const result = await metamask.installSnap({
       id: SNAP_ID,
-      version: '5.4.0',
+      version: '>5.4.0',
       page,
     })
 
-    expect(result[SNAP_ID].version).toBe('5.4.0')
+    expect(result[SNAP_ID].version).toBe('5.5.0')
   })
 
   test('should install filsnap and update with another install', async ({

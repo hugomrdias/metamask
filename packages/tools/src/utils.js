@@ -1,3 +1,4 @@
+import { EthereumRpcError } from 'eth-rpc-errors'
 import { isValidCode } from 'eth-rpc-errors/dist/utils.js'
 
 /**
@@ -97,4 +98,59 @@ export async function redirectConsole(msg) {
   } else if (text) {
     console.log(`🌐 ${text}`)
   }
+}
+
+/**
+ * Get installed snaps
+ *
+ * @param {import('@playwright/test').Page} page
+ */
+export async function getSnaps(page) {
+  const result = await page.evaluate(async () => {
+    const getRequestProvider = () => {
+      return new Promise((resolve) => {
+        // Define the event handler directly. This assumes the window is already loaded.
+        // @ts-ignore
+        const handler = (event) => {
+          const { rdns } = event.detail.info
+          switch (rdns) {
+            case 'io.metamask':
+            case 'io.metamask.flask':
+            case 'io.metamask.mmi': {
+              window.removeEventListener('eip6963:announceProvider', handler)
+              resolve(event.detail.provider)
+              break
+            }
+            default: {
+              break
+            }
+          }
+        }
+
+        window.addEventListener('eip6963:announceProvider', handler)
+        window.dispatchEvent(new Event('eip6963:requestProvider'))
+      })
+    }
+
+    try {
+      const api = await getRequestProvider()
+      const result = await api.request({
+        method: 'wallet_getSnaps',
+      })
+
+      return result
+    } catch (error) {
+      return /** @type {error} */ (error)
+    }
+  })
+  if (isMetamaskRpcError(result))
+    throw new EthereumRpcError(result.code, result.message, result.data)
+
+  if (!result) {
+    throw new Error(
+      `Unknown RPC error: "wallet_requestSnaps" didnt return a response`
+    )
+  }
+
+  return /** @type {import('./types.js').InstallSnapsResult} */ (result)
 }

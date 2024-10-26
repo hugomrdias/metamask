@@ -1,7 +1,7 @@
 import { EthereumRpcError } from 'eth-rpc-errors'
 import pRetry from 'p-retry'
 
-import { ensurePageLoadedURL, isMetamaskRpcError } from './utils.js'
+import { ensurePageLoadedURL, getSnaps, isMetamaskRpcError } from './utils.js'
 
 const DEFAULT_MNEMONIC =
   process.env.METAMASK_MNEMONIC ||
@@ -24,8 +24,11 @@ async function snapApprove(page) {
     return
   }
   // snaps connect
-  await page.getByTestId('snap-privacy-warning-scroll').click()
-  await page.getByRole('button', { name: 'Accept', exact: true }).click()
+  const connect = page.getByTestId('snap-privacy-warning-scroll')
+  if (await connect.isVisible()) {
+    await page.getByTestId('snap-privacy-warning-scroll').click()
+    await page.getByRole('button', { name: 'Accept', exact: true }).click()
+  }
   await page.getByTestId('page-container-footer-next').click()
 
   // snap install
@@ -60,7 +63,7 @@ function waitForDialog(page, name, extension) {
   }
 
   return pRetry(run, {
-    retries: 3,
+    retries: 1,
     factor: 1,
   })
 }
@@ -91,8 +94,8 @@ export class Metamask {
     this.#snap = undefined
     this.page = this.extension.page
 
-    // this.#page.on('console', redirectConsole)
-    // this.#page.on('pageerror', (err) => {
+    // this.page.on('console', redirectConsole)
+    // this.page.on('pageerror', (err) => {
     //   console.log('Wallet Page Uncaught exception', err.message)
     // })
 
@@ -153,13 +156,42 @@ export class Metamask {
     const { mnemonic = DEFAULT_MNEMONIC, password = DEFAULT_PASSWORD } = options
 
     const page = this.page
+    const url = this.page.url()
 
+    // wait for navigation if needed
+    if (
+      !url.includes('unlock') &&
+      !url.includes('onboarding/experimental-area') &&
+      !url.includes('onboarding/welcome')
+    ) {
+      await this.page.waitForEvent('framenavigated')
+    }
+
+    // setup extra extensions
     if (options.setupExtraExtensions) {
       await options.setupExtraExtensions(this.extraExtensions)
     }
 
-    if (this.isFlask) {
-      // flask warning
+    // adjust page viewport
+    const client = await page.context().newCDPSession(page)
+    await client.send('Emulation.setDeviceMetricsOverride', {
+      width: 0,
+      height: 0,
+      deviceScaleFactor: 0,
+      mobile: false,
+    })
+
+    // unlock flow
+    if (this.page.url().includes('unlock')) {
+      await page.getByTestId('unlock-password').fill(password)
+      await page.getByTestId('unlock-submit').click()
+
+      return this
+    }
+
+    // new setup flow
+    // flask warning
+    if (this.page.url().includes('onboarding/experimental-area')) {
       await page
         .getByTestId('experimental-area')
         .getByRole('button', { name: 'I accept the risks', exact: true })
@@ -189,6 +221,7 @@ export class Metamask {
     await page.waitForURL('**/pin-extension')
     await page.getByTestId('pin-extension-next').click()
     await page.getByTestId('pin-extension-done').click()
+
     return this
   }
 
@@ -212,6 +245,20 @@ export class Metamask {
   async installSnap(options) {
     if (!options.id && !process.env.METAMASK_SNAP_ID) {
       throw new Error('Snap ID is required.')
+    }
+
+    // wait for metamask to be available
+    await options.page.waitForFunction(() => {
+      return 'ethereum' in window && window.ethereum.isMetaMask
+    })
+
+    const snapId = process.env.METAMASK_SNAP_ID || options.id
+    const snapVersion = process.env.METAMASK_SNAP_VERSION || options.version
+    const snaps = await getSnaps(options.page)
+
+    // skip install if already installed
+    if (snaps[snapId] && snaps[snapId].version === snapVersion) {
+      return snaps
     }
 
     const install = options.page.evaluate(
@@ -261,8 +308,8 @@ export class Metamask {
         }
       },
       {
-        snapId: process.env.METAMASK_SNAP_ID || options.id,
-        version: process.env.METAMASK_SNAP_VERSION || options.version,
+        snapId,
+        version: snapVersion,
       }
     )
 
@@ -285,7 +332,7 @@ export class Metamask {
       )
     }
 
-    this.#snap = process.env.METAMASK_SNAP_ID || options.id
+    this.#snap = snapId
 
     return /** @type {import('./types.js').InstallSnapsResult} */ (result)
   }
@@ -344,6 +391,28 @@ export class Metamask {
         opts.page
       )
     )
+  }
+
+  /**
+   * Go to the snaps homepage
+   *
+   * @param {string} snapId - Snap ID to select snap. ie. 'npm:filsnap', 'local:http://localhost:8080'
+   */
+  async goToHomepage(snapId) {
+    await this.page.getByTestId('account-options-menu-button').click()
+    await this.page
+      .getByTestId('global-menu')
+      .getByRole('button')
+      .filter({ hasText: 'Snaps' })
+      .click()
+
+    await this.page.getByTestId(snapId).click()
+    return this.page
+  }
+
+  async goBack() {
+    await this.page.getByLabel('Back').click()
+    return this.page
   }
 
   /**

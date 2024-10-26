@@ -76,6 +76,13 @@ export interface FixtureOptions {
    * Password to use for metamask instance. Defaults: process.env.PASSWORD or '12345678'
    */
   password?: string
+
+  /**
+   * Cache and reuse user directory. Defaults: false
+   * This options may cause unexpected behaviors and is not recommended
+   * You will loose isolation between tests and it wouldn't work with multiple extensions
+   */
+  cacheUserDir?: boolean
 }
 
 export type InstallSnapsResult = Record<string, TruncatedSnap>

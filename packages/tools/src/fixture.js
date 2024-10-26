@@ -1,7 +1,13 @@
+import { createHash } from 'crypto'
+import { existsSync, mkdirSync } from 'fs'
+import { fileURLToPath } from 'node:url'
+import path from 'path'
 import { test as base, chromium } from '@playwright/test'
 import pWaitFor from 'p-wait-for'
 import { download } from './download.js'
 import { Metamask } from './metamask.js'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /**
  * @typedef {import('./types.js').Extension} Extension
@@ -23,15 +29,15 @@ export async function findExtensionPage(ctx, extensionId) {
       },
     })
   }
-  await page.waitForLoadState('networkidle')
   return page
 }
 
 /**
  * @param {import('@playwright/test').BrowserContext} ctx
- * @param {number} [extensionsNumber]
+ * @param {number} extensionsNumber
+ * @param {boolean} cacheUserDir
  */
-export async function findExtensions(ctx, extensionsNumber = 1) {
+export async function findExtensions(ctx, extensionsNumber, cacheUserDir) {
   /** @type {import('./types.js').Extension[]} */
   const extensions = []
 
@@ -69,8 +75,16 @@ export async function findExtensions(ctx, extensionsNumber = 1) {
 
   await pWaitFor(() => urls.length === extensionsNumber)
   const extensionIds = urls.map((url) => url.split('/')[2])
+
   for (const id of extensionIds) {
-    const page = await findExtensionPage(ctx, id)
+    let page
+    if (extensionIds.length > 1 || !cacheUserDir) {
+      page = await findExtensionPage(ctx, id)
+    } else {
+      const url = `chrome-extension://${id}/home.html`
+      page = await ctx.newPage()
+      await page.goto(url)
+    }
 
     extensions.push({
       title: await page.title(),
@@ -95,6 +109,7 @@ export function createFixture(opts = {}) {
     snap,
     mnemonic,
     password,
+    cacheUserDir = false,
   } = opts
 
   /** @type {import('@playwright/test').BrowserContext | undefined} */
@@ -104,8 +119,23 @@ export function createFixture(opts = {}) {
   let mm
 
   const test = /** @type {import('./types').TextExtend} */ (base.extend)({
-    context: async ({ headless }, use) => {
+    context: async ({ headless, browser }, use) => {
       const extensionPaths = [await download(downloadOptions)]
+      let dirPath = ''
+
+      if (cacheUserDir) {
+        const hash = createHash('sha256')
+        hash.update(
+          `${mnemonic}-${password}-${browser.browserType().name}-${browser.version}-${extensionPaths.join('-')}-${test.info().workerIndex}`
+        )
+        const digest = hash.digest('hex')
+        dirPath = path.join(__dirname, '../.tmp', digest)
+        if (!existsSync(dirPath)) {
+          mkdirSync(dirPath, {
+            recursive: true,
+          })
+        }
+      }
 
       // https://playwright.dev/docs/service-workers-experimental
       // @ts-ignore
@@ -113,7 +143,7 @@ export function createFixture(opts = {}) {
 
       if (!ctx || isolated) {
         // Launch context with extension
-        ctx = await chromium.launchPersistentContext('', {
+        ctx = await chromium.launchPersistentContext(dirPath, {
           headless,
           args: [
             ...(headless ? ['--headless=new'] : []),
@@ -150,11 +180,17 @@ export function createFixture(opts = {}) {
       // })
 
       if (!mm || isolated) {
+        if (downloadOptions.extensionsIds?.length && cacheUserDir) {
+          throw new Error(
+            'Cannot use extensionsIds and cacheUserDir at the same time'
+          )
+        }
         const extensions = await findExtensions(
           context,
           downloadOptions.extensionsIds
             ? downloadOptions.extensionsIds.length + 1
-            : 1
+            : 1,
+          cacheUserDir
         )
 
         mm = new Metamask(extensions, context, opts.downloadOptions?.flask)

@@ -8,6 +8,7 @@ const flask = createFixture({
     flask: true,
     extensionsIds: [rainbowExtensionId],
   },
+  // cacheUserDir: true,
 })
 
 /**
