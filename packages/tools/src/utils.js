@@ -73,8 +73,9 @@ function extractErrorMessage(arg) {
 
 /**
  * @param {import('@playwright/test').ConsoleMessage} msg
+ * @param {string} prefix
  */
-export async function redirectConsole(msg) {
+export async function redirectConsole(msg, prefix = 'Metamask') {
   const type = msg.type()
   const consoleFn = messageTypeToConsoleFn[type]
 
@@ -94,9 +95,10 @@ export async function redirectConsole(msg) {
   }
 
   if (msgArgs && msgArgs.length > 0) {
-    consoleFn.apply(console, msgArgs)
+    consoleFn.apply(console, [`[${prefix}]`, ...msgArgs])
   } else if (text) {
-    console.log(`🌐 ${text}`)
+    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+    console.log(`[${prefix}] ${text}`)
   }
 }
 

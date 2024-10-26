@@ -83,6 +83,7 @@ export interface FixtureOptions {
    * You will loose isolation between tests and it wouldn't work with multiple extensions
    */
   cacheUserDir?: boolean
+  debug?: boolean
 }
 
 export type InstallSnapsResult = Record<string, TruncatedSnap>

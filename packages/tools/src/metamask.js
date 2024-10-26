@@ -1,7 +1,12 @@
 import { EthereumRpcError } from 'eth-rpc-errors'
 import pRetry from 'p-retry'
 
-import { ensurePageLoadedURL, getSnaps, isMetamaskRpcError } from './utils.js'
+import {
+  ensurePageLoadedURL,
+  getSnaps,
+  isMetamaskRpcError,
+  redirectConsole,
+} from './utils.js'
 
 const DEFAULT_MNEMONIC =
   process.env.METAMASK_MNEMONIC ||
@@ -81,8 +86,9 @@ export class Metamask {
    * @param {import('./types.js').Extension[]} extensions
    * @param {import("@playwright/test").BrowserContext} context
    * @param {boolean} [isFlask]
+   * @param {boolean} [debug]
    */
-  constructor(extensions, context, isFlask = false) {
+  constructor(extensions, context, isFlask = false, debug = false) {
     this.isFlask = isFlask
     this.context = context
     this.extension = extensions.find((ext) => ext.title === 'MetaMask')
@@ -94,10 +100,13 @@ export class Metamask {
     this.#snap = undefined
     this.page = this.extension.page
 
-    // this.page.on('console', redirectConsole)
-    // this.page.on('pageerror', (err) => {
-    //   console.log('Wallet Page Uncaught exception', err.message)
-    // })
+    if (debug) {
+      this.page.on('console', redirectConsole)
+      this.page.on('pageerror', (err) => {
+        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+        console.log('[Metamask] Uncaught exception', err.message)
+      })
+    }
 
     // context.on('request', async (request) => {
     //   if (
@@ -191,14 +200,14 @@ export class Metamask {
 
     // new setup flow
     // flask warning
-    if (this.page.url().includes('onboarding/experimental-area')) {
+    if (this.isFlask) {
       await page
         .getByTestId('experimental-area')
         .getByRole('button', { name: 'I accept the risks', exact: true })
         .click()
     }
     // import wallet
-    await page.waitForURL('**/welcome')
+    // await page.waitForURL('**/welcome')
     await page.getByTestId('onboarding-terms-checkbox').click()
     await page.getByTestId('onboarding-import-wallet').click()
     await page.getByTestId('metametrics-no-thanks').click()

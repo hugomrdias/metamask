@@ -6,6 +6,7 @@ import { test as base, chromium } from '@playwright/test'
 import pWaitFor from 'p-wait-for'
 import { download } from './download.js'
 import { Metamask } from './metamask.js'
+import { redirectConsole } from './utils.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -110,6 +111,7 @@ export function createFixture(opts = {}) {
     mnemonic,
     password,
     cacheUserDir = false,
+    debug = false,
   } = opts
 
   /** @type {import('@playwright/test').BrowserContext | undefined} */
@@ -170,14 +172,17 @@ export function createFixture(opts = {}) {
     },
 
     metamask: async ({ context, page, baseURL }, use) => {
-      // page.on('console', redirectConsole)
-      // page.on('pageerror', (err) => {
-      //   console.log('Page Uncaught exception', err.message)
-      // })
-
-      // context.on('weberror', (webError) => {
-      //   console.log(`Context Uncaught exception: "${webError.error()}"`)
-      // })
+      if (debug) {
+        page.on('console', (msg) => redirectConsole(msg, 'Page'))
+        page.on('pageerror', (err) => {
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+          console.log('[Page] Uncaught exception', err.message)
+        })
+        context.on('weberror', (webError) => {
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+          console.log(`[Context] Uncaught exception: "${webError.error()}"`)
+        })
+      }
 
       if (!mm || isolated) {
         if (downloadOptions.extensionsIds?.length && cacheUserDir) {
@@ -193,7 +198,12 @@ export function createFixture(opts = {}) {
           cacheUserDir
         )
 
-        mm = new Metamask(extensions, context, opts.downloadOptions?.flask)
+        mm = new Metamask(
+          extensions,
+          context,
+          opts.downloadOptions?.flask,
+          debug
+        )
 
         if (snap) {
           if (!baseURL) {
