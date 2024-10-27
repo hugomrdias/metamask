@@ -4,7 +4,8 @@ const { test, expect } = createFixture({
   downloadOptions: {
     flask: true,
   },
-  cacheUserDir: true,
+  // cacheUserDir: true,
+  // debug: true,
 })
 const SNAP_ID = 'npm:@metamask/test-snap-bip32'
 

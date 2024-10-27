@@ -99,8 +99,17 @@ export class Metamask {
     this.extraExtensions = extensions.filter((ext) => ext.title !== 'MetaMask')
     this.#snap = undefined
     this.page = this.extension.page
+    this.extension.id
 
     if (debug) {
+      context.newPage().then((page) => {
+        page.on('console', (msg) => redirectConsole(msg, 'Worker'))
+        page.on('pageerror', (err) => {
+          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+          console.log('[Worker] Uncaught exception', err.message)
+        })
+        page.goto(`chrome-extension://${this.extension.id}/offscreen.html`)
+      })
       this.page.on('console', redirectConsole)
       this.page.on('pageerror', (err) => {
         // biome-ignore lint/suspicious/noConsoleLog: <explanation>

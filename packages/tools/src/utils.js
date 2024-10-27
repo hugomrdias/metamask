@@ -77,6 +77,7 @@ function extractErrorMessage(arg) {
  */
 export async function redirectConsole(msg, prefix = 'Metamask') {
   const type = msg.type()
+
   const consoleFn = messageTypeToConsoleFn[type]
 
   if (!consoleFn) {
