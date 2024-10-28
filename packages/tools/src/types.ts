@@ -84,6 +84,7 @@ export interface FixtureOptions {
    */
   cacheUserDir?: boolean
   debug?: boolean
+  devtools?: boolean
 }
 
 export type InstallSnapsResult = Record<string, TruncatedSnap>

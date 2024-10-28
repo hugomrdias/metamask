@@ -31,12 +31,14 @@ async function snapApprove(page) {
     return
   }
   // snaps connect
-  const connect = page.getByTestId('snap-privacy-warning-scroll')
-  if (await connect.isVisible()) {
-    await page.getByTestId('snap-privacy-warning-scroll').click()
-    await page.getByRole('button', { name: 'Accept', exact: true }).click()
+  if (page.url().includes('snaps-connect')) {
+    const connect = page.getByTestId('snap-privacy-warning-scroll')
+    if (await connect.isVisible()) {
+      await page.getByTestId('snap-privacy-warning-scroll').click()
+      await page.getByRole('button', { name: 'Accept', exact: true }).click()
+    }
+    await page.getByTestId('page-container-footer-next').click()
   }
-  await page.getByTestId('page-container-footer-next').click()
 
   // snap install
   await page.waitForURL('**/snap-install')
