@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.2.0](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.1.0...metamask-testing-tools-v2.2.0) (2024-10-28)
+
+
+### Features
+
+* add debug option ([8366a86](https://github.com/hugomrdias/metamask/commit/8366a8679cce17f13ee34a147c8a1f4c02068338))
+* support cache user dir, reinstall snap, better headed viewport and new goToHomepage and goBack methods ([2e05a17](https://github.com/hugomrdias/metamask/commit/2e05a176bcf32d6436b13a7f9a1a18a14386a73d))
+
+
+### Bug Fixes
+
+* add debug for offscreen ([ab625a2](https://github.com/hugomrdias/metamask/commit/ab625a28a509b81fabd6d1dc2a4eac01e8637134))
+* increase retries for popup and improve getProvider ([bb1584d](https://github.com/hugomrdias/metamask/commit/bb1584d1dd11cb09df0044df1e4ed09ce9234df4))
+
 ## [2.1.0](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.0.1...metamask-testing-tools-v2.1.0) (2024-10-24)
 
 
