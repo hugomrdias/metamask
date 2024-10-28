@@ -268,7 +268,9 @@ export class Metamask {
 
     // Snap connect popup steps
     try {
-      const page = await this.waitForDialog('**/{snaps-connect,snap-update}')
+      const page = await this.waitForDialog(
+        '**/{snaps-connect,snap-update,snap-install}'
+      )
       await snapApprove(page)
     } catch (_error) {
       //   console.log(error)
