@@ -268,7 +268,7 @@ export class Metamask {
     try {
       const page = await this.waitForDialog('**/{snaps-connect,snap-update}')
       await snapApprove(page)
-    } catch (error) {
+    } catch (_error) {
       //   console.log(error)
     }
 

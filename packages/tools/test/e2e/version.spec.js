@@ -7,7 +7,7 @@ let fixture = createFixture({
 })
 
 fixture.test(
-  'should install a latest version of flask',
+  'should install a latest metamask flask version',
   async ({ metamask, page }) => {
     fixture.expect(await metamask.getVersion(page)).toContain('flask')
   }
@@ -23,19 +23,19 @@ fixture.test(
 
 fixture = createFixture({
   downloadOptions: {
-    tag: 'v11.15.3',
+    tag: 'v12.4.2',
   },
 })
 fixture.test(
   'should install a specific metamask version',
   async ({ metamask, page }) => {
-    fixture.expect(await metamask.getVersion(page)).toBe('MetaMask/v11.15.3')
+    fixture.expect(await metamask.getVersion(page)).toBe('MetaMask/v12.4.2')
   }
 )
 
 fixture = createFixture({
   downloadOptions: {
-    tag: 'v11.15.3',
+    tag: 'v12.4.2',
     flask: true,
   },
 })
@@ -44,6 +44,6 @@ fixture.test(
   async ({ metamask, page }) => {
     fixture
       .expect(await metamask.getVersion(page))
-      .toBe('MetaMask/v11.15.3-flask.0')
+      .toBe('MetaMask/v12.4.2-flask.0')
   }
 )
