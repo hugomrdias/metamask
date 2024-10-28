@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.1](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.2.0...metamask-testing-tools-v2.2.1) (2024-10-28)
+
+
+### Bug Fixes
+
+* avoid snaps-connect logic when not need and new options devtools ([ef41c9a](https://github.com/hugomrdias/metamask/commit/ef41c9ac65331929ac2e2ab1c1b48a75eec2617f))
+
 ## [2.2.0](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.1.0...metamask-testing-tools-v2.2.0) (2024-10-28)
 
 
