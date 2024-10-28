@@ -2,8 +2,10 @@ import { EthereumRpcError } from 'eth-rpc-errors'
 import pRetry from 'p-retry'
 
 import {
+  callSnap,
   ensurePageLoadedURL,
   getSnaps,
+  installSnap,
   isMetamaskRpcError,
   redirectConsole,
 } from './utils.js'
@@ -68,7 +70,7 @@ function waitForDialog(page, name, extension) {
   }
 
   return pRetry(run, {
-    retries: 1,
+    retries: 3,
     factor: 1,
   })
 }
@@ -99,7 +101,6 @@ export class Metamask {
     this.extraExtensions = extensions.filter((ext) => ext.title !== 'MetaMask')
     this.#snap = undefined
     this.page = this.extension.page
-    this.extension.id
 
     if (debug) {
       context.newPage().then((page) => {
@@ -116,28 +117,6 @@ export class Metamask {
         console.log('[Metamask] Uncaught exception', err.message)
       })
     }
-
-    // context.on('request', async (request) => {
-    //   if (
-    //     request.url().includes('acl.execution.metamask.io/latest/registry.json')
-    //   ) {
-    //     console.log('REGISTRY', request.url())
-    //     console.log('HEADERS', await request.allHeaders())
-    //   }
-    // })
-
-    // context.on('response', async (response) => {
-    //   if (
-    //     response
-    //       .url()
-    //       .includes('acl.execution.metamask.io/latest/registry.json')
-    //   ) {
-    //     console.log(response.url())
-
-    //     console.log('BODY', await response.text())
-    //     console.log('HEADERS', await response.allHeaders())
-    //   }
-    // })
   }
 
   /**
@@ -266,9 +245,12 @@ export class Metamask {
     }
 
     // wait for metamask to be available
-    await options.page.waitForFunction(() => {
-      return 'ethereum' in window && window.ethereum.isMetaMask
-    })
+    await options.page.waitForFunction(
+      () => {
+        return 'ethereum' in window && window.ethereum.isMetaMask
+      },
+      { timeout: 1000 }
+    )
 
     const snapId = process.env.METAMASK_SNAP_ID || options.id
     const snapVersion = process.env.METAMASK_SNAP_VERSION || options.version
@@ -279,64 +261,15 @@ export class Metamask {
       return snaps
     }
 
-    const install = options.page.evaluate(
-      async ({ snapId, version }) => {
-        const getRequestProvider = () => {
-          return new Promise((resolve) => {
-            // Define the event handler directly. This assumes the window is already loaded.
-            // @ts-ignore
-            const handler = (event) => {
-              const { rdns } = event.detail.info
-              switch (rdns) {
-                case 'io.metamask':
-                case 'io.metamask.flask':
-                case 'io.metamask.mmi': {
-                  window.removeEventListener(
-                    'eip6963:announceProvider',
-                    handler
-                  )
-                  resolve(event.detail.provider)
-                  break
-                }
-                default: {
-                  break
-                }
-              }
-            }
-
-            window.addEventListener('eip6963:announceProvider', handler)
-            window.dispatchEvent(new Event('eip6963:requestProvider'))
-          })
-        }
-
-        try {
-          const api = await getRequestProvider()
-          const result = await api.request({
-            method: 'wallet_requestSnaps',
-            params: {
-              [snapId]: {
-                version: version || '*',
-              },
-            },
-          })
-
-          return result
-        } catch (error) {
-          return /** @type {error} */ (error)
-        }
-      },
-      {
-        snapId,
-        version: snapVersion,
-      }
-    )
+    // install snap
+    const install = installSnap(options.page, snapId, snapVersion)
 
     // Snap connect popup steps
     try {
       const page = await this.waitForDialog('**/{snaps-connect,snap-update}')
       await snapApprove(page)
-    } catch {
-      // ignore
+    } catch (error) {
+      //   console.log(error)
     }
 
     const result = await install
@@ -439,51 +372,8 @@ export class Metamask {
    * @param {import('@metamask/providers').RequestArguments} arg
    * @param {import('@playwright/test').Page} page
    */
-  async #_rpcCall(arg, page) {
+  #_rpcCall(arg, page) {
     const rpcPage = ensurePageLoadedURL(page)
-    /** @type {Promise<R>} */
-    // @ts-ignore
-    const result = await rpcPage.evaluate(async (arg) => {
-      const getRequestProvider = () => {
-        return new Promise((resolve) => {
-          // Define the event handler directly. This assumes the window is already loaded.
-          // @ts-ignore
-          const handler = (event) => {
-            const { rdns } = event.detail.info
-            switch (rdns) {
-              case 'io.metamask':
-              case 'io.metamask.flask':
-              case 'io.metamask.mmi': {
-                window.removeEventListener('eip6963:announceProvider', handler)
-                resolve(event.detail.provider)
-                break
-              }
-              default: {
-                break
-              }
-            }
-          }
-
-          window.addEventListener('eip6963:announceProvider', handler)
-          window.dispatchEvent(new Event('eip6963:requestProvider'))
-        })
-      }
-      try {
-        const api = await getRequestProvider()
-        const result = await api.request(arg)
-        return result
-      } catch (error) {
-        return /** @type {error} */ (error)
-      }
-    }, arg)
-
-    if (isMetamaskRpcError(result)) {
-      throw new EthereumRpcError(result.code, result.message, result.data)
-    }
-
-    if (!result) {
-      throw new Error('Unknown RPC error: method didnt return a response')
-    }
-    return result
+    return /** @type {Promise<R>} */ (callSnap(rpcPage, arg))
   }
 }

@@ -104,39 +104,96 @@ export async function redirectConsole(msg, prefix = 'Metamask') {
 }
 
 /**
- * Get installed snaps
  *
  * @param {import('@playwright/test').Page} page
  */
-export async function getSnaps(page) {
-  const result = await page.evaluate(async () => {
-    const getRequestProvider = () => {
-      return new Promise((resolve) => {
-        // Define the event handler directly. This assumes the window is already loaded.
+export async function injectGetProvider(page) {
+  await page.evaluate(async () => {
+    if ('getProvider' in window) return
+    // @ts-ignore
+    window.getProvider = async function getProvider(timeout = 1000) {
+      let timeoutHandle = 0
+      return await new Promise((resolve, reject) => {
         // @ts-ignore
-        const handler = (event) => {
+        const onProviderFound = (event) => {
+          clearTimeout(timeoutHandle) // Clear the timeout on successful provider detection
           const { rdns } = event.detail.info
           switch (rdns) {
             case 'io.metamask':
             case 'io.metamask.flask':
             case 'io.metamask.mmi': {
-              window.removeEventListener('eip6963:announceProvider', handler)
-              resolve(event.detail.provider)
+              const provider = event.detail.provider
+              if (!provider || !provider.isMetaMask) {
+                reject(new Error('Provider not supported or not found.'))
+              } else {
+                window.removeEventListener(
+                  'eip6963:announceProvider',
+                  onProviderFound
+                )
+                resolve(provider)
+              }
               break
             }
             default: {
+              // console.error('Provider not supported or not found.', rdns)
+              // reject(new Error('Provider not supported or not found.'))
               break
             }
           }
         }
 
-        window.addEventListener('eip6963:announceProvider', handler)
-        window.dispatchEvent(new Event('eip6963:requestProvider'))
+        window.addEventListener('eip6963:announceProvider', onProviderFound)
+
+        window.dispatchEvent(new CustomEvent('eip6963:requestProvider'))
+        // Set a timeout to reject the promise if no provider is found within the specified time
+        timeoutHandle = window.setTimeout(() => {
+          window.removeEventListener(
+            'eip6963:announceProvider',
+            onProviderFound
+          )
+          reject(new Error('Provider request timed out.'))
+        }, timeout)
       })
     }
+  })
+}
+
+/**
+ * Get installed snaps
+ *
+ * @param {import('@playwright/test').Page} page
+ */
+export async function getSnaps(page) {
+  await injectGetProvider(page)
+  const result = await page.evaluate(async () => {
+    // const getRequestProvider = () => {
+    //   return new Promise((resolve) => {
+    //     // Define the event handler directly. This assumes the window is already loaded.
+    //     // @ts-ignore
+    //     const handler = (event) => {
+    //       const { rdns } = event.detail.info
+    //       switch (rdns) {
+    //         case 'io.metamask':
+    //         case 'io.metamask.flask':
+    //         case 'io.metamask.mmi': {
+    //           window.removeEventListener('eip6963:announceProvider', handler)
+    //           resolve(event.detail.provider)
+    //           break
+    //         }
+    //         default: {
+    //           break
+    //         }
+    //       }
+    //     }
+
+    //     window.addEventListener('eip6963:announceProvider', handler)
+    //     window.dispatchEvent(new Event('eip6963:requestProvider'))
+    //   })
+    // }
 
     try {
-      const api = await getRequestProvider()
+      // @ts-ignore
+      const api = await window.getProvider()
       const result = await api.request({
         method: 'wallet_getSnaps',
       })
@@ -156,4 +213,126 @@ export async function getSnaps(page) {
   }
 
   return /** @type {import('./types.js').InstallSnapsResult} */ (result)
+}
+
+/**
+ * Installs snap
+ * @param {import('@playwright/test').Page} page
+ * @param {string} snapId
+ * @param {string} [snapVersion]
+ */
+export async function installSnap(page, snapId, snapVersion) {
+  await injectGetProvider(page)
+
+  const install = page.evaluate(
+    async ({ snapId, version }) => {
+      // const getRequestProvider = () => {
+      //   return new Promise((resolve) => {
+      //     // Define the event handler directly. This assumes the window is already loaded.
+      //     // @ts-ignore
+      //     const handler = (event) => {
+      //       const { rdns } = event.detail.info
+      //       switch (rdns) {
+      //         case 'io.metamask':
+      //         case 'io.metamask.flask':
+      //         case 'io.metamask.mmi': {
+      //           window.removeEventListener(
+      //             'eip6963:announceProvider',
+      //             handler
+      //           )
+      //           resolve(event.detail.provider)
+      //           break
+      //         }
+      //         default: {
+      //           break
+      //         }
+      //       }
+      //     }
+
+      //     window.addEventListener('eip6963:announceProvider', handler)
+      //     window.dispatchEvent(new Event('eip6963:requestProvider'))
+      //   })
+      // }
+
+      try {
+        // @ts-ignore
+        const api = await window.getProvider()
+        const result = await api.request({
+          method: 'wallet_requestSnaps',
+          params: {
+            [snapId]: {
+              version: version || '*',
+            },
+          },
+        })
+
+        return result
+      } catch (error) {
+        return /** @type {error} */ (error)
+      }
+    },
+    {
+      snapId,
+      version: snapVersion,
+    }
+  )
+
+  return /** @type {Promise<import('./types.js').InstallSnapsResult>} */ (
+    install
+  )
+}
+
+/**
+ * Call snap
+ *
+ * @param {import('@playwright/test').Page} page
+ * @param {import('@metamask/providers').RequestArguments} arg
+ */
+export async function callSnap(page, arg) {
+  await injectGetProvider(page)
+
+  const result = await page.evaluate(async (arg) => {
+    // const getRequestProvider = () => {
+    //   return new Promise((resolve) => {
+    //     // Define the event handler directly. This assumes the window is already loaded.
+    //     // @ts-ignore
+    //     const handler = (event) => {
+    //       const { rdns } = event.detail.info
+    //       switch (rdns) {
+    //         case 'io.metamask':
+    //         case 'io.metamask.flask':
+    //         case 'io.metamask.mmi': {
+    //           window.removeEventListener('eip6963:announceProvider', handler)
+    //           resolve(event.detail.provider)
+    //           break
+    //         }
+    //         default: {
+    //           break
+    //         }
+    //       }
+    //     }
+
+    //     window.addEventListener('eip6963:announceProvider', handler)
+    //     window.dispatchEvent(new Event('eip6963:requestProvider'))
+    //   })
+    // }
+    try {
+      // @ts-ignore
+      const api = await globalThis.getProvider()
+      // @ts-ignore
+      const result = await api.request(arg)
+      return result
+    } catch (error) {
+      return /** @type {error} */ (error)
+    }
+  }, arg)
+
+  if (isMetamaskRpcError(result)) {
+    throw new EthereumRpcError(result.code, result.message, result.data)
+  }
+
+  if (!result) {
+    throw new Error('Unknown RPC error: method didnt return a response')
+  }
+  return result
 }
