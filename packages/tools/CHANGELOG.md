@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.3](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.2.2...metamask-testing-tools-v2.2.3) (2024-10-29)
+
+
+### Bug Fixes
+
+* fix devtools option ([3a979ca](https://github.com/hugomrdias/metamask/commit/3a979ca53f9e210e10ff77e243f81ec3eda51e53))
+
 ## [2.2.2](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.2.1...metamask-testing-tools-v2.2.2) (2024-10-28)
 
 
