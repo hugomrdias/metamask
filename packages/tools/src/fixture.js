@@ -158,7 +158,7 @@ export function createFixture(opts = {}) {
             '--enable-automation',
             '--disable-gpu',
             '--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
-            ...(headless && devtools ? [] : ['--auto-open-devtools-for-tabs']),
+            ...(!headless && devtools ? ['--auto-open-devtools-for-tabs'] : []),
             // '--offscreen-document-testing',
             // '--enable-experimental-extension-apis',
           ],
