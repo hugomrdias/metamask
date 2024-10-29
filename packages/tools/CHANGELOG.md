@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.2](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.2.1...metamask-testing-tools-v2.2.2) (2024-10-28)
+
+
+### Bug Fixes
+
+* wait for snap-install too ([ab6f631](https://github.com/hugomrdias/metamask/commit/ab6f631a04599478f50d651d21df36f116f9b2c2))
+
 ## [2.2.1](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.2.0...metamask-testing-tools-v2.2.1) (2024-10-28)
 
 
