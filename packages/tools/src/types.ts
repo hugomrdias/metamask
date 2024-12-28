@@ -2,13 +2,7 @@ import type { MetaMaskInpageProvider } from '@metamask/providers'
 import type { TruncatedSnap } from '@metamask/snaps-utils'
 import type { SetOptional } from 'type-fest'
 
-import type {
-  Page,
-  PlaywrightTestArgs,
-  PlaywrightWorkerArgs,
-  TestType,
-} from '@playwright/test'
-import type { Metamask } from './metamask'
+import type { Page } from '@playwright/test'
 
 export interface Extension {
   title: string
@@ -45,13 +39,6 @@ export interface DownloadMetamaskOptions {
   extensionsIds?: string[]
   browser?: 'chrome' | 'firefox'
 }
-
-export type TextExtend = TestType<
-  PlaywrightTestArgs & {
-    metamask: Metamask
-  },
-  PlaywrightWorkerArgs
->['extend']
 
 export interface FixtureOptions {
   /**
