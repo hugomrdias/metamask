@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { unzipSync } from 'fflate'
+import { writeFile } from 'fs/promises'
 
 // @ts-ignore
 import Conf from 'conf'
@@ -69,7 +70,9 @@ async function getAsset({ repo, userAgent = 'filsnap', token, tag, asset }) {
     throw new Error(msg.message)
   }
 
-  return rsp.arrayBuffer()
+  const buf = await rsp.arrayBuffer()
+
+  return new Uint8Array(buf)
 }
 
 /**
@@ -117,13 +120,14 @@ export async function download({
   if (extensions.length > 0) {
     for (const extension of extensions) {
       const extensionOutFolder = path.join(dir, extension)
+
       if (fs.existsSync(extensionOutFolder)) {
         outFolders.push(extensionOutFolder)
         continue
       }
       const extensionData = await downloadExtensionById(extension, dir)
-      outFolders.push(extensionOutFolder)
 
+      outFolders.push(extensionOutFolder)
       const filePath = path.resolve(dir, `${extension}.crx`)
       if (filePath !== null && extensionData !== null) {
         extractCrxFile(filePath, extensionData)
@@ -146,11 +150,11 @@ export async function download({
 /**
  * Unzip a zip file into the given directory
  *
- * @param {ArrayBuffer} data
+ * @param {Uint8Array} data
  * @param {string} outDir
  */
 function unzip(data, outDir) {
-  const decompressed = unzipSync(new Uint8Array(data))
+  const decompressed = unzipSync(data)
 
   if (!fs.existsSync(outDir)) {
     fs.mkdirSync(outDir, { recursive: true })
@@ -170,52 +174,25 @@ function unzip(data, outDir) {
  *
  * @param {string} extensionId - The ID of the Chrome extension to download.
  * @param {string} dir - The directory where the .crx file will be downloaded and extracted.
- * @returns {Promise<string|null>} The path to the extracted directory or null if an error occurs.
+ * @returns {Promise<string>} The path to the extracted directory or null if an error occurs.
  */
 const downloadExtensionById = async (extensionId, dir = defaultDirectory) => {
-  const url = `https://clients2.google.com/service/update2/crx?response=redirect&prodversion=49.0&acceptformat=crx3&x=id%3D${extensionId}%26installsource%3Dondemand%26uc`
+  const url = `https://clients2.google.com/service/update2/crx?response=redirect&prodversion=130.0&acceptformat=crx3&x=id%3D${extensionId}%26installsource%3Dondemand%26uc`
 
-  try {
-    const response = await fetch(url)
-    if (!response.ok) {
-      throw new Error(`Error fetching the extension: ${response.statusText}`)
-    }
-
-    const filePath = path.resolve(dir, `${extensionId}.crx`)
-    const fileStream = fs.createWriteStream(filePath)
-
-    if (response.body) {
-      const reader = response.body.getReader()
-
-      /**
-       * Processes the stream from a Fetch API response.
-       *
-       * @param {ReadableStreamReadResult<Uint8Array>} readResult - The result of reading from the stream.
-       * @returns {Promise<void>} A promise that resolves when the stream processing is complete.
-       */
-      const processStream = async ({ done, value }) => {
-        if (done) {
-          fileStream.end()
-          return
-        }
-        fileStream.write(value)
-        return reader.read().then(processStream)
-      }
-
-      await reader.read().then(processStream)
-
-      await new Promise((resolve, reject) => {
-        fileStream.on('finish', resolve)
-        fileStream.on('error', reject)
-      })
-
-      return path.resolve(dir, extensionId)
-    }
-    throw new Error('Response body is null')
-  } catch {
-    // eslint-disable-next-line unicorn/no-null
-    return null // Return null in case of an error
+  const response = await fetch(url)
+  if (!response.ok) {
+    throw new Error(`Error fetching the extension: ${response.statusText}`)
   }
+
+  const filePath = path.resolve(dir, `${extensionId}.crx`)
+
+  if (fs.existsSync(filePath)) {
+    return filePath
+  }
+  const buf = await response.arrayBuffer()
+  await writeFile(filePath, new Uint8Array(buf))
+
+  return filePath
 }
 
 /**
@@ -259,6 +236,5 @@ function extractCrxFile(crxFilePath, extractToDirectory) {
   }
 
   const zipData = stripCrxHeader(data.subarray(zipHeaderIndex))
-
   unzip(zipData, extractToDirectory)
 }
