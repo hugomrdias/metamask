@@ -125,13 +125,10 @@ export async function download({
         outFolders.push(extensionOutFolder)
         continue
       }
-      const extensionData = await downloadExtensionById(extension, dir)
+      const crxPath = await downloadExtensionById(extension, dir)
+      extractCrxFile(crxPath, extensionOutFolder)
 
       outFolders.push(extensionOutFolder)
-      const filePath = path.resolve(dir, `${extension}.crx`)
-      if (filePath !== null && extensionData !== null) {
-        extractCrxFile(filePath, extensionData)
-      }
     }
   }
 
@@ -237,4 +234,5 @@ function extractCrxFile(crxFilePath, extractToDirectory) {
 
   const zipData = stripCrxHeader(data.subarray(zipHeaderIndex))
   unzip(zipData, extractToDirectory)
+  return extractToDirectory
 }
