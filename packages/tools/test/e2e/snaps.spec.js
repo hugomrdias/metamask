@@ -77,16 +77,16 @@ test.describe('snaps', () => {
     await metamask.setup()
     await metamask.installSnap({
       id: 'npm:filsnap',
-      version: '1.0.3',
+      version: '1.1.0',
       page,
     })
 
     const update = await metamask.installSnap({
       id: 'npm:filsnap',
-      version: '1.1.0',
+      version: '1.2.0',
       page,
     })
 
-    expect(update['npm:filsnap'].version).toBe('1.1.0')
+    expect(update['npm:filsnap'].version).toBe('1.2.0')
   })
 })

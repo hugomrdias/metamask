@@ -57,18 +57,18 @@
 		"test": "playwright test"
 	},
 	"dependencies": {
-		"@metamask/providers": "^18.1.0",
-		"@metamask/snaps-utils": "^8.4.1",
-		"@playwright/test": "^1.48.1",
-		"conf": "^13.0.1",
+		"@metamask/providers": "^18.3.1",
+		"@metamask/snaps-utils": "^8.7.0",
+		"@playwright/test": "^1.49.1",
+		"conf": "^13.1.0",
 		"eth-rpc-errors": "^4.0.3",
 		"fflate": "^0.8.2",
-		"p-retry": "^6.2.0",
+		"p-retry": "^6.2.1",
 		"p-wait-for": "^5.0.2"
 	},
 	"devDependencies": {
-		"@types/node": "^22.7.9",
-		"type-fest": "^4.26.1"
+		"@types/node": "^22.10.2",
+		"type-fest": "^4.31.0"
 	},
 	"depcheck": {
 		"specials": [
