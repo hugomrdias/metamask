@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.2.3](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.2.2...metamask-testing-tools-v2.2.3) (2024-12-28)
+
+
+### Bug Fixes
+
+* chrome store crx url changed ([d9aa0a0](https://github.com/hugomrdias/metamask/commit/d9aa0a0a4376ccf774b23a253c8de7850463f12d))
+* fix devtools option ([3a979ca](https://github.com/hugomrdias/metamask/commit/3a979ca53f9e210e10ff77e243f81ec3eda51e53))
+* fix extra extension download logic ([c7dca31](https://github.com/hugomrdias/metamask/commit/c7dca310fd3727f6783f742864734607b9a101ca))
+* fix fixture types ([71e465c](https://github.com/hugomrdias/metamask/commit/71e465c2651cf38fbccd9baf0dd7e6a62696583e))
+* pw headless mode for extension needs a channel now ([aa3787b](https://github.com/hugomrdias/metamask/commit/aa3787b3cbdb85eba4924a1b71ffc1ef165f64e0))
+
 ## [2.2.2](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.2.1...metamask-testing-tools-v2.2.2) (2024-10-28)
 
 
