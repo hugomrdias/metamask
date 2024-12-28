@@ -121,7 +121,9 @@ export function createFixture(opts = {}) {
   /** @type {Metamask | undefined} */
   let mm
 
-  const test = /** @type {import('./types').TextExtend} */ (base.extend)({
+  const test = /** @type {typeof base.extend<{metamask: Metamask}>} */ (
+    base.extend
+  )({
     context: async ({ headless, browser }, use) => {
       const extensionPaths = [await download(downloadOptions)]
       let dirPath = ''
@@ -147,9 +149,9 @@ export function createFixture(opts = {}) {
       if (!ctx || isolated) {
         // Launch context with extension
         ctx = await chromium.launchPersistentContext(dirPath, {
+          channel: 'chromium',
           headless,
           args: [
-            ...(headless ? ['--headless=new'] : []),
             `--disable-extensions-except=${extensionPaths.join(',')}`,
             `--load-extension=${extensionPaths.join(',')}`,
             '--no-sandbox',
