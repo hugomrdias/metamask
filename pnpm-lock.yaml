@@ -58,8 +58,8 @@ importers:
         version: 5.0.2
     devDependencies:
       '@types/node':
-        specifier: ^22.10.2
-        version: 22.10.2
+        specifier: ^22.10.7
+        version: 22.10.7
       type-fest:
         specifier: ^4.31.0
         version: 4.31.0
@@ -243,6 +243,10 @@ packages:
     resolution: {integrity: sha512-qUZXuyjy51o73QpkfgwvFiyahi0MRE0u33DGnC6eS34eww7JWwzwA+jbPFSWYj2nVGlR/ZQ1uZR7r1yCxcpzvg==}
     engines: {node: ^18.18 || >=20}
 
+  '@metamask/base-controller@7.1.1':
+    resolution: {integrity: sha512-4nbA6RL9y0SdHdn4MmMTREX6ISJL7OGHn0GXXszv0tp1fdjsn+SBs28uu1a9ceg1J7R/lO6JH7jAAz8zRtt8Nw==}
+    engines: {node: ^18.18 || >=20}
+
   '@metamask/controller-utils@11.4.4':
     resolution: {integrity: sha512-0/gKC6jxlj8KRzi0RjGDQnml6l4b46Da/AIqnGJMOC59zl4qD5UN1GM+mq7L5duw/m8sSHa7VbL1hL0l7Cw1pg==}
     engines: {node: ^18.18 || >=20}
@@ -401,8 +405,8 @@ packages:
   '@types/ms@0.7.34':
     resolution: {integrity: sha512-nG96G3Wp6acyAgJqGasjODb+acrI7KltPiRxzHPXnP3NgI28bpQDRv53olbqGXbfcgF5aiiHmO3xpwEpS5Ld9g==}
 
-  '@types/node@22.10.2':
-    resolution: {integrity: sha512-Xxr6BBRCAOQixvonOye19wnzyDiUtTeqldOOmj3CkeblonbccA12PFwlufvRdrpjXxqnmUaeiU5EOA+7s5diUQ==}
+  '@types/node@22.10.7':
+    resolution: {integrity: sha512-V09KvXxFiutGp6B7XkpaDXlNadZxrzajcY50EuoLIpQ6WWYCSvf19lVIazzfIzQvhUN2HjX12spLojTnhuKlGg==}
 
   '@types/parse-json@4.0.2':
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==}
@@ -1338,7 +1342,7 @@ snapshots:
 
   '@metamask/approval-controller@7.1.1':
     dependencies:
-      '@metamask/base-controller': 7.1.0
+      '@metamask/base-controller': 7.1.1
       '@metamask/rpc-errors': 7.0.2
       '@metamask/utils': 10.0.1
       nanoid: 3.3.8
@@ -1348,6 +1352,13 @@ snapshots:
   '@metamask/base-controller@7.1.0':
     dependencies:
       '@metamask/utils': 10.0.1
+      immer: 9.0.21
+    transitivePeerDependencies:
+      - supports-color
+
+  '@metamask/base-controller@7.1.1':
+    dependencies:
+      '@metamask/utils': 11.0.1
       immer: 9.0.21
     transitivePeerDependencies:
       - supports-color
@@ -1602,7 +1613,7 @@ snapshots:
 
   '@types/bn.js@5.1.6':
     dependencies:
-      '@types/node': 22.10.2
+      '@types/node': 22.10.7
 
   '@types/debug@4.1.12':
     dependencies:
@@ -1618,7 +1629,7 @@ snapshots:
 
   '@types/ms@0.7.34': {}
 
-  '@types/node@22.10.2':
+  '@types/node@22.10.7':
     dependencies:
       undici-types: 6.20.0
 
