@@ -80,6 +80,7 @@ test.describe('snaps', () => {
       version: '1.1.0',
       page,
     })
+    await metamask.page.getByTestId('confirmation-submit-button').click()
 
     const update = await metamask.installSnap({
       id: 'npm:filsnap',
