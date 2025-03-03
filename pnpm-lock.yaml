@@ -61,8 +61,8 @@ importers:
         specifier: ^22.10.7
         version: 22.10.7
       type-fest:
-        specifier: ^4.33.0
-        version: 4.33.0
+        specifier: ^4.36.0
+        version: 4.36.0
 
 packages:
 
@@ -1017,6 +1017,11 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
+  semver@7.7.1:
+    resolution: {integrity: sha512-hlq8tAfn0m/61p4BVRcPzIGr6LKiMwo4VM6dGi6pt4qcRkmNzTcWq6eCEjEh+qXjkMDvPlOFFSGwQjoEa6gyMA==}
+    engines: {node: '>=10'}
+    hasBin: true
+
   ses@1.10.0:
     resolution: {integrity: sha512-HXmJbNEgY/4hsQfaz5dna39vVKNyvlElRmJYk+bjTqSXSElT0Hr6NKwWVg4j0TxP6IuHp/PNMoWJKIRXzmLbAQ==}
 
@@ -1064,8 +1069,8 @@ packages:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
 
-  type-fest@4.33.0:
-    resolution: {integrity: sha512-s6zVrxuyKbbAsSAD5ZPTB77q4YIdRctkTbJ2/Dqlinwz+8ooH2gd+YA7VA6Pa93KML9GockVvoxjZ2vHP+mu8g==}
+  type-fest@4.36.0:
+    resolution: {integrity: sha512-3T/PUdKTCnkUmhQU6FFJEHsLwadsRegktX3TNHk+2JJB9HlA8gp1/VXblXVDI93kSnXF2rdPx0GMbHtJIV2LPg==}
     engines: {node: '>=16'}
 
   typedoc-plugin-missing-exports@3.1.0:
@@ -1576,7 +1581,7 @@ snapshots:
       '@types/debug': 4.1.12
       debug: 4.4.0
       pony-cause: 2.1.11
-      semver: 7.6.3
+      semver: 7.7.1
       uuid: 9.0.1
     transitivePeerDependencies:
       - supports-color
@@ -1874,7 +1879,7 @@ snapshots:
 
   dot-prop@9.0.0:
     dependencies:
-      type-fest: 4.33.0
+      type-fest: 4.36.0
 
   electron-to-chromium@1.5.84: {}
 
@@ -2219,6 +2224,8 @@ snapshots:
 
   semver@7.6.3: {}
 
+  semver@7.7.1: {}
+
   ses@1.10.0:
     dependencies:
       '@endo/env-options': 1.1.8
@@ -2261,7 +2268,7 @@ snapshots:
     dependencies:
       is-number: 7.0.0
 
-  type-fest@4.33.0: {}
+  type-fest@4.36.0: {}
 
   typedoc-plugin-missing-exports@3.1.0(typedoc@0.27.6(typescript@5.7.3)):
     dependencies:
