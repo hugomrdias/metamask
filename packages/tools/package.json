@@ -67,7 +67,7 @@
 		"p-wait-for": "^5.0.2"
 	},
 	"devDependencies": {
-		"@types/node": "^22.10.7",
+		"@types/node": "^22.13.10",
 		"type-fest": "^4.33.0"
 	},
 	"depcheck": {
