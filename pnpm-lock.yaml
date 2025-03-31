@@ -61,8 +61,8 @@ importers:
         specifier: ^22.10.7
         version: 22.10.7
       type-fest:
-        specifier: ^4.33.0
-        version: 4.33.0
+        specifier: ^4.38.0
+        version: 4.38.0
 
 packages:
 
@@ -874,6 +874,11 @@ packages:
     resolution: {integrity: sha512-ypMKuglUrZUD99Tk2bUQ+xNQj43lPEfAeX2o9cTteAmShXy2VHDJpuwu1o0xqoKCt9jLVAvwyFKdLTPXKAfJyA==}
     engines: {node: '>=10'}
 
+  nanoid@3.3.11:
+    resolution: {integrity: sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==}
+    engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
+    hasBin: true
+
   nanoid@3.3.8:
     resolution: {integrity: sha512-WNLf5Sd8oZxOm+TzppcYk8gVOgP+l58xNy58D0nbUnOxOWRWvlcCV4kUF7ltmI6PsrLl/BgKEyS4mqsGChFN0w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -1017,6 +1022,11 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
+  semver@7.7.1:
+    resolution: {integrity: sha512-hlq8tAfn0m/61p4BVRcPzIGr6LKiMwo4VM6dGi6pt4qcRkmNzTcWq6eCEjEh+qXjkMDvPlOFFSGwQjoEa6gyMA==}
+    engines: {node: '>=10'}
+    hasBin: true
+
   ses@1.10.0:
     resolution: {integrity: sha512-HXmJbNEgY/4hsQfaz5dna39vVKNyvlElRmJYk+bjTqSXSElT0Hr6NKwWVg4j0TxP6IuHp/PNMoWJKIRXzmLbAQ==}
 
@@ -1064,8 +1074,8 @@ packages:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
 
-  type-fest@4.33.0:
-    resolution: {integrity: sha512-s6zVrxuyKbbAsSAD5ZPTB77q4YIdRctkTbJ2/Dqlinwz+8ooH2gd+YA7VA6Pa93KML9GockVvoxjZ2vHP+mu8g==}
+  type-fest@4.38.0:
+    resolution: {integrity: sha512-2dBz5D5ycHIoliLYLi0Q2V7KRaDlH0uWIvmk7TYlAg5slqwiPv1ezJdZm1QEM0xgk29oYWMCbIG7E6gHpvChlg==}
     engines: {node: '>=16'}
 
   typedoc-plugin-missing-exports@3.1.0:
@@ -1390,7 +1400,7 @@ snapshots:
       '@metamask/base-controller': 7.1.1
       '@metamask/rpc-errors': 7.0.2
       '@metamask/utils': 10.0.1
-      nanoid: 3.3.8
+      nanoid: 3.3.11
     transitivePeerDependencies:
       - supports-color
 
@@ -1576,7 +1586,7 @@ snapshots:
       '@types/debug': 4.1.12
       debug: 4.4.0
       pony-cause: 2.1.11
-      semver: 7.6.3
+      semver: 7.7.1
       uuid: 9.0.1
     transitivePeerDependencies:
       - supports-color
@@ -1874,7 +1884,7 @@ snapshots:
 
   dot-prop@9.0.0:
     dependencies:
-      type-fest: 4.33.0
+      type-fest: 4.38.0
 
   electron-to-chromium@1.5.84: {}
 
@@ -2107,6 +2117,8 @@ snapshots:
       arrify: 2.0.1
       minimatch: 3.1.2
 
+  nanoid@3.3.11: {}
+
   nanoid@3.3.8: {}
 
   node-releases@2.0.19: {}
@@ -2219,6 +2231,8 @@ snapshots:
 
   semver@7.6.3: {}
 
+  semver@7.7.1: {}
+
   ses@1.10.0:
     dependencies:
       '@endo/env-options': 1.1.8
@@ -2261,7 +2275,7 @@ snapshots:
     dependencies:
       is-number: 7.0.0
 
-  type-fest@4.33.0: {}
+  type-fest@4.38.0: {}
 
   typedoc-plugin-missing-exports@3.1.0(typedoc@0.27.6(typescript@5.7.3)):
     dependencies:
