@@ -18,7 +18,7 @@ test.describe('metamask latest stable', () => {
         page,
       })
     }).rejects.toThrow(
-      'Expected caveat to have a value property of a non-empty object of snap IDs.: At path: value.foo -- Expected the value to satisfy a union of `intersection | string`, but received: "foo".'
+      'Expected caveat to have a value property of a non-empty object of snap IDs.: At path: value.foo -- Invalid or no prefix found. Expected Snap ID to start with one of: "npm:", "local:", but received: "foo".'
     )
   })
 
