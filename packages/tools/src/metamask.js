@@ -197,24 +197,22 @@ export class Metamask {
         .click()
     }
     // import wallet
-    // await page.waitForURL('**/welcome')
-    await page.getByTestId('onboarding-terms-checkbox').click()
+    await page.getByTestId('onboarding-get-started-button').click()
+    await page.getByTestId('terms-of-use-checkbox').click()
+    await page.getByTestId('terms-of-use-scroll-button').click()
+    await page.getByTestId('terms-of-use-agree-button').click()
     await page.getByTestId('onboarding-import-wallet').click()
-    await page.getByTestId('metametrics-no-thanks').click()
 
-    await page.waitForURL('**/import-with-recovery-phrase')
-    for (const [index, seedPart] of mnemonic.split(' ').entries()) {
-      await page.getByTestId(`import-srp__srp-word-${index}`).fill(seedPart)
-    }
+    await page
+      .getByTestId('srp-input-import__srp-note')
+      .pressSequentially(mnemonic)
+
     await page.getByTestId('import-srp-confirm').click()
-
-    await page.waitForURL('**/create-password')
-    await page.getByTestId('create-password-new').fill(password)
-    await page.getByTestId('create-password-confirm').fill(password)
+    await page.getByTestId('create-password-new-input').fill(password)
+    await page.getByTestId('create-password-confirm-input').fill(password)
     await page.getByTestId('create-password-terms').click()
-    await page.getByTestId('create-password-import').click()
-
-    await page.waitForURL('**/completion')
+    await page.getByTestId('create-password-submit').click()
+    await page.getByTestId('metametrics-i-agree').click()
     await page.getByTestId('onboarding-complete-done').click()
 
     await page.waitForURL('**/pin-extension')
