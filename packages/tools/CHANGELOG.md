@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.4](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.2.3...metamask-testing-tools-v2.2.4) (2025-07-08)
+
+
+### Bug Fixes
+
+* fix new mm onboarding ([62234bc](https://github.com/hugomrdias/metamask/commit/62234bcf63d55fddca695bdb87c429083d1dd1d6))
+
 ## [2.2.3](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.2.2...metamask-testing-tools-v2.2.3) (2024-12-28)
 
 
