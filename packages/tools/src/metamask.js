@@ -90,7 +90,7 @@ async function closeConnectEth(page) {
       timeout: 300,
       noWaitAfter: true,
     })
-  } catch (error) {
+  } catch (_error) {
     // ignore
   }
 }
