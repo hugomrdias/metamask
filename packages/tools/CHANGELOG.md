@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.5](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.2.4...metamask-testing-tools-v2.2.5) (2025-07-24)
+
+
+### Bug Fixes
+
+* fix connect to eth and static server ([32ffdca](https://github.com/hugomrdias/metamask/commit/32ffdca19c7125e804a2e5f29658c82d2c71f0c0))
+
 ## [2.2.4](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.2.3...metamask-testing-tools-v2.2.4) (2025-07-08)
 
 
