@@ -37,6 +37,7 @@ async function snapApprove(page) {
       await page.getByTestId('snap-privacy-warning-scroll').click()
       await page.getByRole('button', { name: 'Accept', exact: true }).click()
     }
+    await closeConnectEth(page)
     await page.getByTestId('page-container-footer-next').click()
   }
 
@@ -75,6 +76,23 @@ function waitForDialog(page, name, extension) {
     retries: 3,
     factor: 1,
   })
+}
+
+/**
+ * Close connect eth
+ *
+ * @param {import('@playwright/test').Page} page
+ */
+async function closeConnectEth(page) {
+  const connectEth = page.locator('.page-container__header-close')
+  try {
+    await connectEth.click({
+      timeout: 300,
+      noWaitAfter: true,
+    })
+  } catch (error) {
+    // ignore
+  }
 }
 
 /**
@@ -244,6 +262,8 @@ export class Metamask {
       throw new Error('Snap ID is required.')
     }
 
+    await closeConnectEth(this.page)
+
     // wait for metamask to be available
     await options.page.waitForFunction(
       () => {
@@ -269,6 +289,7 @@ export class Metamask {
       const page = await this.waitForDialog(
         '**/{snaps-connect,snap-update,snap-install}'
       )
+
       await snapApprove(page)
     } catch (_error) {
       //   console.log(error)

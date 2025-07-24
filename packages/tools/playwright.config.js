@@ -10,9 +10,16 @@ export default defineConfig({
   maxFailures: process.env.CI ? 0 : 1,
   reporter: process.env.CI ? [['html'], ['list']] : 'list',
   use: {
-    baseURL: 'http://example.org',
+    baseURL: 'http://localhost:8081',
     trace: 'on-first-retry',
     colorScheme: 'dark',
     browserName: 'chromium',
   },
+  webServer: [
+    {
+      command: 'pnpm run serve-static',
+      url: 'http://localhost:8081',
+      reuseExistingServer: !process.env.CI,
+    },
+  ],
 })

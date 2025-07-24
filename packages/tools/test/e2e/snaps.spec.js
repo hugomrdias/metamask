@@ -18,7 +18,7 @@ test.describe('snaps', () => {
       page,
     })
 
-    await expect(page.getByText('Example Domain')).toBeVisible()
+    await expect(page.getByTestId('filsnap-title')).toBeVisible()
 
     expect(result[SNAP_ID].id).toBe(SNAP_ID)
   })
@@ -31,7 +31,7 @@ test.describe('snaps', () => {
       page,
     })
 
-    await expect(page.getByText('Example Domain')).toBeVisible()
+    await expect(page.getByTestId('filsnap-title')).toBeVisible()
 
     expect(result[snapId].id).toBe(snapId)
   })

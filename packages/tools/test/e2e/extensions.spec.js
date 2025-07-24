@@ -39,7 +39,7 @@ flask.test.describe('snaps rainbow flask metamask', () => {
         page,
       })
 
-      await flask.expect(page.getByText('Example Domain')).toBeVisible()
+      await flask.expect(page.getByTestId('filsnap-title')).toBeVisible()
       flask.expect(result[snapId].id).toBe(snapId)
     }
   )
@@ -63,7 +63,7 @@ main.test.describe('snaps rainbow main metamask', () => {
         page,
       })
 
-      await main.expect(page.getByText('Example Domain')).toBeVisible()
+      await main.expect(page.getByTestId('filsnap-title')).toBeVisible()
       main.expect(result[snapId].id).toBe(snapId)
     }
   )
@@ -88,7 +88,7 @@ main2.test.describe('snaps install metamask and filsnap', () => {
       })
       await metamask.page.getByTestId('confirmation-submit-button').click()
 
-      await main2.expect(page.getByText('Example Domain')).toBeVisible()
+      await main2.expect(page.getByTestId('filsnap-title')).toBeVisible()
       main2.expect(result[snapId].id).toBe(snapId)
 
       metamask.waitForConfirmation()
