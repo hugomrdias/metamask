@@ -220,7 +220,7 @@ export class Metamask {
     await page.getByTestId('terms-of-use-scroll-button').click()
     await page.getByTestId('terms-of-use-agree-button').click()
     await page.getByTestId('onboarding-import-wallet').click()
-
+    await page.getByTestId('onboarding-import-with-srp-button').click()
     await page
       .getByTestId('srp-input-import__srp-note')
       .pressSequentially(mnemonic)
