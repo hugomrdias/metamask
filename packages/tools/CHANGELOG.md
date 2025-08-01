@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.6](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.2.5...metamask-testing-tools-v2.2.6) (2025-08-01)
+
+
+### Bug Fixes
+
+* update onboarding flow to include SRP import button ([6fe23e7](https://github.com/hugomrdias/metamask/commit/6fe23e72937451045f932d42bc0cd64990b249d6))
+
 ## [2.2.5](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.2.4...metamask-testing-tools-v2.2.5) (2025-07-24)
 
 
