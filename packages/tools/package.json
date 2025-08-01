@@ -1,84 +1,84 @@
 {
-	"name": "metamask-testing-tools",
-	"type": "module",
-	"version": "2.2.5",
-	"description": "This is a collection of tools for testing metamask, metamask flask and metamask snaps.",
-	"author": "Hugo Dias <hugomrdias@gmail.com> (hugodias.me)",
-	"license": "MIT",
-	"homepage": "https://github.com/hugomrdias/metamask/tree/main/packages/tools",
-	"repository": {
-		"url": "hugomrdias/metamask",
-		"directory": "packages/tools"
-	},
-	"keywords": [
-		"metamask",
-		"testing",
-		"snap",
-		"flask",
-		"playwright"
-	],
-	"exports": {
-		".": {
-			"types": "./dist/src/index.d.ts",
-			"import": "./src/index.js"
-		},
-		"./fixture": {
-			"types": "./dist/src/fixture.d.ts",
-			"import": "./src/fixture.js"
-		},
-		"./metamask": {
-			"types": "./dist/src/metamask.d.ts",
-			"import": "./src/metamask.js"
-		}
-	},
-	"main": "src/index.js",
-	"types": "dist/src/index.d.ts",
-	"typesVersions": {
-		"*": {
-			"fixture": [
-				"dist/src/fixture"
-			],
-			"metamask": [
-				"dist/src/metamask"
-			]
-		}
-	},
-	"files": [
-		"src",
-		"dist/src/*.d.ts",
-		"dist/src/*.d.ts.map"
-	],
-	"engines": {
-		"node": ">=20"
-	},
-	"scripts": {
-		"lint": "tsc --build && biome check --no-errors-on-unmatched --files-ignore-unknown=true",
-		"build": "tsc --build",
-		"serve-static": "sirv . --single --port 8081",
-		"test": "playwright test"
-	},
-	"dependencies": {
-		"@metamask/providers": "^22.1.0",
-		"@metamask/snaps-utils": "^11.2.0",
-		"@playwright/test": "^1.54.1",
-		"conf": "^14.0.0",
-		"eth-rpc-errors": "^4.0.3",
-		"fflate": "^0.8.2",
-		"p-retry": "^6.2.1",
-		"p-wait-for": "^5.0.2"
-	},
-	"devDependencies": {
-		"@types/node": "^24.1.0",
-		"sirv-cli": "^3.0.1",
-		"type-fest": "^4.41.0"
-	},
-	"depcheck": {
-		"specials": [
-			"bin"
-		],
-		"ignores": [
-			"@types/*",
-			"type-fest"
-		]
-	}
+  "name": "metamask-testing-tools",
+  "type": "module",
+  "version": "2.2.5",
+  "description": "This is a collection of tools for testing metamask, metamask flask and metamask snaps.",
+  "author": "Hugo Dias <hugomrdias@gmail.com> (hugodias.me)",
+  "license": "MIT",
+  "homepage": "https://github.com/hugomrdias/metamask/tree/main/packages/tools",
+  "repository": {
+    "url": "hugomrdias/metamask",
+    "directory": "packages/tools"
+  },
+  "keywords": [
+    "metamask",
+    "testing",
+    "snap",
+    "flask",
+    "playwright"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./src/index.js"
+    },
+    "./fixture": {
+      "types": "./dist/src/fixture.d.ts",
+      "import": "./src/fixture.js"
+    },
+    "./metamask": {
+      "types": "./dist/src/metamask.d.ts",
+      "import": "./src/metamask.js"
+    }
+  },
+  "main": "src/index.js",
+  "types": "dist/src/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "fixture": [
+        "dist/src/fixture"
+      ],
+      "metamask": [
+        "dist/src/metamask"
+      ]
+    }
+  },
+  "files": [
+    "src",
+    "dist/src/*.d.ts",
+    "dist/src/*.d.ts.map"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "lint": "tsc --build && biome check --no-errors-on-unmatched --files-ignore-unknown=true",
+    "build": "tsc --build",
+    "serve-static": "sirv . --single --port 8081",
+    "test": "playwright test"
+  },
+  "dependencies": {
+    "@metamask/providers": "^22.1.0",
+    "@metamask/snaps-utils": "^11.2.0",
+    "@playwright/test": "^1.54.2",
+    "conf": "^14.0.0",
+    "eth-rpc-errors": "^4.0.3",
+    "fflate": "^0.8.2",
+    "p-retry": "^6.2.1",
+    "p-wait-for": "^5.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^24.1.0",
+    "sirv-cli": "^3.0.1",
+    "type-fest": "^4.41.0"
+  },
+  "depcheck": {
+    "specials": [
+      "bin"
+    ],
+    "ignores": [
+      "@types/*",
+      "type-fest"
+    ]
+  }
 }

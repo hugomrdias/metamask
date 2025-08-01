@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noConsole: cli */
 import { EthereumRpcError } from 'eth-rpc-errors'
 import pRetry from 'p-retry'
 
@@ -126,14 +127,12 @@ export class Metamask {
       context.newPage().then((page) => {
         page.on('console', (msg) => redirectConsole(msg, 'Worker'))
         page.on('pageerror', (err) => {
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log('[Worker] Uncaught exception', err.message)
         })
         page.goto(`chrome-extension://${this.extension.id}/offscreen.html`)
       })
       this.page.on('console', redirectConsole)
       this.page.on('pageerror', (err) => {
-        // biome-ignore lint/suspicious/noConsoleLog: <explanation>
         console.log('[Metamask] Uncaught exception', err.message)
       })
     }

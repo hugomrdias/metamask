@@ -1,8 +1,7 @@
 import type { MetaMaskInpageProvider } from '@metamask/providers'
 import type { TruncatedSnap } from '@metamask/snaps-utils'
-import type { SetOptional } from 'type-fest'
-
 import type { Page } from '@playwright/test'
+import type { SetOptional } from 'type-fest'
 
 export interface Extension {
   title: string

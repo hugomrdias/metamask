@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noConsole: cli */
 import { EthereumRpcError } from 'eth-rpc-errors'
 import { isValidCode } from 'eth-rpc-errors/dist/utils.js'
 
@@ -98,7 +99,6 @@ export async function redirectConsole(msg, prefix = 'Metamask') {
   if (msgArgs && msgArgs.length > 0) {
     consoleFn.apply(console, [`[${prefix}]`, ...msgArgs])
   } else if (text) {
-    // biome-ignore lint/suspicious/noConsoleLog: <explanation>
     console.log(`[${prefix}] ${text}`)
   }
 }
@@ -108,12 +108,12 @@ export async function redirectConsole(msg, prefix = 'Metamask') {
  * @param {import('@playwright/test').Page} page
  */
 export async function injectGetProvider(page) {
-  await page.evaluate(async () => {
+  await page.evaluate(() => {
     if ('getProvider' in window) return
     // @ts-ignore
-    window.getProvider = async function getProvider(timeout = 1000) {
+    window.getProvider = function getProvider(timeout = 1000) {
       let timeoutHandle = 0
-      return await new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         // @ts-ignore
         const onProviderFound = (event) => {
           clearTimeout(timeoutHandle) // Clear the timeout on successful provider detection
@@ -166,31 +166,6 @@ export async function injectGetProvider(page) {
 export async function getSnaps(page) {
   await injectGetProvider(page)
   const result = await page.evaluate(async () => {
-    // const getRequestProvider = () => {
-    //   return new Promise((resolve) => {
-    //     // Define the event handler directly. This assumes the window is already loaded.
-    //     // @ts-ignore
-    //     const handler = (event) => {
-    //       const { rdns } = event.detail.info
-    //       switch (rdns) {
-    //         case 'io.metamask':
-    //         case 'io.metamask.flask':
-    //         case 'io.metamask.mmi': {
-    //           window.removeEventListener('eip6963:announceProvider', handler)
-    //           resolve(event.detail.provider)
-    //           break
-    //         }
-    //         default: {
-    //           break
-    //         }
-    //       }
-    //     }
-
-    //     window.addEventListener('eip6963:announceProvider', handler)
-    //     window.dispatchEvent(new Event('eip6963:requestProvider'))
-    //   })
-    // }
-
     try {
       // @ts-ignore
       const api = await window.getProvider()
@@ -226,34 +201,6 @@ export async function installSnap(page, snapId, snapVersion) {
 
   const install = page.evaluate(
     async ({ snapId, version }) => {
-      // const getRequestProvider = () => {
-      //   return new Promise((resolve) => {
-      //     // Define the event handler directly. This assumes the window is already loaded.
-      //     // @ts-ignore
-      //     const handler = (event) => {
-      //       const { rdns } = event.detail.info
-      //       switch (rdns) {
-      //         case 'io.metamask':
-      //         case 'io.metamask.flask':
-      //         case 'io.metamask.mmi': {
-      //           window.removeEventListener(
-      //             'eip6963:announceProvider',
-      //             handler
-      //           )
-      //           resolve(event.detail.provider)
-      //           break
-      //         }
-      //         default: {
-      //           break
-      //         }
-      //       }
-      //     }
-
-      //     window.addEventListener('eip6963:announceProvider', handler)
-      //     window.dispatchEvent(new Event('eip6963:requestProvider'))
-      //   })
-      // }
-
       try {
         // @ts-ignore
         const api = await window.getProvider()
@@ -292,30 +239,6 @@ export async function callSnap(page, arg) {
   await injectGetProvider(page)
 
   const result = await page.evaluate(async (arg) => {
-    // const getRequestProvider = () => {
-    //   return new Promise((resolve) => {
-    //     // Define the event handler directly. This assumes the window is already loaded.
-    //     // @ts-ignore
-    //     const handler = (event) => {
-    //       const { rdns } = event.detail.info
-    //       switch (rdns) {
-    //         case 'io.metamask':
-    //         case 'io.metamask.flask':
-    //         case 'io.metamask.mmi': {
-    //           window.removeEventListener('eip6963:announceProvider', handler)
-    //           resolve(event.detail.provider)
-    //           break
-    //         }
-    //         default: {
-    //           break
-    //         }
-    //       }
-    //     }
-
-    //     window.addEventListener('eip6963:announceProvider', handler)
-    //     window.dispatchEvent(new Event('eip6963:requestProvider'))
-    //   })
-    // }
     try {
       // @ts-ignore
       const api = await globalThis.getProvider()

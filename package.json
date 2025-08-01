@@ -1,33 +1,33 @@
 {
-	"name": "metamask",
-	"version": "0.0.0",
-	"private": true,
-	"workspaces": [
-		"packages/*"
-	],
-	"scripts": {
-		"fix": "biome check --fix --no-errors-on-unmatched --files-ignore-unknown=true",
-		"clean": "rm -rf docs node_modules pnpm-lock.yaml packages/*/{pnpm-lock.yaml,coverage,.nyc_output,dist,node_modules,.next}",
-		"lint": "pnpm -r --if-present run lint",
-		"test": "pnpm -r --if-present run test",
-		"check": "pnpm -r --if-present run check",
-		"build": "pnpm -r --if-present run build",
-		"docs": "typedoc --out docs --plugin typedoc-plugin-missing-exports"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "^1.9.4",
-		"@hugomrdias/configs": "^0.1.9",
-		"depcheck": "^1.4.7",
-		"playwright": "^1.54.1",
-		"simple-git-hooks": "^2.13.0",
-		"typedoc": "^0.28.7",
-		"typedoc-plugin-missing-exports": "^4.0.0",
-		"typescript": "5.8.3"
-	},
-	"simple-git-hooks": {
-		"pre-commit": "pnpm exec biome check --no-errors-on-unmatched --files-ignore-unknown=true --staged"
-	},
-	"engines": {
-		"node": ">=20"
-	}
+  "name": "metamask",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "fix": "biome check --fix --no-errors-on-unmatched --files-ignore-unknown=true",
+    "clean": "rm -rf docs node_modules pnpm-lock.yaml packages/*/{pnpm-lock.yaml,coverage,.nyc_output,dist,node_modules,.next}",
+    "lint": "pnpm -r --if-present run lint",
+    "test": "pnpm -r --if-present run test",
+    "check": "pnpm -r --if-present run check",
+    "build": "pnpm -r --if-present run build",
+    "docs": "typedoc --out docs --plugin typedoc-plugin-missing-exports"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.1.3",
+    "@hugomrdias/configs": "^1.0.0",
+    "depcheck": "^1.4.7",
+    "playwright": "^1.54.2",
+    "simple-git-hooks": "^2.13.1",
+    "typedoc": "^0.28.8",
+    "typedoc-plugin-missing-exports": "^4.0.0",
+    "typescript": "5.9.2"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm exec biome check --no-errors-on-unmatched --files-ignore-unknown=true --staged"
+  },
+  "engines": {
+    "node": ">=20"
+  }
 }

@@ -1,10 +1,9 @@
-import fs from 'fs'
-import path from 'path'
-import { unzipSync } from 'fflate'
-import { writeFile } from 'fs/promises'
-
 // @ts-ignore
 import Conf from 'conf'
+import { unzipSync } from 'fflate'
+import fs from 'fs'
+import { writeFile } from 'fs/promises'
+import path from 'path'
 
 const GITHUB_API_VERSION = '2022-11-28'
 const defaultDirectory = path.resolve('node_modules', '.cache', '.metamask')

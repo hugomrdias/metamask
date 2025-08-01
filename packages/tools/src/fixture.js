@@ -1,9 +1,10 @@
+/** biome-ignore-all lint/suspicious/noConsole: cli */
+import { fileURLToPath } from 'node:url'
+import { test as base, chromium } from '@playwright/test'
 import { createHash } from 'crypto'
 import { existsSync, mkdirSync } from 'fs'
-import { fileURLToPath } from 'node:url'
-import path from 'path'
-import { test as base, chromium } from '@playwright/test'
 import pWaitFor from 'p-wait-for'
+import path from 'path'
 import { download } from './download.js'
 import { Metamask } from './metamask.js'
 import { redirectConsole } from './utils.js'
@@ -178,11 +179,9 @@ export function createFixture(opts = {}) {
       if (debug) {
         page.on('console', (msg) => redirectConsole(msg, 'Page'))
         page.on('pageerror', (err) => {
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log('[Page] Uncaught exception', err.message)
         })
         context.on('weberror', (webError) => {
-          // biome-ignore lint/suspicious/noConsoleLog: <explanation>
           console.log(`[Context] Uncaught exception: "${webError.error()}"`)
         })
       }
