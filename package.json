@@ -21,7 +21,7 @@
     "playwright": "^1.54.2",
     "simple-git-hooks": "^2.13.1",
     "typedoc": "^0.28.9",
-    "typedoc-plugin-missing-exports": "^4.0.0",
+    "typedoc-plugin-missing-exports": "^4.1.0",
     "typescript": "5.9.2"
   },
   "simple-git-hooks": {
