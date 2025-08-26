@@ -104,6 +104,7 @@ main2.test.describe('snaps install metamask and filsnap', () => {
       })
 
       main2.expect(config.result).toEqual({
+        derivationMode: 'native',
         derivationPath: "m/44'/1'/0'/0/0",
         rpc: { url: 'https://api.calibration.node.glif.io', token: '' },
         network: 'testnet',
