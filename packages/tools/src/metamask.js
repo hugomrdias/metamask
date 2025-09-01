@@ -231,6 +231,7 @@ export class Metamask {
     await page.getByTestId('create-password-submit').click()
     await page.getByTestId('metametrics-i-agree').click()
     await page.getByTestId('onboarding-complete-done').click()
+    await page.getByTestId('download-app-continue').click()
 
     await page.waitForURL('**/pin-extension')
     await page.getByTestId('pin-extension-next').click()
