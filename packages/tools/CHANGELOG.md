@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.7](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.2.6...metamask-testing-tools-v2.2.7) (2025-09-01)
+
+
+### Bug Fixes
+
+* update onboarding flow to include app download step ([c6cf430](https://github.com/hugomrdias/metamask/commit/c6cf430a593bb2ea8f3003a94d0ae3a8583f4aba))
+
 ## [2.2.6](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.2.5...metamask-testing-tools-v2.2.6) (2025-08-01)
 
 
