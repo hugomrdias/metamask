@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.8](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.2.7...metamask-testing-tools-v2.2.8) (2025-09-29)
+
+
+### Bug Fixes
+
+* remove unused closeConnectEth function and clean up onboarding flow ([50ed001](https://github.com/hugomrdias/metamask/commit/50ed0017860882807c1870a385a3df84bd4cc15c))
+
 ## [2.2.7](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.2.6...metamask-testing-tools-v2.2.7) (2025-09-01)
 
 
