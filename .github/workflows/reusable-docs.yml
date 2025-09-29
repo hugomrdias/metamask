@@ -19,7 +19,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4.1.0
         with:
           version: latest
@@ -32,7 +32,7 @@ jobs:
       - run: pnpm run lint
       - run: pnpm run docs
       - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: './docs'
       - name: Deploy to GitHub Pages
