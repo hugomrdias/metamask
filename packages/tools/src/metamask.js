@@ -38,7 +38,6 @@ async function snapApprove(page) {
       await page.getByTestId('snap-privacy-warning-scroll').click()
       await page.getByRole('button', { name: 'Accept', exact: true }).click()
     }
-    await closeConnectEth(page)
     await page.getByTestId('page-container-footer-next').click()
   }
 
@@ -79,25 +78,6 @@ function waitForDialog(page, name, extension) {
   })
 }
 
-/**
- * Close connect eth
- *
- * @param {import('@playwright/test').Page} page
- */
-async function closeConnectEth(page) {
-  const connectEth = page.locator('.page-container__header-close')
-  try {
-    await connectEth.click({
-      timeout: 300,
-      noWaitAfter: true,
-    })
-  } catch (_error) {
-    // ignore
-  }
-}
-
-/**
- */
 export class Metamask {
   /** @type {string | undefined} */
   #snap
@@ -214,10 +194,10 @@ export class Metamask {
         .click()
     }
     // import wallet
-    await page.getByTestId('onboarding-get-started-button').click()
-    await page.getByTestId('terms-of-use-checkbox').click()
-    await page.getByTestId('terms-of-use-scroll-button').click()
-    await page.getByTestId('terms-of-use-agree-button').click()
+    // await page.getByTestId('onboarding-import-wallet').click()
+    // await page.getByTestId('terms-of-use-checkbox').click()
+    // await page.getByTestId('terms-of-use-scroll-button').click()
+    // await page.getByTestId('terms-of-use-agree-button').click()
     await page.getByTestId('onboarding-import-wallet').click()
     await page.getByTestId('onboarding-import-with-srp-button').click()
     await page
@@ -261,8 +241,6 @@ export class Metamask {
     if (!options.id && !process.env.METAMASK_SNAP_ID) {
       throw new Error('Snap ID is required.')
     }
-
-    await closeConnectEth(this.page)
 
     // wait for metamask to be available
     await options.page.waitForFunction(
