@@ -64,7 +64,7 @@
     "conf": "^14.0.0",
     "eth-rpc-errors": "^4.0.3",
     "fflate": "^0.8.2",
-    "p-retry": "^6.2.1",
+    "p-retry": "^7.1.0",
     "p-wait-for": "^5.0.2"
   },
   "devDependencies": {
