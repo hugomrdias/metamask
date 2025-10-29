@@ -144,7 +144,7 @@ export function createFixture(opts = {}) {
       }
 
       // https://playwright.dev/docs/service-workers-experimental
-      // @ts-ignore
+      // @ts-expect-error
       process.env.PW_EXPERIMENTAL_SERVICE_WORKER_NETWORK_EVENTS = 1
 
       if (!ctx || isolated) {

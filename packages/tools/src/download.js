@@ -1,4 +1,3 @@
-// @ts-ignore
 import Conf from 'conf'
 import { unzipSync } from 'fflate'
 import fs from 'fs'
@@ -20,7 +19,7 @@ async function getLastestTag({ repo, userAgent = 'metamask', token }) {
     'User-Agent': userAgent,
   }
   if (token) {
-    // @ts-ignore
+    // @ts-expect-error
     headers.Authorization = `Bearer ${token}`
   }
   const rsp = await fetch(
@@ -52,7 +51,7 @@ async function getAsset({ repo, userAgent = 'filsnap', token, tag, asset }) {
     'User-Agent': userAgent,
   }
   if (token) {
-    // @ts-ignore
+    // @ts-expect-error
     headers.Authorization = `Bearer ${token}`
   }
   const rsp = await fetch(url, {

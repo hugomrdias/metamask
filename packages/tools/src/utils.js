@@ -13,7 +13,7 @@ export function isMetamaskRpcError(obj) {
   if (!('code' in obj)) return false
   if (!('message' in obj)) return false
 
-  // @ts-ignore
+  // @ts-expect-error
   if (isValidCode(obj.code)) {
     return true
   }
@@ -110,11 +110,11 @@ export async function redirectConsole(msg, prefix = 'Metamask') {
 export async function injectGetProvider(page) {
   await page.evaluate(() => {
     if ('getProvider' in window) return
-    // @ts-ignore
+    // @ts-expect-error
     window.getProvider = function getProvider(timeout = 1000) {
       let timeoutHandle = 0
       return new Promise((resolve, reject) => {
-        // @ts-ignore
+        // @ts-expect-error
         const onProviderFound = (event) => {
           clearTimeout(timeoutHandle) // Clear the timeout on successful provider detection
           const { rdns } = event.detail.info
@@ -167,7 +167,7 @@ export async function getSnaps(page) {
   await injectGetProvider(page)
   const result = await page.evaluate(async () => {
     try {
-      // @ts-ignore
+      // @ts-expect-error
       const api = await window.getProvider()
       const result = await api.request({
         method: 'wallet_getSnaps',
@@ -202,7 +202,7 @@ export async function installSnap(page, snapId, snapVersion) {
   const install = page.evaluate(
     async ({ snapId, version }) => {
       try {
-        // @ts-ignore
+        // @ts-expect-error no typing for getProvider
         const api = await window.getProvider()
         const result = await api.request({
           method: 'wallet_requestSnaps',
@@ -240,9 +240,8 @@ export async function callSnap(page, arg) {
 
   const result = await page.evaluate(async (arg) => {
     try {
-      // @ts-ignore
+      // @ts-expect-error
       const api = await globalThis.getProvider()
-      // @ts-ignore
       const result = await api.request(arg)
       return result
     } catch (error) {
