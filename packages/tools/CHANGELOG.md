@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.9](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.2.8...metamask-testing-tools-v2.2.9) (2025-10-29)
+
+
+### Bug Fixes
+
+* fix setup ([2baa1c6](https://github.com/hugomrdias/metamask/commit/2baa1c6631fcf3035fdb1f44b2ebc8154024b362))
+
 ## [2.2.8](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.2.7...metamask-testing-tools-v2.2.8) (2025-09-29)
 
 
