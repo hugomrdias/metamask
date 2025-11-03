@@ -61,7 +61,7 @@
     "@metamask/providers": "^22.1.1",
     "@metamask/snaps-utils": "^11.6.1",
     "@playwright/test": "^1.56.1",
-    "conf": "^14.0.0",
+    "conf": "^15.0.2",
     "eth-rpc-errors": "^4.0.3",
     "fflate": "^0.8.2",
     "p-retry": "^6.2.1",
