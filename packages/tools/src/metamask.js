@@ -194,15 +194,11 @@ export class Metamask {
         .click()
     }
     // import wallet
-    // await page.getByTestId('onboarding-import-wallet').click()
-    // await page.getByTestId('terms-of-use-checkbox').click()
-    // await page.getByTestId('terms-of-use-scroll-button').click()
-    // await page.getByTestId('terms-of-use-agree-button').click()
     await page.getByTestId('onboarding-import-wallet').click()
     await page.getByTestId('onboarding-import-with-srp-button').click()
     await page
       .getByTestId('srp-input-import__srp-note')
-      .pressSequentially(mnemonic)
+      .pressSequentially(mnemonic, { delay: 20 })
 
     await page.getByTestId('import-srp-confirm').click()
     await page.getByTestId('create-password-new-input').fill(password)
@@ -211,11 +207,6 @@ export class Metamask {
     await page.getByTestId('create-password-submit').click()
     await page.getByTestId('metametrics-i-agree').click()
     await page.getByTestId('onboarding-complete-done').click()
-    // await page.getByTestId('download-app-continue').click()
-
-    // await page.waitForURL('**/pin-extension')
-    // await page.getByTestId('pin-extension-next').click()
-    // await page.getByTestId('pin-extension-done').click()
 
     return this
   }
