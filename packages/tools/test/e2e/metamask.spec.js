@@ -6,7 +6,7 @@ test.describe('metamask latest stable', () => {
   test('should run setup', async ({ metamask }) => {
     await metamask.setup()
 
-    await expect(metamask.page.getByText('Account 1')).toBeVisible()
+    await expect(metamask.sidepanel.getByText('Account 1')).toBeVisible()
   })
 
   test('should throw on installSnap', async ({ metamask, page }) => {
