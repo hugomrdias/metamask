@@ -59,18 +59,18 @@
   },
   "dependencies": {
     "@metamask/providers": "^22.1.1",
-    "@metamask/snaps-utils": "^11.6.1",
-    "@playwright/test": "^1.56.1",
+    "@metamask/snaps-utils": "^11.7.0",
+    "@playwright/test": "^1.57.0",
     "conf": "^15.0.2",
     "eth-rpc-errors": "^4.0.3",
     "fflate": "^0.8.2",
-    "p-retry": "^7.1.0",
+    "p-retry": "^7.1.1",
     "p-wait-for": "^6.0.0"
   },
   "devDependencies": {
-    "@types/node": "^24.10.1",
+    "@types/node": "^25.0.3",
     "sirv-cli": "^3.0.1",
-    "type-fest": "^5.2.0"
+    "type-fest": "^5.3.1"
   },
   "depcheck": {
     "specials": [
