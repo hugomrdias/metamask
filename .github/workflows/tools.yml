@@ -8,14 +8,14 @@ on:
     branches:
       - main
     paths:
-      - 'packages/tools/**'
-      - '.github/workflows/tools.yml'
-      - 'pnpm-lock.yaml'
+      - "packages/tools/**"
+      - ".github/workflows/tools.yml"
+      - "pnpm-lock.yaml"
   pull_request:
     paths:
-      - 'packages/tools/**'
-      - '.github/workflows/tools.yml'
-      - 'pnpm-lock.yaml'
+      - "packages/tools/**"
+      - ".github/workflows/tools.yml"
+      - "pnpm-lock.yaml"
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -27,11 +27,11 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: lts/*
-          cache: 'pnpm'
+          cache: "pnpm"
       - run: pnpm install
       - run: pnpm -r --filter metamask-testing-tools run lint
       - run: pnpm -r --filter metamask-testing-tools exec depcheck
-      - run: pnpm -r --filter metamask-testing-tools exec playwright install --with-deps
+      - run: pnpm -r --filter metamask-testing-tools exec playwright install chromium --with-deps
       - run: pnpm -r --filter metamask-testing-tools run test
         env:
           GITHUB_TOKEN: ${{ github.token }}
