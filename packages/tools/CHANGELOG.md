@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.3.0](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.2.10...metamask-testing-tools-v2.3.0) (2026-01-09)
+
+
+### Features
+
+* add viewport adjustment and sidepanel handling in Metamask setup ([ba0f83b](https://github.com/hugomrdias/metamask/commit/ba0f83bb639f4c29552fb7c9a626dd02a64a7113))
+
+
+### Bug Fixes
+
+* increase delay in mnemonic input for Metamask onboarding ([ae802ad](https://github.com/hugomrdias/metamask/commit/ae802ad5cc5ba2fd7b9f31250bea72eb08e91c24))
+
 ## [2.2.10](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.2.9...metamask-testing-tools-v2.2.10) (2025-11-15)
 
 
