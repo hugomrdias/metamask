@@ -78,6 +78,21 @@ function waitForDialog(page, name, extension) {
   })
 }
 
+/**
+ * Adjust viewport
+ *
+ * @param {import('@playwright/test').Page} page
+ */
+async function adjustViewport(page) {
+  const client = await page.context().newCDPSession(page)
+  await client.send('Emulation.setDeviceMetricsOverride', {
+    width: 0,
+    height: 0,
+    deviceScaleFactor: 0,
+    mobile: false,
+  })
+}
+
 export class Metamask {
   /** @type {string | undefined} */
   #snap
@@ -102,6 +117,7 @@ export class Metamask {
     this.extraExtensions = extensions.filter((ext) => ext.title !== 'MetaMask')
     this.#snap = undefined
     this.page = this.extension.page
+    this.sidepanel = this.extension.page
 
     if (debug) {
       context.newPage().then((page) => {
@@ -124,7 +140,7 @@ export class Metamask {
    * @param {string | RegExp | ((url: URL) => boolean)} name - A glob pattern, regex pattern or predicate receiving [URL] to match while waiting for the navigation. Note that if the parameter is a string without wildcard characters, the method will wait for navigation to URL that is exactly equal to the string.
    */
   waitForDialog(name) {
-    return waitForDialog(this.page, name, this.extension.url)
+    return waitForDialog(this.sidepanel, name, this.sidepanel.url())
   }
 
   /**
@@ -169,13 +185,7 @@ export class Metamask {
     }
 
     // adjust page viewport
-    const client = await page.context().newCDPSession(page)
-    await client.send('Emulation.setDeviceMetricsOverride', {
-      width: 0,
-      height: 0,
-      deviceScaleFactor: 0,
-      mobile: false,
-    })
+    await adjustViewport(page)
 
     // unlock flow
     if (this.page.url().includes('unlock')) {
@@ -198,7 +208,7 @@ export class Metamask {
     await page.getByTestId('onboarding-import-with-srp-button').click()
     await page
       .getByTestId('srp-input-import__srp-note')
-      .pressSequentially(mnemonic, { delay: 20 })
+      .pressSequentially(mnemonic, { delay: 10 })
 
     await page.getByTestId('import-srp-confirm').click()
     await page.getByTestId('create-password-new-input').fill(password)
@@ -207,6 +217,12 @@ export class Metamask {
     await page.getByTestId('create-password-submit').click()
     await page.getByTestId('metametrics-i-agree').click()
     await page.getByTestId('onboarding-complete-done').click()
+
+    // setup sidepanel
+    const sidepanelUrl = `chrome-extension://${this.extension.id}/sidepanel.html`
+    this.sidepanel = await this.context.newPage()
+    await this.sidepanel.goto(sidepanelUrl)
+    await adjustViewport(this.sidepanel)
 
     return this
   }
