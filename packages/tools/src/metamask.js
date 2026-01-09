@@ -208,7 +208,7 @@ export class Metamask {
     await page.getByTestId('onboarding-import-with-srp-button').click()
     await page
       .getByTestId('srp-input-import__srp-note')
-      .pressSequentially(mnemonic, { delay: 10 })
+      .pressSequentially(mnemonic, { delay: 30 })
 
     await page.getByTestId('import-srp-confirm').click()
     await page.getByTestId('create-password-new-input').fill(password)
