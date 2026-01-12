@@ -20,7 +20,7 @@
     "depcheck": "^1.4.7",
     "playwright": "^1.57.0",
     "simple-git-hooks": "^2.13.1",
-    "typedoc": "^0.28.15",
+    "typedoc": "^0.28.16",
     "typedoc-plugin-missing-exports": "^4.1.2",
     "typescript": "5.9.3"
   },
