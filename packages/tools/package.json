@@ -68,7 +68,7 @@
     "p-wait-for": "^6.0.0"
   },
   "devDependencies": {
-    "@types/node": "^25.0.3",
+    "@types/node": "^25.0.10",
     "sirv-cli": "^3.0.1",
     "type-fest": "^5.3.1"
   },
