@@ -123,14 +123,14 @@ export async function injectGetProvider(page) {
             case 'io.metamask.flask':
             case 'io.metamask.mmi': {
               const provider = event.detail.provider
-              if (!provider || !provider.isMetaMask) {
-                reject(new Error('Provider not supported or not found.'))
-              } else {
+              if (provider?.isMetaMask) {
                 window.removeEventListener(
                   'eip6963:announceProvider',
                   onProviderFound
                 )
                 resolve(provider)
+              } else {
+                reject(new Error('Provider not supported or not found.'))
               }
               break
             }
