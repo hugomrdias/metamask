@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.1](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.3.0...metamask-testing-tools-v2.3.1) (2026-05-08)
+
+
+### Bug Fixes
+
+* **deps:** update TypeScript and various package versions ([2f0ad1c](https://github.com/hugomrdias/metamask/commit/2f0ad1cf0408d7ee96e1ea4478d9d34d4278ce98))
+
 ## [2.3.0](https://github.com/hugomrdias/metamask/compare/metamask-testing-tools-v2.2.10...metamask-testing-tools-v2.3.0) (2026-01-09)
 
 
